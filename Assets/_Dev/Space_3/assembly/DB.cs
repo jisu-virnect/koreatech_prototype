@@ -10,6 +10,7 @@ public class Sequence
     public int index;
     public string title;
     public string summary;
+    public string renderMode;
 }
 
 [Serializable]

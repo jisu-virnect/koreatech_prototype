@@ -4,12 +4,39 @@ using UnityEngine;
 
 public class TestA : MonoBehaviour
 {
+    MeshRenderer meshRenderer;
     private void Start()
     {
-        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        meshRenderer = GetComponent<MeshRenderer>();
         materials = meshRenderer.materials;
     }
     Material[] materials;
+
+    void SetMaterialTransparent(Material standardShaderMaterial)
+    {
+        // URP/Lit 셰이더 사용
+        standardShaderMaterial.SetFloat("_Surface", 1); // 0 = Opaque, 1 = Transparent
+        //mat.SetInt("_Blend", (int)UnityEngine.Rendering.BlendMode.One);
+        standardShaderMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        standardShaderMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        standardShaderMaterial.SetInt("_ZWrite", 0);
+        standardShaderMaterial.DisableKeyword("_ALPHATEST_ON");
+        standardShaderMaterial.EnableKeyword("_ALPHABLEND_ON");
+        standardShaderMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        standardShaderMaterial.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+
+        // Alpha 값 설정 (투명도 설정)
+        Color color = standardShaderMaterial.color;
+        color.a = 0f; // 원하는 투명도 값 (0.0f에서 1.0f 사이)
+        standardShaderMaterial.color = color;
+
+        // 알파 클리핑 비활성화
+        standardShaderMaterial.SetFloat("_Cutoff", 0.0f);
+
+        // URP 키워드 설정
+        standardShaderMaterial.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+        standardShaderMaterial.DisableKeyword("_SURFACE_TYPE_OPAQUE");
+    }
 
     private void Update()
     {
@@ -36,7 +63,7 @@ public class TestA : MonoBehaviour
             {
                 StopCoroutine(coroutine);
             }
-            coroutine = StartCoroutine(Co_Translate(materials, Util.BlendMode.Opaque));
+            coroutine = StartCoroutine(Co_Translate(materials, BlendMode.Opaque));
 
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
@@ -45,30 +72,40 @@ public class TestA : MonoBehaviour
             {
                 StopCoroutine(coroutine);
             }
-            coroutine = StartCoroutine(Co_Translate(materials, Util.BlendMode.Transparent));
+            coroutine = StartCoroutine(Co_Translate(materials, BlendMode.Transparent));
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            SetMaterialTransparent(meshRenderer.material);
         }
     }
 
     Coroutine coroutine = null;
-    IEnumerator Co_Translate(Material[] materials, Util.BlendMode Transparent)
+    IEnumerator Co_Translate(Material[] materials, BlendMode Transparent)
     {
         switch (Transparent)
         {
-            case Util.BlendMode.Opaque:
+            case BlendMode.Opaque:
                 for (int i = 0; i < materials.Length; i++)
                 {
-                    Util.changeRenderMode(materials[i], Util.BlendMode.Opaque);
+                    Util.ChangeRenderMode(materials[i], BlendMode.Opaque);
                     materials[i].color = Color.white;
                 }
                 break;
-            case Util.BlendMode.Cutout:
+            case BlendMode.Cutout:
                 break;
-            case Util.BlendMode.Fade:
+            case BlendMode.Fade:
                 break;
-            case Util.BlendMode.Transparent:
+            case BlendMode.Transparent:
+                //for (int i = 0; i < materials.Length; i++)
+                //{
+                //    Util.changeRenderMode(materials[i], Util.BlendMode.Transparent);
+                //    materials[i].color = Color.white-Color.black;
+                //}
+                //break;
                 for (int i = 0; i < materials.Length; i++)
                 {
-                    Util.changeRenderMode(materials[i], Util.BlendMode.Transparent);
+                    Util.ChangeRenderMode(materials[i], BlendMode.Transparent);
                 }
                 float durTime = 1f;
                 float curTime = 0f;
@@ -81,7 +118,7 @@ public class TestA : MonoBehaviour
                         for (int i = 0; i < materials.Length; i++)
                         {
                             Material material = materials[i];
-                            material.color = Color.Lerp(Color.white, Color.white - Color.black, curTime);
+                            material.color = new Color(1f, 1f, 1f, Mathf.Lerp(1f, 0f, curTime));
                         }
                         yield return null;
                     }
@@ -92,7 +129,7 @@ public class TestA : MonoBehaviour
                         for (int i = 0; i < materials.Length; i++)
                         {
                             Material material = materials[i];
-                            material.color = Color.Lerp(Color.white - Color.black, Color.white, curTime);
+                            material.color = new Color(1f, 1f, 1f, Mathf.Lerp(0f, 1f, curTime));
                         }
                         yield return null;
                     }

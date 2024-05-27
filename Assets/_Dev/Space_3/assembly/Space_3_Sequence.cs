@@ -13,7 +13,7 @@ public class Space_3_Sequence : MonoBehaviour
     private Button button;
     private GameObject go_Focus;
 
-    private Sequence sequence;
+    public Sequence sequence;
 
     private void GetComponent()
     {

@@ -229,20 +229,14 @@ public static partial class Util
     #endregion
 
 
-    public enum BlendMode
-    {
-        Opaque = 0,
-        Cutout,
-        Fade,
-        Transparent
-    }
 
-
-    public static void changeRenderMode(Material standardShaderMaterial, BlendMode blendMode)
+    
+    public static void ChangeRenderMode(Material standardShaderMaterial, BlendMode blendMode)
     {
         switch (blendMode)
         {
             case BlendMode.Opaque:
+                standardShaderMaterial.SetFloat("_Surface", 0); // 0 = Opaque, 1 = Transparent
                 standardShaderMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                 standardShaderMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                 standardShaderMaterial.SetInt("_ZWrite", 1);
@@ -250,6 +244,9 @@ public static partial class Util
                 standardShaderMaterial.DisableKeyword("_ALPHABLEND_ON");
                 standardShaderMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                 standardShaderMaterial.renderQueue = -1;
+                // URP 키워드 설정
+                standardShaderMaterial.DisableKeyword("_SURFACE_TYPE_TRANSPARENT");
+                standardShaderMaterial.EnableKeyword("_SURFACE_TYPE_OPAQUE");
                 break;
             case BlendMode.Cutout:
                 standardShaderMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
@@ -270,14 +267,25 @@ public static partial class Util
                 standardShaderMaterial.renderQueue = 3000;
                 break;
             case BlendMode.Transparent:
-                standardShaderMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                standardShaderMaterial.SetFloat("_Surface", 1); // 0 = Opaque, 1 = Transparent
+                standardShaderMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
                 standardShaderMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
                 standardShaderMaterial.SetInt("_ZWrite", 0);
                 standardShaderMaterial.DisableKeyword("_ALPHATEST_ON");
-                standardShaderMaterial.DisableKeyword("_ALPHABLEND_ON");
-                standardShaderMaterial.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+                standardShaderMaterial.EnableKeyword("_ALPHABLEND_ON");
+                standardShaderMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                 standardShaderMaterial.renderQueue = 3000;
+                standardShaderMaterial.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+                standardShaderMaterial.DisableKeyword("_SURFACE_TYPE_OPAQUE");
                 break;
         }
     }
+}
+
+public enum BlendMode
+{
+    Opaque = 0,
+    Cutout,
+    Fade,
+    Transparent
 }
