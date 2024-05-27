@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7535749176389697153}
+  - component: {fileID: 1441183454}
   m_Layer: 0
   m_Name: scaffold
   m_TagString: Untagged
@@ -42,6 +43,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1441183454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7403365491334708574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e20a5ef670b12da4492f602682f571b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1331236815275934602
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -129,11 +142,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: stump
       objectReference: {fileID: 0}
-    - target: {fileID: 524674449831514356, guid: b7b12a94d8cb2f74f9c3d0c977c31a39,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 865768706865498702, guid: b7b12a94d8cb2f74f9c3d0c977c31a39,
         type: 3}
       propertyPath: m_RootOrder
@@ -209,11 +217,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall_jont
       objectReference: {fileID: 0}
-    - target: {fileID: 486479039558705463, guid: 26fcec6b05c14724fb810ac366e4da67,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 976017468845833101, guid: 26fcec6b05c14724fb810ac366e4da67,
         type: 3}
       propertyPath: m_RootOrder
@@ -288,11 +291,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: work_scaffolding
-      objectReference: {fileID: 0}
-    - target: {fileID: 1331148764640350245, guid: c64a026f53df333479eb2e254588d91a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1815759972817357471, guid: c64a026f53df333479eb2e254588d91a,
         type: 3}
@@ -424,11 +422,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: bracing
       objectReference: {fileID: 0}
-    - target: {fileID: 2269460385997245471, guid: bdfb602ffa5764749bba90a277504563,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bdfb602ffa5764749bba90a277504563, type: 3}
 --- !u!4 &3378964506677317518 stripped
@@ -503,11 +496,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: railing
-      objectReference: {fileID: 0}
-    - target: {fileID: 5312926661689288268, guid: d454b9049c7b6e84ba56d30562a87fbb,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d454b9049c7b6e84ba56d30562a87fbb, type: 3}
@@ -584,11 +572,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: piiler
       objectReference: {fileID: 0}
-    - target: {fileID: 5294663711423556780, guid: 0f4351c3e9f5a614cad1e4b8daacde0a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f4351c3e9f5a614cad1e4b8daacde0a, type: 3}
 --- !u!4 &3378964504892752419 stripped
@@ -664,11 +647,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: catgut
       objectReference: {fileID: 0}
-    - target: {fileID: 5222284910977311422, guid: 623af748a8c4f1646a99339a88904283,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 623af748a8c4f1646a99339a88904283, type: 3}
 --- !u!4 &3378964505244537670 stripped
@@ -688,11 +666,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: stump_piller
-      objectReference: {fileID: 0}
-    - target: {fileID: 5790568269298276881, guid: e4d4f15a17dbdd642a1f09dca6cc3126,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6563973942029861035, guid: e4d4f15a17dbdd642a1f09dca6cc3126,
         type: 3}
@@ -824,11 +797,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ladder
       objectReference: {fileID: 0}
-    - target: {fileID: 6638125483614349258, guid: 5b6765ef019a8784a815aef1ece2bb34,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b6765ef019a8784a815aef1ece2bb34, type: 3}
 --- !u!4 &3378964505342779395 stripped
@@ -903,11 +871,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: net
-      objectReference: {fileID: 0}
-    - target: {fileID: 6533110286524431906, guid: 176d13211ba29c449afa7dbdbae42aef,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 176d13211ba29c449afa7dbdbae42aef, type: 3}
