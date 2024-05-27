@@ -76,8 +76,8 @@ public class Space_3_SequenceManager : MonoBehaviour
     /// <param name="item"></param>
     private void InitSequenceData(/*JSONArray item*/)
     {
-        sequenceList = new List<Sequence>(Util.FromJsonArray<Sequence>(db.text));
-        
+        sequenceList = Util.FromJsonList<Sequence>(db.text);
+
         //for (int i = 0; i < item.Count; i++)
         //{
         //    JSONNode itemdata = item[i];

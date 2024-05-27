@@ -16,6 +16,11 @@ public static partial class Util
         return wrapper.array;
     }
 
+    public static List<T> FromJsonList<T>(string json)
+    {
+        return new List<T>(FromJsonArray<T>(json));
+    }
+
     /// <summary>
     /// GetComponentsInChildren 강화버전 (비활성화 상태도 호출가능)
     /// </summary>
