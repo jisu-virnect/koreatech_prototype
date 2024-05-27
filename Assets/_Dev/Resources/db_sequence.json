@@ -1,0 +1,98 @@
+[
+	{
+		"index":0,
+		"title":"밑받침 설치",
+		"summary":"발판을 설치한다.발판을 설치한다.발판을 설치한다.발판을 설치한다.",
+		"object" : "stup_all"
+	},
+	{
+		"index":1,
+		"title":"기둥 설치",
+		"summary":"파이프를 설치한다.파이프를 설치한다.파이프를 설치한다.파이프를 설치한다.",
+		"object" : "Coillder_pipe"
+	},
+	{
+		"index":2,
+		"title":"밑동 잡이 설치",
+		"summary":"조인트를 설치한다.조인트를 설치한다.조인트를 설치한다.조인트를 설치한다.",
+		"object" : "Coillder_PIPE_PIN_ALL"
+	},
+	{
+		"index":3,
+		"title":"띠장 및 장선 설치",
+		"summary":"사다리를 설치한다.사다리를 설치한다.사다리를 설치한다.사다리를 설치한다.",
+		"object" : "Coillder_scaffold_IN_ladder_all"
+	},
+	{
+		"index":4,
+		"title":"작업 발판 설치",
+		"summary":"작업대를 설치한다.작업대를 설치한다.작업대를 설치한다.작업대를 설치한다.",
+		"object" : "Coillder_planer_ALL"
+	},
+	{
+		"index":5,
+		"title":"안전 난간대 설치",
+		"summary":"안전그물을 설치한다.안전그물을 설치한다.안전그물을 설치한다.안전그물을 설치한다.",
+		"object" : "Coillder_net"
+	},
+	{
+		"index":6,
+		"title":"벽이음 설치",
+		"summary":"발판을 설치한다.발판을 설치한다.발판을 설치한다.발판을 설치한다.",
+		"object" : "stup_all"
+	},
+	{
+		"index":7,
+		"title":"밑받침 설치",
+		"summary":"발판을 설치한다.발판을 설치한다.발판을 설치한다.발판을 설치한다.",
+		"object" : "stup_all"
+	},
+	{
+		"index":8,
+		"title":"기둥 설치",
+		"summary":"파이프를 설치한다.파이프를 설치한다.파이프를 설치한다.파이프를 설치한다.",
+		"object" : "Coillder_pipe"
+	},
+	{
+		"index":9,
+		"title":"밑동 잡이 설치",
+		"summary":"조인트를 설치한다.조인트를 설치한다.조인트를 설치한다.조인트를 설치한다.",
+		"object" : "Coillder_PIPE_PIN_ALL"
+	},
+	{
+		"index":10,
+		"title":"띠장 및 장선 설치",
+		"summary":"사다리를 설치한다.사다리를 설치한다.사다리를 설치한다.사다리를 설치한다.",
+		"object" : "Coillder_scaffold_IN_ladder_all"
+	},
+	{
+		"index":11,
+		"title":"작업 발판 설치",
+		"summary":"작업대를 설치한다.작업대를 설치한다.작업대를 설치한다.작업대를 설치한다.",
+		"object" : "Coillder_planer_ALL"
+	},
+	{
+		"index":12,
+		"title":"안전 난간대 설치",
+		"summary":"안전그물을 설치한다.안전그물을 설치한다.안전그물을 설치한다.안전그물을 설치한다.",
+		"object" : "Coillder_net"
+	},
+	{
+		"index":13,
+		"title":"가설 계단",
+		"summary":"안전그물을 설치한다.안전그물을 설치한다.안전그물을 설치한다.안전그물을 설치한다.",
+		"object" : "Coillder_net"
+	},
+	{
+		"index":14,
+		"title":"가브레이싱(가새) 설치",
+		"summary":"안전그물을 설치한다.안전그물을 설치한다.안전그물을 설치한다.안전그물을 설치한다.",
+		"object" : "Coillder_net"
+	},
+	{
+		"index":15,
+		"title":"수직 보호망 설치",
+		"summary":"안전그물을 설치한다.안전그물을 설치한다.안전그물을 설치한다.안전그물을 설치한다.",
+		"object" : "Coillder_net"
+	}
+]
