@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class panel_Checklist : MonoBehaviour
+public class panel_Checklist : panel_Base
 {
     // Start is called before the first frame update
     void Start()

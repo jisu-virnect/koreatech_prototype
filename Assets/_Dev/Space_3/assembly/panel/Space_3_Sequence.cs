@@ -55,7 +55,7 @@ public class Space_3_Sequence : MonoBehaviour
         {
             case SEQUENCE_STATE.BEFORE:
                 break;
-            case SEQUENCE_STATE.FOCUE:
+            case SEQUENCE_STATE.FOCUS:
                 canvasGroup.alpha = 1f;
                 button.interactable = true;
                 go_Focus.SetActive(true);
@@ -68,10 +68,4 @@ public class Space_3_Sequence : MonoBehaviour
                 break;
         }
     }
-}
-public enum SEQUENCE_STATE
-{
-    BEFORE,
-    FOCUE,
-    AFTER,
 }

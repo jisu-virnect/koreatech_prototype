@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class panel_Checkout : MonoBehaviour
+public class panel_Checkout : panel_Base
 {
     // Start is called before the first frame update
     void Start()
