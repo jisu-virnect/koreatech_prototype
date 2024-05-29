@@ -7,8 +7,9 @@ using UnityEngine.UI;
 
 public class panel_ChecklistAndInstall : panel_Base
 {
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Button btn_Checklist = gameObject.Search<Button>(nameof(btn_Checklist));
         btn_Checklist.onClick.AddListener(OnClick_Checklist);
         Button btn_Install = gameObject.Search<Button>(nameof(btn_Install));

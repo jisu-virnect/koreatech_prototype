@@ -58,3 +58,12 @@ public enum eServiceMode
     Input,
     UI,
 }
+
+public enum ePanelAnimation
+{
+    None,
+    Left,
+    Right,
+    Top, 
+    Bottom,
+}

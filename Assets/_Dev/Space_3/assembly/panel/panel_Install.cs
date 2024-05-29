@@ -21,8 +21,9 @@ public class panel_Install : panel_Base
     private List<Space_3_Sequence> sequences = new List<Space_3_Sequence>();
     private Space_3_Sequence prevSequence = null;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         GetComponent();
     }
 
@@ -53,35 +54,37 @@ public class panel_Install : panel_Base
 
         //카메라 원점
         SpatialBridge.cameraService.ClearTargetOverride();
+
+        Space_3_SequenceManager.instance.OpenPanel<panel_ChecklistAndInstall>();
     }
 
     private void Update()
     {
-        if (!SpatialBridge.networkingService.isMasterClient)
-        {
-            return;
-        }
+//        if (!SpatialBridge.networkingService.isMasterClient)
+//        {
+//            return;
+//        }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-#if UNITY_EDITOR
-            PrevSequence();
-#else
-            SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.Uninstall);
-#endif
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-#if UNITY_EDITOR
-            NextSequence();
-#else
-            SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.Install);
-#endif
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            ResetSequence();
-        }
+//        if (Input.GetKeyDown(KeyCode.Alpha1))
+//        {
+//#if UNITY_EDITOR
+//            PrevSequence();
+//#else
+//            SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.Uninstall);
+//#endif
+//        }
+//        if (Input.GetKeyDown(KeyCode.Alpha2))
+//        {
+//#if UNITY_EDITOR
+//            NextSequence();
+//#else
+//            SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.Install);
+//#endif
+//        }
+//        if (Input.GetKeyDown(KeyCode.Alpha3))
+//        {
+//            ResetSequence();
+//        }
     }
 
 

@@ -4,9 +4,11 @@ using UnityEngine;
 using SpatialSys.UnitySDK;
 using TMPro;
 using System;
+using Cinemachine;
 
 public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
 {
+    public CinemachineVirtualCamera _cam;
     public static Space_3 instance;
     public TMP_Text tmp_Mode;
     public GameObject HMD;
@@ -14,14 +16,14 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     public List<SpatialTriggerEvent> triggerEvents = new List<SpatialTriggerEvent>();
 
     public Transform target;
-    float dist = 0f;
+    private float dist = 0f;
+
+    private eServiceMode serviceMode = eServiceMode.None;
 
     private void Awake()
     {
         instance = this;
-    }
-    private void Start()
-    {
+
     }
 
     private void Update()
@@ -30,6 +32,10 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
         //LookAtCamera(HMD.transform);
         if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
         {
+            if (Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                serviceMode = eServiceMode.None;
+            }
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 serviceMode = eServiceMode.Network;
@@ -53,6 +59,7 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
             switch (serviceMode)
             {
                 case eServiceMode.None:
+                    NoneMode();
                     break;
                 case eServiceMode.Network:
                     NetworkMode();
@@ -71,8 +78,27 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
             }
         }
     }
-    
 
+    private void OnEnable()
+    {
+#if UNITY_EDITOR
+        SetTriggerEvent();
+#else
+        SpatialBridge.networkingService.remoteEvents.onEvent += HandleEventReceived;
+        SpatialBridge.networkingService.onConnectionStatusChanged += HandleConnectionStatusChanged;
+#endif
+    }
+
+    private void OnDisable()
+    {
+#if UNITY_EDITOR
+#else
+        SpatialBridge.networkingService.remoteEvents.onEvent -= HandleEventReceived;
+        SpatialBridge.networkingService.onConnectionStatusChanged -= HandleConnectionStatusChanged;
+#endif
+    }
+
+    #region handler
     /// <summary>
     /// 스페이셜 접속상태변경 이벤트
     /// </summary>
@@ -126,7 +152,7 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
             }
         }
     }
-
+    #endregion
 
     #region Trigger
     /// <summary>
@@ -152,7 +178,12 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
         switch (remoteEventSubIDs)
         {
             case RemoteEventSubIDs.Install:
+#if UNITY_EDITOR
+                Space_3_SequenceManager.instance.OpenPanel<panel_ChecklistAndInstall>();
+                PolygonGrid_Glow.Play(Define.polygonGrid_Glow_Appear, -1, 0);
+#else
                 SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.SpaceState, new object[] { remoteEventSubIDs.ToString() });
+#endif
                 break;
             case RemoteEventSubIDs.Uninstall:
                 break;
@@ -166,15 +197,20 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
                 break;
         }
     }
-    public GameObject PolygonGrid_Glow;
+    public Animator PolygonGrid_Glow;
     private void OnTriggerExit_Spatial(string name)
     {
         var remoteEventSubIDs = Util.String2Enum<RemoteEventSubIDs>(name);
-        Debug.Log(remoteEventSubIDs);
         switch (remoteEventSubIDs)
         {
             case RemoteEventSubIDs.Install:
+#if UNITY_EDITOR
+                Space_3_SequenceManager.instance.ClosePanel<panel_ChecklistAndInstall>();
+                PolygonGrid_Glow.Play(Define.polygonGrid_Glow_DisAppear, -1,0);
+#else
                 SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.SpaceState, new object[] { RemoteEventSubIDs.None.ToString() });
+#endif
+
                 break;
             case RemoteEventSubIDs.Uninstall:
                 break;
@@ -202,12 +238,12 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
                     case RemoteEventSubIDs.None:
                         Space_3_SequenceManager.instance.ClosePanel<panel_ChecklistAndInstall>();
                         SpatialBridge.networkingService.SetServerProperties(new Dictionary<string, object> { { RemoteEventIDs.SpaceState.ToString(), remoteEventSubIDs.ToString() } });
-                        PolygonGrid_Glow.SetActive(false);
+                        PolygonGrid_Glow.Play(Define.polygonGrid_Glow_DisAppear, -1, 0);
                         break;
                     case RemoteEventSubIDs.Install:
                         Space_3_SequenceManager.instance.OpenPanel<panel_ChecklistAndInstall>();
                         SpatialBridge.networkingService.SetServerProperties(new Dictionary<string, object> { { RemoteEventIDs.SpaceState.ToString(), remoteEventSubIDs.ToString() } });
-                        PolygonGrid_Glow.SetActive(true);
+                        PolygonGrid_Glow.Play(Define.polygonGrid_Glow_Appear, -1, 0);
                         break;
                     case RemoteEventSubIDs.Uninstall:
                         break;
@@ -231,10 +267,45 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
                 break;
         }
     }
-    #endregion
+#endregion
 
-
-
+    #region test mode
+    void ToastMessage(string message)
+    {
+        SpatialBridge.coreGUIService.DisplayToastMessage(message);
+    }
+    void NoneMode()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            _cam.enabled = true;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            _cam.enabled = false;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+        }
+    }
     void NetworkMode()
     {
         if (Input.GetKeyDown(KeyCode.Alpha4))
@@ -310,6 +381,7 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
+            SpatialBridge.inputService.StartAvatarInputCapture(true, true, true, true, this);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
@@ -364,29 +436,6 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
         {
         }
     }
-
-
-
-    void ToastMessage(string message)
-    {
-        SpatialBridge.coreGUIService.DisplayToastMessage(message);
-    }
-
-    eServiceMode serviceMode = eServiceMode.Camera;
-
-
-    private void OnEnable()
-    {
-        SpatialBridge.networkingService.remoteEvents.onEvent += HandleEventReceived;
-        SpatialBridge.networkingService.onConnectionStatusChanged += HandleConnectionStatusChanged;
-    }
-
-    private void OnDisable()
-    {
-        SpatialBridge.networkingService.remoteEvents.onEvent -= HandleEventReceived;
-        SpatialBridge.networkingService.onConnectionStatusChanged -= HandleConnectionStatusChanged;
-    }
-
     public void SetAllAvatarsVisibilityLocally(bool visible)
     {
         foreach (var actor in SpatialBridge.actorService.actors.Values)
@@ -397,7 +446,9 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
             }
         }
     }
+    #endregion
 
+    #region etc
 
     private void LocalAvatarName()
     {
@@ -412,46 +463,27 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
             }
         }
     }
-
     private void LookAtCamera(Transform tr)
     {
         var camera = SpatialBridge.cameraService;
         Debug.Log(camera.position);
         tr.LookAt(2 * tr.position - camera.position);
     }
+    #endregion
 
-    public void OnAvatarMoveInput(InputPhase inputPhase, Vector2 inputMove)
-    {
-        throw new NotImplementedException();
-    }
+    #region control movement (wasd)
+    public void OnAvatarMoveInput(InputPhase inputPhase, Vector2 inputMove) { }
 
-    public void OnAvatarJumpInput(InputPhase inputPhase)
-    {
-        throw new NotImplementedException();
-    }
+    public void OnAvatarJumpInput(InputPhase inputPhase) { }
 
-    public void OnAvatarSprintInput(InputPhase inputPhase)
-    {
-        throw new NotImplementedException();
-    }
+    public void OnAvatarSprintInput(InputPhase inputPhase) { }
 
-    public void OnAvatarActionInput(InputPhase inputPhase)
-    {
-        throw new NotImplementedException();
-    }
+    public void OnAvatarActionInput(InputPhase inputPhase) { }
 
-    public void OnAvatarAutoSprintToggled(bool on)
-    {
-        throw new NotImplementedException();
-    }
+    public void OnAvatarAutoSprintToggled(bool on) { }
 
-    public void OnInputCaptureStarted(InputCaptureType type)
-    {
-        throw new NotImplementedException();
-    }
+    public void OnInputCaptureStarted(InputCaptureType type) { }
 
-    public void OnInputCaptureStopped(InputCaptureType type)
-    {
-        throw new NotImplementedException();
-    }
+    public void OnInputCaptureStopped(InputCaptureType type) { }
+    #endregion
 }
