@@ -27,7 +27,7 @@ public class Space_3_Sequence : MonoBehaviour
 
     public void OnClick_OpenSummary()
     {
-        Space_3_SequenceManager.instance.sequenceDetail.OpenSequenceDetail(sequence);
+        Space_3_SequenceManager.instance.OpenPopup<popup_InstallDetail>().SetData(sequence);
     }
 
     public void SetData(Sequence sequence)

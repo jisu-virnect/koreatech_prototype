@@ -42,3 +42,19 @@ public enum RemoteEventSubIDs : byte
     Checklist = 40,
     Checkout = 50,
 }
+public enum BlendMode
+{
+    Opaque = 0,
+    Cutout,
+    Fade,
+    Transparent
+}
+
+public enum eServiceMode
+{
+    None = 0,
+    Network,
+    Camera,
+    Input,
+    UI,
+}

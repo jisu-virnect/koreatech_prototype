@@ -282,10 +282,3 @@ public static partial class Util
     }
 }
 
-public enum BlendMode
-{
-    Opaque = 0,
-    Cutout,
-    Fade,
-    Transparent
-}

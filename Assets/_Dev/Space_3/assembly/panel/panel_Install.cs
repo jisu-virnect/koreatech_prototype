@@ -2,29 +2,39 @@ using SpatialSys.UnitySDK;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class panel_Install : panel_Base
 {
     public GameObject prefab_go_Title;
     public GameObject prefab_go_Sequence;
 
-    private GameObject go_SequencePreviewRoot;
+    public scaffold01_1 scaffold01_1;
 
+    private GameObject go_SequencePreviewRoot;
     private int sequenceIndex;
 
-    //private List<Sequence> sequenceList;
+    private Button btn_Next;
+    private Button btn_Prev;
+    private Button btn_Close;
+
     private List<Space_3_Sequence> sequences = new List<Space_3_Sequence>();
     private Space_3_Sequence prevSequence = null;
 
-    public scaffold01_1 scaffold01_1;
     private void Awake()
     {
-        go_SequencePreviewRoot = gameObject.Search(nameof(go_SequencePreviewRoot)).gameObject;
+        GetComponent();
     }
 
-    private void Start()
+    private void GetComponent()
     {
-        //ResetSequence();
+        go_SequencePreviewRoot = gameObject.Search(nameof(go_SequencePreviewRoot)).gameObject;
+        btn_Next = gameObject.Search<Button>(nameof(btn_Next));
+        btn_Next.onClick.AddListener(NextSequence);
+        btn_Prev = gameObject.Search<Button>(nameof(btn_Prev));
+        btn_Prev.onClick.AddListener(PrevSequence);
+        btn_Close = gameObject.Search<Button>(nameof(btn_Close));
+        btn_Close.onClick.AddListener(Close);
     }
 
     public override void Open()
@@ -40,6 +50,9 @@ public class panel_Install : panel_Base
         prevSequence = null;
         scaffold01_1.Action_ResetObjects();
         DestroySequenceUI();
+
+        //카메라 원점
+        SpatialBridge.cameraService.ClearTargetOverride();
     }
 
     private void Update()
