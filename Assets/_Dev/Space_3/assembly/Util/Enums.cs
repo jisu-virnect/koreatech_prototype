@@ -67,3 +67,24 @@ public enum ePanelAnimation
     Top, 
     Bottom,
 }
+
+public enum eVirtualCameraState
+{
+    none,
+    vcam_install,
+    vcam_checkout,
+}
+public enum eActive
+{
+    idle,
+    active,
+}
+public enum eDBName
+{
+    db_before_check_environment,
+    db_before_safetytools,
+    db_work_install,
+    db_work_check_install,
+    db_after_work,
+    db_after_uninstall,
+}

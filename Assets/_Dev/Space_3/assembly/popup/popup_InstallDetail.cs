@@ -14,7 +14,7 @@ public class popup_InstallDetail : popup_Base
     }
     public override void SetData<T>(T t)
     {
-        Sequence sequence = t as Sequence;
+        Install sequence = t as Install;
         tmp_SequenceDetail.text = sequence.summary;
     }
 }

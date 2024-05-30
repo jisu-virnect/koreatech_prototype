@@ -8,12 +8,13 @@ using Cinemachine;
 
 public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
 {
-    public CinemachineVirtualCamera _cam;
+    public Dictionary<eVirtualCameraState,CinemachineVirtualCamera> virtualCameras { get;private set; } = new Dictionary<eVirtualCameraState, CinemachineVirtualCamera> ();   
     public static Space_3 instance;
     public TMP_Text tmp_Mode;
     public GameObject HMD;
     public TMP_Text tmp_LocalAvatarName;
     public List<SpatialTriggerEvent> triggerEvents = new List<SpatialTriggerEvent>();
+
 
     public Transform target;
     private float dist = 0f;
@@ -23,7 +24,39 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     private void Awake()
     {
         instance = this;
+        GetVirtualCamera();
+    }
+    private void Start()
+    {
+        Trigger_None();
+    }
 
+    private void GetVirtualCamera()
+    {
+        CinemachineVirtualCamera[] cinemachineVirtualCameras = FindObjectsOfType<CinemachineVirtualCamera>(true);
+        for (int i = 0;cinemachineVirtualCameras.Length > i;i++) 
+        {
+            CinemachineVirtualCamera cinemachineVirtualCamera = cinemachineVirtualCameras[i];
+            eVirtualCameraState eVirtualCameraState = Util.String2Enum<eVirtualCameraState>(cinemachineVirtualCamera.name);
+            virtualCameras.Add(eVirtualCameraState, cinemachineVirtualCamera);
+            cinemachineVirtualCamera.enabled = false;
+        }
+    }
+
+    CinemachineVirtualCamera prevVirtualCamera = null;
+
+    public void Control_VirtualCamera(eVirtualCameraState eVirtualCameraState = eVirtualCameraState.none)
+    {
+        if (prevVirtualCamera != null)
+        {
+            prevVirtualCamera.enabled = false;
+            prevVirtualCamera = null;
+        }
+        if (virtualCameras.ContainsKey(eVirtualCameraState))
+        {
+            prevVirtualCamera = virtualCameras[eVirtualCameraState];
+            prevVirtualCamera.enabled = true;
+        }
     }
 
     private void Update()
@@ -115,6 +148,7 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
 
                 SpatialBridge.coreGUIService.SetCoreGUIOpen(SpatialCoreGUITypeFlags.All, false);
                 SpatialBridge.coreGUIService.SetCoreGUIOpen(SpatialCoreGUITypeFlags.ParticipantsList, true);
+                SpatialBridge.cameraService.rotationMode = SpatialCameraRotationMode.DragToRotate;
                 SetTriggerEvent();
                 FirstGetServerProperties();
                 break;
@@ -139,7 +173,7 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
                 case RemoteEventSubIDs.None:
                     break;
                 case RemoteEventSubIDs.Install:
-                    Space_3_SequenceManager.instance.OpenPanel<panel_Install>();
+                    UIManager.instance.OpenPanel<panel_Install>();
                     break;
                 case RemoteEventSubIDs.Uninstall:
                     break;
@@ -179,8 +213,7 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
         {
             case RemoteEventSubIDs.Install:
 #if UNITY_EDITOR
-                Space_3_SequenceManager.instance.OpenPanel<panel_ChecklistAndInstall>();
-                PolygonGrid_Glow.Play(Define.polygonGrid_Glow_Appear, -1, 0);
+                Trigger_BeforeZone();
 #else
                 SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.SpaceState, new object[] { remoteEventSubIDs.ToString() });
 #endif
@@ -197,7 +230,6 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
                 break;
         }
     }
-    public Animator PolygonGrid_Glow;
     private void OnTriggerExit_Spatial(string name)
     {
         var remoteEventSubIDs = Util.String2Enum<RemoteEventSubIDs>(name);
@@ -205,8 +237,7 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
         {
             case RemoteEventSubIDs.Install:
 #if UNITY_EDITOR
-                Space_3_SequenceManager.instance.ClosePanel<panel_ChecklistAndInstall>();
-                PolygonGrid_Glow.Play(Define.polygonGrid_Glow_DisAppear, -1,0);
+                Trigger_None();
 #else
                 SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.SpaceState, new object[] { RemoteEventSubIDs.None.ToString() });
 #endif
@@ -222,6 +253,11 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
                 break;
         }
     }
+
+    /// <summary>
+    /// event response
+    /// </summary>
+    /// <param name="args"></param>
     private void HandleEventReceived(NetworkingRemoteEventArgs args)
     {
         RemoteEventIDs remoteEventIDs = (RemoteEventIDs)args.eventID;
@@ -236,14 +272,12 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
                 switch (remoteEventSubIDs)
                 {
                     case RemoteEventSubIDs.None:
-                        Space_3_SequenceManager.instance.ClosePanel<panel_ChecklistAndInstall>();
                         SpatialBridge.networkingService.SetServerProperties(new Dictionary<string, object> { { RemoteEventIDs.SpaceState.ToString(), remoteEventSubIDs.ToString() } });
-                        PolygonGrid_Glow.Play(Define.polygonGrid_Glow_DisAppear, -1, 0);
+                        Trigger_None();
                         break;
                     case RemoteEventSubIDs.Install:
-                        Space_3_SequenceManager.instance.OpenPanel<panel_ChecklistAndInstall>();
                         SpatialBridge.networkingService.SetServerProperties(new Dictionary<string, object> { { RemoteEventIDs.SpaceState.ToString(), remoteEventSubIDs.ToString() } });
-                        PolygonGrid_Glow.Play(Define.polygonGrid_Glow_Appear, -1, 0);
+                        Trigger_BeforeZone();
                         break;
                     case RemoteEventSubIDs.Uninstall:
                         break;
@@ -267,7 +301,35 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
                 break;
         }
     }
-#endregion
+
+
+    public Animator PolygonGrid_Glow;
+
+    private void Trigger_None()
+    {
+        PolygonGrid_Glow.Play(Define.polygonGrid_Glow_DisAppear, -1, 0);
+        UIManager.instance.OpenPanel<panel_GlobalMessage>("world");
+        UIManager.instance.ClosePanels("trigger");
+    }
+
+    private void Trigger_BeforeZone()
+    {
+        PolygonGrid_Glow.Play(Define.polygonGrid_Glow_Appear, -1, 0);
+        UIManager.instance.ClosePanels("world");
+        UIManager.instance.OpenPanel<panel_TopNavigation>("trigger");
+        UIManager.instance.OpenPanel<panel_PlanMap>("trigger");
+        UIManager.instance.OpenPanel<panel_TriggerMenu>("trigger");
+    }
+
+    private void Trigger_WorkingZone()
+    {
+
+    }
+    private void Trigger_AfterZone()
+    {
+
+    }
+    #endregion
 
     #region test mode
     void ToastMessage(string message)
@@ -278,34 +340,54 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            _cam.enabled = true;
+            UIManager.instance.OpenPanel<panel_TopNavigation>("a");
+            UIManager.instance.OpenPanel<panel_Install>("a");
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            _cam.enabled = false;
+            UIManager.instance.ClosePanels("a");
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
+            UIManager.instance.ShowToast<toast_Base>("aaa", 1f);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
+            UIManager.instance.ShowToast<toast_Base>("bbb");
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
+            UIManager.instance.ShowToast<toast_Base>("ccc",0.5f);
         }
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
+            UIManager.instance.OpenPanel<panel_GlobalMessage>().SetData<string>("aaaa");
         }
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
+            UIManager.instance.OpenPanel<panel_GlobalMessage>().SetData<string>("bbbbb");
         }
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
+            UIManager.instance.OpenPanel<panel_TopNavigation>();
         }
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
         }
     }
+
+    public void Control_PlayerMovement(bool active)
+    {
+        if (active)
+        {
+            SpatialBridge.inputService.ReleaseInputCapture(this);
+        }
+        else
+        {
+            SpatialBridge.inputService.StartAvatarInputCapture(true, true, true, true, this);
+        }
+    }
+
     void NetworkMode()
     {
         if (Input.GetKeyDown(KeyCode.Alpha4))
@@ -352,36 +434,29 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
         }
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            SpatialBridge.cameraService.SetTargetOverride(target, SpatialCameraMode.Actor);
-            //SpatialBridge.cameraService.lockCameraRotation = true;
         }
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-            SpatialBridge.cameraService.ClearTargetOverride();
-            //SpatialBridge.cameraService.lockCameraRotation = false;
         }
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-            SetAllAvatarsVisibilityLocally(true);
         }
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            SetAllAvatarsVisibilityLocally(false);
         }
     }
     void InputMode()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            SpatialBridge.inputService.StartAvatarInputCapture(false, false, false, false, this);
+            Control_PlayerMovement(true);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            SpatialBridge.inputService.ReleaseInputCapture(this);
+            Control_PlayerMovement(false);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            SpatialBridge.inputService.StartAvatarInputCapture(true, true, true, true, this);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
@@ -406,19 +481,19 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Space_3_SequenceManager.instance.OpenPanel<panel_Install>();
+            UIManager.instance.OpenPanel<panel_Install>();
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            Space_3_SequenceManager.instance.ClosePanel<panel_Install>();
+            UIManager.instance.ClosePanel<panel_Install>();
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            Space_3_SequenceManager.instance.OpenPanel<panel_Checkout>();
+            UIManager.instance.OpenPanel<panel_Check_Install>();
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            Space_3_SequenceManager.instance.ClosePanel<panel_Checkout>();
+            UIManager.instance.ClosePanel<panel_Check_Install>();
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {

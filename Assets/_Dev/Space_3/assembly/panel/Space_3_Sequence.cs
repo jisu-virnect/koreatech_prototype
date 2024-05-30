@@ -13,34 +13,36 @@ public class Space_3_Sequence : MonoBehaviour
     private Button button;
     private GameObject go_Focus;
 
-    public Sequence sequence;
+    public Install sequence;
 
     private void GetComponent()
     {
         canvasGroup = gameObject.GetComponentInChildren<CanvasGroup>();
         toggle = gameObject.GetComponentInChildren<Toggle>();
         tMP_Text = gameObject.GetComponentInChildren<TMP_Text>();
+
         button = gameObject.GetComponentInChildren<Button>();
         button.onClick.AddListener(OnClick_OpenSummary);
+
         go_Focus = gameObject.transform.GetChild(0).gameObject;
     }
 
     public void OnClick_OpenSummary()
     {
-        Space_3_SequenceManager.instance.OpenPopup<popup_InstallDetail>().SetData(sequence);
+        UIManager.instance.OpenPopup<popup_InstallDetail>().SetData(sequence);
     }
 
-    public void SetData(Sequence sequence)
+    public void SetData(Install install)
     {
         GetComponent();
-        this.sequence = sequence;
-        SetSequenceData(sequence);
+        this.sequence = install;
+        SetInstallData(install);
         SetSequenceState(SEQUENCE_STATE.BEFORE);
     }
 
-    public void SetSequenceData(Sequence sequence)
+    public void SetInstallData(Install install)
     {
-        tMP_Text.text = sequence.title;
+        tMP_Text.text = install.title;
         SetSequenceState(SEQUENCE_STATE.BEFORE);
     }
     public void SetSequenceState(SEQUENCE_STATE sEQUENCE_STATE)

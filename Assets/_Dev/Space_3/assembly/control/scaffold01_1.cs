@@ -43,7 +43,7 @@ public class scaffold01_1 : MonoBehaviour
     /// <param name="eBuildScaffold"></param>
     /// <param name="blendMode"></param>
     /// <param name="sequence"></param>
-    public void Action_scaffold_RenderMode(eBuildScaffold eBuildScaffold, BlendMode blendMode, Sequence sequence)
+    public void Action_scaffold_RenderMode(eBuildScaffold eBuildScaffold, BlendMode blendMode, Install sequence)
     {
         if (coroutine_RenderMode != null)
         {
@@ -59,7 +59,7 @@ public class scaffold01_1 : MonoBehaviour
     /// <param name="eBuildScaffold"></param>
     /// <param name="blendMode"></param>
     /// <param name="sequence"></param>
-    public void Action_scaffold_Position(eBuildScaffold eBuildScaffold, BlendMode blendMode, Sequence sequence)
+    public void Action_scaffold_Position(eBuildScaffold eBuildScaffold, BlendMode blendMode, Install sequence)
     {
         if (coroutine_Position != null)
         {
@@ -80,7 +80,7 @@ public class scaffold01_1 : MonoBehaviour
     /// <param name="Transparent"></param>
     /// <param name="sequence"></param>
     /// <returns></returns>
-    IEnumerator Co_Change_Material(Material[] materials, BlendMode Transparent, Sequence sequence)
+    IEnumerator Co_Change_Material(Material[] materials, BlendMode Transparent, Install sequence)
     {
         float curTime;
         float durTime = 0.5f;
@@ -138,7 +138,7 @@ public class scaffold01_1 : MonoBehaviour
     /// <param name="Transparent"></param>
     /// <param name="sequence"></param>
     /// <returns></returns>
-    IEnumerator Co_Change_Position(eBuildScaffold eBuildScaffold, BlendMode Transparent, Sequence sequence)
+    IEnumerator Co_Change_Position(eBuildScaffold eBuildScaffold, BlendMode Transparent, Install sequence)
     {
         float curTime;
         float durTime = 0.5f;

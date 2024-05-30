@@ -6,7 +6,10 @@ using SpatialSys.UnitySDK;
 
 public static partial class Util
 {
-
+    public static Sprite Tex2Sprite(Texture2D _tex)
+    {
+        return Sprite.Create(_tex, new Rect(0, 0, _tex.width, _tex.height), new Vector2(0.5f, 0.5f));
+    }
 
     // JSON 배열을 파싱하는 헬퍼 메서드
     public static T[] FromJsonArray<T>(string json)
