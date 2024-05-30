@@ -28,7 +28,8 @@ public class UIManager : MonoBehaviour
         toast_Bases = FindObjectsOfType<toast_Base>(true);
     }
 
-    public panel_Base OpenPanel<T>(string stackName = "") where T : panel_Base
+
+    public T GetPanel<T>(string stackName = "") where T : panel_Base
     {
         panel_Base panel_Base = default;
         for (int i = 0; i < panel_Bases.Length; i++)
@@ -36,7 +37,6 @@ public class UIManager : MonoBehaviour
             panel_Base = panel_Bases[i];
             if (panel_Base as T)
             {
-                panel_Base.Open();
                 if (stackName != "")
                 {
                     Util.DicList(ref stackedPanel, stackName, panel_Base);
@@ -44,8 +44,16 @@ public class UIManager : MonoBehaviour
                 break;
             }
         }
+        return panel_Base as T;
+    }
+
+    public panel_Base OpenPanel<T>(string stackName = "") where T : panel_Base
+    {
+        panel_Base panel_Base = GetPanel<T>(stackName);
+        panel_Base.Open();
         return panel_Base;
     }
+
     public panel_Base ClosePanel<T>() where T : panel_Base
     {
         panel_Base panel_Base = default;
@@ -77,17 +85,24 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public popup_Base OpenPopup<T>() where T : popup_Base
+    public T GetPopup<T>() where T : popup_Base
     {
         popup_Base popup_Base = default;
         for (int i = 0; i < popup_Bases.Length; i++)
         {
-            popup_Base = popup_Bases [i];
+            popup_Base = popup_Bases[i];
             if (popup_Base as T)
             {
-                break;                
+                break;
             }
         }
+        popup_Base.Open();
+        return popup_Base as T;
+    }
+
+    public popup_Base OpenPopup<T>() where T : popup_Base
+    {
+        popup_Base popup_Base = GetPopup<T>();
         popup_Base.Open();
         return popup_Base;
     }

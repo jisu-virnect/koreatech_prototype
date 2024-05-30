@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class panel_TopNavigation : panel_Base
@@ -11,6 +12,14 @@ public class panel_TopNavigation : panel_Base
     private void Start()
     {
         ResetStep();
+    }
+
+    public override void SetData<T>(T t)
+    {
+        base.SetData(t);
+        Section section = t as Section;
+        steps[0].SetText(section.step1);
+        steps[1].SetText(section.step2);
     }
 
     public void NextStep()

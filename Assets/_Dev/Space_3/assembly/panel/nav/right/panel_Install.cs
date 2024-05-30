@@ -1,12 +1,13 @@
 using SpatialSys.UnitySDK;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class panel_Install : panel_Base
 {
-    public GameObject prefab_go_Sequence;
+    //public GameObject prefab_go_Sequence;
 
     public scaffold01_1 scaffold01_1;
 
@@ -43,7 +44,9 @@ public class panel_Install : panel_Base
     public override void Open()
     {
         base.Open();
+
         ResetSequence();
+
         Space_3.instance.Control_PlayerMovement(false);
         Space_3.instance.Control_VirtualCamera(eVirtualCameraState.vcam_install);
     }
@@ -51,12 +54,18 @@ public class panel_Install : panel_Base
     public override void Close()
     {
         base.Close();
-        sequenceIndex = -1;
+
         prevSequence = null;
+        sequenceIndex = -1;
+
         scaffold01_1.Action_ResetObjects();
         DestroySequenceUI();
 
-        UIManager.instance.OpenPanel<panel_TriggerMenu>();
+
+        Section section = DBManager.instance.Sections.FirstOrDefault(x => x.index == 1);
+
+        UIManager.instance.OpenPanel<panel_TopNavigation>("trigger").SetData(section);
+        UIManager.instance.OpenPanel<panel_TriggerMenu>("trigger").SetData(section);
 
         Space_3.instance.Control_PlayerMovement(true);
         Space_3.instance.Control_VirtualCamera(eVirtualCameraState.none);
@@ -102,7 +111,7 @@ public class panel_Install : panel_Base
         for (int i = 0; i < DBManager.instance.Installs.Count; i++)
         {
             Install install = DBManager.instance.Installs[i];
-            Space_3_Sequence space_3_Sequence = Instantiate(prefab_go_Sequence, go_SequencePreviewRoot.transform).GetComponent<Space_3_Sequence>();
+            Space_3_Sequence space_3_Sequence = Instantiate(ResourceManager.instance.LoadData<GameObject>("go_Install"), go_SequencePreviewRoot.transform).GetComponent<Space_3_Sequence>();
             sequences.Add(space_3_Sequence);
             space_3_Sequence.SetData(install);
         }

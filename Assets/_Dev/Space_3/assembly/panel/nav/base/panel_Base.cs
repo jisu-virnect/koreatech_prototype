@@ -6,7 +6,7 @@ public class panel_Base : MonoBehaviour, IPanel
 {
     public ePanelAnimation ePanelAnimation = ePanelAnimation.None;
 
-    private GameObject go_Root;
+    public GameObject go_Root { get; private set; }
     private RectTransform rect;
 
     private Dictionary<ePanelAnimation, Vector2> animationPivot_Appear = new Dictionary<ePanelAnimation, Vector2>();
@@ -47,11 +47,11 @@ public class panel_Base : MonoBehaviour, IPanel
         if (ePanelAnimation != ePanelAnimation.None)
         {
             float curTime = 0f;
-            float durTime = 0.5f;
+            float durTime = 0.3f;
             while (curTime < 1f)
             {
                 curTime += Time.deltaTime / durTime;
-                rect.pivot = Vector3.Lerp(animationPivot_DisAppear[ePanelAnimation], animationPivot_Appear[ePanelAnimation], EasingFunction.EaseInExpo(0f, 1f, curTime));
+                rect.pivot = Vector3.Lerp(animationPivot_DisAppear[ePanelAnimation], animationPivot_Appear[ePanelAnimation], EasingFunction.EaseOutExpo(0f, 1f, curTime));
                 yield return null;
             }
         }
@@ -61,7 +61,7 @@ public class panel_Base : MonoBehaviour, IPanel
         if (ePanelAnimation != ePanelAnimation.None)
         {
             float curTime = 0f;
-            float durTime = 0.5f;
+            float durTime = 0.2f;
             while (curTime < 1f)
             {
                 curTime += Time.deltaTime / durTime;

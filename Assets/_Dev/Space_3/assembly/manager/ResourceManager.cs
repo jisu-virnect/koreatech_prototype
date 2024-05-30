@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(-10000)]
 public class ResourceManager : MonoBehaviour
 {
     public static ResourceManager instance;
@@ -18,7 +19,16 @@ public class ResourceManager : MonoBehaviour
 
     public T LoadData<T>(string resourceName) where T : Object
     {
-        return resourcesDic[resourceName] as T;
+        if (resourcesDic.ContainsKey(resourceName))
+        {
+            return resourcesDic[resourceName] as T;
+        }
+        else
+        {
+            Debug.Log("데이터가 없습니다.");
+            return null;
+        }
+        
     }
 
 }

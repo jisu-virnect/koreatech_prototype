@@ -5,15 +5,15 @@ using SpatialSys.UnitySDK;
 using TMPro;
 using System;
 using Cinemachine;
+using System.Linq;
 
 public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
 {
-    public Dictionary<eVirtualCameraState,CinemachineVirtualCamera> virtualCameras { get;private set; } = new Dictionary<eVirtualCameraState, CinemachineVirtualCamera> ();   
+    public Dictionary<eVirtualCameraState, CinemachineVirtualCamera> virtualCameras { get; private set; } = new Dictionary<eVirtualCameraState, CinemachineVirtualCamera>();
     public static Space_3 instance;
     public TMP_Text tmp_Mode;
     public GameObject HMD;
     public TMP_Text tmp_LocalAvatarName;
-    public List<SpatialTriggerEvent> triggerEvents = new List<SpatialTriggerEvent>();
 
 
     public Transform target;
@@ -28,13 +28,13 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     }
     private void Start()
     {
-        Trigger_None();
+        Trigger_World();
     }
 
     private void GetVirtualCamera()
     {
         CinemachineVirtualCamera[] cinemachineVirtualCameras = FindObjectsOfType<CinemachineVirtualCamera>(true);
-        for (int i = 0;cinemachineVirtualCameras.Length > i;i++) 
+        for (int i = 0; cinemachineVirtualCameras.Length > i; i++)
         {
             CinemachineVirtualCamera cinemachineVirtualCamera = cinemachineVirtualCameras[i];
             eVirtualCameraState eVirtualCameraState = Util.String2Enum<eVirtualCameraState>(cinemachineVirtualCamera.name);
@@ -114,21 +114,14 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
 
     private void OnEnable()
     {
-#if UNITY_EDITOR
-        SetTriggerEvent();
-#else
         SpatialBridge.networkingService.remoteEvents.onEvent += HandleEventReceived;
         SpatialBridge.networkingService.onConnectionStatusChanged += HandleConnectionStatusChanged;
-#endif
     }
 
     private void OnDisable()
     {
-#if UNITY_EDITOR
-#else
         SpatialBridge.networkingService.remoteEvents.onEvent -= HandleEventReceived;
         SpatialBridge.networkingService.onConnectionStatusChanged -= HandleConnectionStatusChanged;
-#endif
     }
 
     #region handler
@@ -149,7 +142,6 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
                 SpatialBridge.coreGUIService.SetCoreGUIOpen(SpatialCoreGUITypeFlags.All, false);
                 SpatialBridge.coreGUIService.SetCoreGUIOpen(SpatialCoreGUITypeFlags.ParticipantsList, true);
                 SpatialBridge.cameraService.rotationMode = SpatialCameraRotationMode.DragToRotate;
-                SetTriggerEvent();
                 FirstGetServerProperties();
                 break;
             case ServerConnectionStatus.Disconnecting:
@@ -170,87 +162,16 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
         {
             switch (Util.String2Enum<RemoteEventSubIDs>((string)getServerProperties[RemoteEventIDs.SpaceState.ToString()]))
             {
-                case RemoteEventSubIDs.None:
-                    break;
-                case RemoteEventSubIDs.Install:
+                case RemoteEventSubIDs.install:
                     UIManager.instance.OpenPanel<panel_Install>();
                     break;
-                case RemoteEventSubIDs.Uninstall:
+                case RemoteEventSubIDs.before:
                     break;
-                case RemoteEventSubIDs.Checklist:
-                    break;
-                case RemoteEventSubIDs.Checkout:
+                case RemoteEventSubIDs.after:
                     break;
                 default:
                     break;
             }
-        }
-    }
-    #endregion
-
-    #region Trigger
-    /// <summary>
-    /// 트리거 됨에 따른 상태 변경
-    /// </summary>
-    private void SetTriggerEvent()
-    {
-        if (!SpatialBridge.networkingService.isMasterClient)
-        {
-            return;
-        }
-
-        for (int i = 0; i < triggerEvents.Count; i++)
-        {
-            string name = triggerEvents[i].name;
-            triggerEvents[i].onEnterEvent.unityEvent.AddListener(() => OnTriggerEnter_Spatial(name));
-            triggerEvents[i].onExitEvent.unityEvent.AddListener(() => OnTriggerExit_Spatial(name));
-        }
-    }
-    private void OnTriggerEnter_Spatial(string name)
-    {
-        var remoteEventSubIDs = Util.String2Enum<RemoteEventSubIDs>(name);
-        switch (remoteEventSubIDs)
-        {
-            case RemoteEventSubIDs.Install:
-#if UNITY_EDITOR
-                Trigger_BeforeZone();
-#else
-                SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.SpaceState, new object[] { remoteEventSubIDs.ToString() });
-#endif
-                break;
-            case RemoteEventSubIDs.Uninstall:
-                break;
-            case RemoteEventSubIDs.Checklist:
-                break;
-            case RemoteEventSubIDs.Checkout:
-                break;
-            case RemoteEventSubIDs.None:
-                break;
-            default:
-                break;
-        }
-    }
-    private void OnTriggerExit_Spatial(string name)
-    {
-        var remoteEventSubIDs = Util.String2Enum<RemoteEventSubIDs>(name);
-        switch (remoteEventSubIDs)
-        {
-            case RemoteEventSubIDs.Install:
-#if UNITY_EDITOR
-                Trigger_None();
-#else
-                SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.SpaceState, new object[] { RemoteEventSubIDs.None.ToString() });
-#endif
-
-                break;
-            case RemoteEventSubIDs.Uninstall:
-                break;
-            case RemoteEventSubIDs.Checklist:
-                break;
-            case RemoteEventSubIDs.Checkout:
-                break;
-            default:
-                break;
         }
     }
 
@@ -263,71 +184,73 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
         RemoteEventIDs remoteEventIDs = (RemoteEventIDs)args.eventID;
         switch (remoteEventIDs)
         {
-            case RemoteEventIDs.SendMagicNumber:
-                break;
-            case RemoteEventIDs.PrivateMessage:
-                break;
             case RemoteEventIDs.SpaceState:
-                RemoteEventSubIDs remoteEventSubIDs = Util.String2Enum<RemoteEventSubIDs>((string)args.eventArgs[0]);
-                switch (remoteEventSubIDs)
                 {
-                    case RemoteEventSubIDs.None:
-                        SpatialBridge.networkingService.SetServerProperties(new Dictionary<string, object> { { RemoteEventIDs.SpaceState.ToString(), remoteEventSubIDs.ToString() } });
-                        Trigger_None();
-                        break;
-                    case RemoteEventSubIDs.Install:
-                        SpatialBridge.networkingService.SetServerProperties(new Dictionary<string, object> { { RemoteEventIDs.SpaceState.ToString(), remoteEventSubIDs.ToString() } });
-                        Trigger_BeforeZone();
-                        break;
-                    case RemoteEventSubIDs.Uninstall:
-                        break;
-                    case RemoteEventSubIDs.Checklist:
-                        break;
-                    case RemoteEventSubIDs.Checkout:
-                        break;
-                    default:
-                        break;
+                    RemoteEventSubIDs remoteEventSubIDs = Util.String2Enum<RemoteEventSubIDs>((string)args.eventArgs[0]);
+                    SpatialBridge.networkingService.SetServerProperties(new Dictionary<string, object> { { RemoteEventIDs.SpaceState.ToString(), remoteEventSubIDs.ToString() } });
+                    switch (remoteEventSubIDs)
+                    {
+                        case RemoteEventSubIDs.world:
+                            Trigger_World();
+                            break;
+                        case RemoteEventSubIDs.before:
+                            Trigger_BeforeZone();
+                            break;
+                        case RemoteEventSubIDs.install:
+                            Trigger_InstallZone();
+                            break;
+                        case RemoteEventSubIDs.after:
+                            Trigger_AfterZone();
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 break;
             case RemoteEventIDs.Install:
-                break;
             case RemoteEventIDs.Uninstall:
-                break;
             case RemoteEventIDs.Checklist:
-                break;
             case RemoteEventIDs.Checkout:
-                break;
+            case RemoteEventIDs.SendMagicNumber:
+            case RemoteEventIDs.PrivateMessage:
             default:
                 break;
         }
     }
+    #endregion
 
-
-    public Animator PolygonGrid_Glow;
-
-    private void Trigger_None()
+    #region trigger
+    public void Trigger_World()
     {
-        PolygonGrid_Glow.Play(Define.polygonGrid_Glow_DisAppear, -1, 0);
-        UIManager.instance.OpenPanel<panel_GlobalMessage>("world");
-        UIManager.instance.ClosePanels("trigger");
+        UIManager.instance.ClosePanels(Define.trigger);
+
+        UIManager.instance.OpenPanel<panel_GlobalMessage>(Define.world);
     }
 
-    private void Trigger_BeforeZone()
+    public void Trigger_BeforeZone()
     {
-        PolygonGrid_Glow.Play(Define.polygonGrid_Glow_Appear, -1, 0);
-        UIManager.instance.ClosePanels("world");
-        UIManager.instance.OpenPanel<panel_TopNavigation>("trigger");
-        UIManager.instance.OpenPanel<panel_PlanMap>("trigger");
-        UIManager.instance.OpenPanel<panel_TriggerMenu>("trigger");
+        UIManager.instance.ClosePanels(Define.world);
+
+        Section section = DBManager.instance.Sections.FirstOrDefault(x => x.index == 0);
+        UIManager.instance.OpenPanel<panel_TopNavigation>(Define.trigger).SetData(section);
+        UIManager.instance.OpenPanel<panel_TriggerMenu>(Define.trigger).SetData(section);
     }
 
-    private void Trigger_WorkingZone()
+    public void Trigger_InstallZone()
     {
+        UIManager.instance.ClosePanels(Define.world);
 
+        Section section = DBManager.instance.Sections.FirstOrDefault(x => x.index == 1);
+        UIManager.instance.OpenPanel<panel_TopNavigation>(Define.trigger).SetData(section);
+        UIManager.instance.OpenPanel<panel_TriggerMenu>(Define.trigger).SetData(section);
     }
-    private void Trigger_AfterZone()
+    public void Trigger_AfterZone()
     {
+        UIManager.instance.ClosePanels(Define.world);
 
+        Section section = DBManager.instance.Sections.FirstOrDefault(x => x.index == 2);
+        UIManager.instance.OpenPanel<panel_TopNavigation>(Define.trigger).SetData(section);
+        UIManager.instance.OpenPanel<panel_TriggerMenu>(Define.trigger).SetData(section);
     }
     #endregion
 
@@ -357,7 +280,7 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            UIManager.instance.ShowToast<toast_Base>("ccc",0.5f);
+            UIManager.instance.ShowToast<toast_Base>("ccc", 0.5f);
         }
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {

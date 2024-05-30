@@ -36,11 +36,10 @@ public enum RemoteEventIDs : byte
 
 public enum RemoteEventSubIDs : byte
 {
-    None = 0,
-    Install = 20,
-    Uninstall = 30,
-    Checklist = 40,
-    Checkout = 50,
+    world,
+    install,
+    before,
+    after,
 }
 public enum BlendMode
 {
@@ -81,10 +80,17 @@ public enum eActive
 }
 public enum eDBName
 {
+    db_section,
     db_before_check_environment,
     db_before_safetytools,
     db_work_install,
     db_work_check_install,
-    db_after_work,
+    db_after_workscaffold,
     db_after_uninstall,
+}
+public enum eSectionType
+{
+    before,
+    install,
+    after,
 }

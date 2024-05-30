@@ -3,48 +3,70 @@
 		"index":0,
 		"title":"부지 내 공지 상황",
 		"summary":"자재 적재 장소 등",
-		"caption":""
+		"caption":"",
+		"popuptitle":"",
+		"popupsummary":"",
+		"ischecked":1
 	},
 	{
 		"index":1,
 		"title":"재료 반입 여건",
 		"summary":"자재 반입로의 위치, 넓이 등",
-		"caption":""
+		"caption":"",
+		"popuptitle":"",
+		"popupsummary":"",
+		"ischecked":1
 	},
 	{
 		"index":2,
 		"title":"부지의 평면상 항목",
 		"summary":"건물 위치, 가설건물, 인접건물(구조물)",
-		"caption":"*안전한 비계 설치를 위해 인접건물과 최소 1.5m 이상 확보(권장)"
+		"caption":"*안전한 비계 설치를 위해 인접건물과 최소 1.5m 이상 확보(권장)",
+		"popuptitle":"",
+		"popupsummary":"",
+		"ischecked":1
 	},
 	{
 		"index":3,
 		"title":"지반 항목",
 		"summary":"비계 설치 지반의 지내력, 고저차, 지중 장애 등",
-		"caption":""
+		"caption":"",
+		"popuptitle":"",
+		"popupsummary":"",
+		"ischecked":1
 	},
 	{
 		"index":4,
 		"title":"주변 교통상황",
 		"summary":"사람, 차, 교통규제, 버스정거장, 간선도로 등",
-		"caption":""
+		"caption":"",
+		"popuptitle":"",
+		"popupsummary":"",
+		"ischecked":1
 	},
 	{
 		"index":5,
 		"title":"주변 환경",
 		"summary":"학교, 병원, 철도, 작업시간 제한, 주변 건물 등",
-		"caption":""
+		"caption":"",
+		"ischecked":1
 	},
 	{
 		"index":6,
 		"title":"주변 시설물(지장물)",
 		"summary":"고압선, 통신선, 담, 수목 등",
-		"caption":"*고압선과 최소안전거리 3m 이상 확보(최소안전거리 확보가 어려운 경우 이설, 절연방호구 설치 등)"
+		"caption":"*고압선과 최소안전거리 3m 이상 확보(최소안전거리 확보가 어려운 경우 이설, 절연방호구 설치 등)",
+		"popuptitle":"주변 시설물",
+		"popupsummary":"통신선이나 담 등 주변 시설물을 확인합니다.\n고압선이 있을 경우, 최소 안전거리 3m 이상을 확보합니다.",
+		"ischecked":0
 	},
 	{
 		"index":7,
 		"title":"작업장소의 안전",
 		"summary":"환기 불충분 등 질식위험, 인화성・가연성 물질로 인한 화재 위험 등",
-		"caption":""
+		"caption":"",
+		"popuptitle":"작업장소의 안전",
+		"popupsummary":"환기 불충분이나 인화성 물질로 인한\n질식, 화재 등의 위험이 없는지 확인합니다.",
+		"ischecked":0
 	}
 ]

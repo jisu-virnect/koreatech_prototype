@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using SpatialSys.UnitySDK;
+using UnityEngine.UI;
+using System.Threading.Tasks;
 
 public static partial class Util
 {
@@ -167,8 +169,6 @@ public static partial class Util
         {
             return SearchParent(_target.parent, _name);
         }
-
-        return null;
     }
 
 
@@ -232,8 +232,24 @@ public static partial class Util
     #endregion
 
 
+    /// <summary>
+    /// 컨텐츠사이즈피터 버그가 있어 레이아웃 갱신하는 함수
+    /// </summary>
+    /// <param name="go"></param>
+    /// <param name="objName"></param>
+    public static void RefreshLayout(GameObject go, string objName)
+    {
+        RectTransform rectTr = Search<RectTransform>(go, objName);
+        if (!rectTr)
+        {
+            Debug.Log("리프레쉬할게없음");
+            return;
+        }
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rectTr);
+    }
 
-    
+
+
     public static void ChangeRenderMode(Material standardShaderMaterial, BlendMode blendMode)
     {
         switch (blendMode)

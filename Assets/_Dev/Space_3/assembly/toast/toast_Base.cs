@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -23,14 +24,14 @@ public class toast_Base : MonoBehaviour, IToast
         rect.anchoredPosition = Vector3.zero;
     }
 
-    public virtual void Show(string message, float duration = 0f)
+    public virtual void Show(string message, float duration = 0f, Action act = null)
     {
         tmp_Toast.text = message;
         if (coroutine != null)
         {
             StopCoroutine(coroutine);
         }
-        coroutine = StartCoroutine(Co_Show(duration));
+        coroutine = StartCoroutine(Co_Show(duration, act));
     }
 
     IEnumerator Co_CanvasAlpha(float start, float end)
@@ -64,7 +65,7 @@ public class toast_Base : MonoBehaviour, IToast
         canvasGroup.alpha = end;
     }
 
-    IEnumerator Co_Show(float duration = 0f)
+    IEnumerator Co_Show(float duration = 0f, Action act = null)
     {
         StartCoroutine(Co_Transform(0f, -20f));
         yield return Co_CanvasAlpha(0f, 1f);
@@ -75,5 +76,6 @@ public class toast_Base : MonoBehaviour, IToast
         yield return new WaitForSeconds(duration);
         StartCoroutine(Co_Transform(-20f, 0f));
         yield return Co_CanvasAlpha(1f, 0f);
+        act?.Invoke();
     }
 }

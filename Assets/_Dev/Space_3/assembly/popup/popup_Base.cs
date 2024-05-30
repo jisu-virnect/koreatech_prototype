@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine.UI;
 public class popup_Base : MonoBehaviour, IPopup
 {
     private Button btn_Close;
+    private Action act;
 
     protected virtual void Awake()
     {
@@ -31,6 +33,11 @@ public class popup_Base : MonoBehaviour, IPopup
 
     public virtual void SetData<T>(T t) where T : class
     {
-        
+
+    }
+
+    public virtual void  SetAction(Action act)
+    {
+        this.act = act;
     }
 }
