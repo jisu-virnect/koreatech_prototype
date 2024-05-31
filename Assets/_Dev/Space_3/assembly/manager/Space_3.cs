@@ -225,6 +225,8 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
         UIManager.instance.ClosePanels(Define.trigger);
 
         UIManager.instance.OpenPanel<panel_GlobalMessage>(Define.world);
+        UIManager.instance.OpenPanel<panel_MiniMap>(Define.world);
+        UIManager.instance.OpenPanel<panel_CustomKey>(Define.world);
     }
 
     public void Trigger_BeforeZone()
@@ -272,15 +274,15 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            UIManager.instance.ShowToast<toast_Base>("aaa", 1f);
+            UIManager.instance.ShowHideToast<toast_Base>("aaa", 1f);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            UIManager.instance.ShowToast<toast_Base>("bbb");
+            //UIManager.instance.ShowHideToast<toast_Base>("bbb");
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            UIManager.instance.ShowToast<toast_Base>("ccc", 0.5f);
+            UIManager.instance.ShowHideToast<toast_Base>("ccc", 0.5f);
         }
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {

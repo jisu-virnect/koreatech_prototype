@@ -47,10 +47,10 @@ public class UIManager : MonoBehaviour
         return panel_Base as T;
     }
 
-    public panel_Base OpenPanel<T>(string stackName = "") where T : panel_Base
+    public panel_Base OpenPanel<T>(string stackName = "", Action act = null) where T : panel_Base
     {
         panel_Base panel_Base = GetPanel<T>(stackName);
-        panel_Base.Open();
+        panel_Base.Open(act);
         return panel_Base;
     }
 
@@ -121,7 +121,22 @@ public class UIManager : MonoBehaviour
         return popup_Base;
     }
 
-    public toast_Base ShowToast<T>(string message, float duration = 0f) where T : toast_Base
+    public T ShowHideToast<T>(string message, float duration, Action act = null) where T : toast_Base
+    {
+        toast_Base toast_Base = default;
+        for (int i = 0; i < toast_Bases.Length; i++)
+        {
+            toast_Base = toast_Bases[i];
+            if (toast_Base as T)
+            {
+                break;
+            }
+        }
+        toast_Base.ShowHide(message, duration, act);
+        return toast_Base as T;
+    }
+
+    public T ShowToast<T>(string message, Action act = null) where T : toast_Base
     {
         toast_Base toast_Base = default;
         for (int i = 0; i < popup_Bases.Length; i++)
@@ -132,7 +147,21 @@ public class UIManager : MonoBehaviour
                 break;
             }
         }
-        toast_Base.Show(message, duration);
-        return toast_Base;
+        toast_Base.Show(message, act);
+        return toast_Base as T;
+    }
+    public T HideToast<T>(Action act = null) where T : toast_Base
+    {
+        toast_Base toast_Base = default;
+        for (int i = 0; i < popup_Bases.Length; i++)
+        {
+            toast_Base = toast_Bases[i];
+            if (toast_Base as T)
+            {
+                break;
+            }
+        }
+        toast_Base.Hide(act);
+        return toast_Base as T;
     }
 }

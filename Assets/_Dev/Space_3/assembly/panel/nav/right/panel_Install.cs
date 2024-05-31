@@ -1,4 +1,5 @@
 using SpatialSys.UnitySDK;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,10 +39,10 @@ public class panel_Install : panel_Base
         btn_Prev.onClick.AddListener(PrevSequence);
 
         btn_Close = gameObject.Search<Button>(nameof(btn_Close));
-        btn_Close.onClick.AddListener(Close);
+        btn_Close.onClick.AddListener(()=> Close());
     }
 
-    public override void Open()
+    public override void Open(Action act = null)
     {
         base.Open();
 
@@ -51,7 +52,7 @@ public class panel_Install : panel_Base
         Space_3.instance.Control_VirtualCamera(eVirtualCameraState.vcam_install);
     }
 
-    public override void Close()
+    public override void Close(Action act = null)
     {
         base.Close();
 

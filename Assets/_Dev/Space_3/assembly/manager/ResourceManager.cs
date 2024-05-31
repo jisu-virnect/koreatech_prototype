@@ -8,6 +8,7 @@ public class ResourceManager : MonoBehaviour
     public static ResourceManager instance;
     public Object[] resources;
     public Dictionary<string, object> resourcesDic = new Dictionary<string, object>();
+
     private void Awake()
     {
         instance = this;
@@ -17,6 +18,12 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 일반 유니티 오브젝트 로드
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="resourceName"></param>
+    /// <returns></returns>
     public T LoadData<T>(string resourceName) where T : Object
     {
         if (resourcesDic.ContainsKey(resourceName))
@@ -28,7 +35,25 @@ public class ResourceManager : MonoBehaviour
             Debug.Log("데이터가 없습니다.");
             return null;
         }
-        
     }
 
+    /// <summary>
+    /// 스프라이트 로드
+    /// </summary>
+    /// <param name="resourceName"></param>
+    /// <returns></returns>
+    public Sprite LoadDataSprite(string resourceName)
+    {
+        if (resourcesDic.ContainsKey(resourceName))
+        {
+            Texture2D texture = LoadData<Texture2D>(resourceName);
+            Sprite sprite = Util.Tex2Sprite(texture);
+            return sprite;
+        }
+        else
+        {
+            Debug.Log("데이터가 없습니다.");
+            return null;
+        }
+    }
 }

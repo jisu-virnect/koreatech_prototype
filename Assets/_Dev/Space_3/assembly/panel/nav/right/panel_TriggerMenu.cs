@@ -44,8 +44,12 @@ public class panel_TriggerMenu : panel_Base
         {
             case eSectionType.before:
                 UIManager.instance.GetPanel<panel_TopNavigation>().NextStep();
-                UIManager.instance.OpenPanel<panel_Check_Environment>(Define.before);
+
+                UIManager.instance.ShowToast<toast_Base>("화면 우측에서 작업현장 적합성을 확인합니다.")
+                    .SetData(new packet_toast_basic(eToastColor.blue, eToastIcon.toast_idle));
+                
                 UIManager.instance.OpenPanel<panel_PlanMap>(Define.before);
+                UIManager.instance.OpenPanel<panel_Check_Environment>(Define.before);
                 break;
             case eSectionType.install:
                 UIManager.instance.OpenPanel<panel_Install>();

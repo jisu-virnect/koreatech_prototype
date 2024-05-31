@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class popup_Base : MonoBehaviour, IPopup
 {
     private Button btn_Close;
-    private Action act;
+
 
     protected virtual void Awake()
     {
@@ -29,6 +29,8 @@ public class popup_Base : MonoBehaviour, IPopup
     public virtual void Close()
     {
         gameObject.SetActive(false);
+        Action_Closing();
+        Action_Closed();
     }
 
     public virtual void SetData<T>(T t) where T : class
@@ -36,8 +38,13 @@ public class popup_Base : MonoBehaviour, IPopup
 
     }
 
-    public virtual void  SetAction(Action act)
+    public virtual void Action_Closing()
     {
-        this.act = act;
+
+    }
+
+    public virtual void Action_Closed()
+    {
+
     }
 }

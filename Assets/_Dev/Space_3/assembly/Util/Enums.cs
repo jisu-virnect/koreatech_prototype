@@ -70,8 +70,9 @@ public enum ePanelAnimation
 public enum eVirtualCameraState
 {
     none,
+    vcam_before,
     vcam_install,
-    vcam_checkout,
+    vcam_after,
 }
 public enum eActive
 {

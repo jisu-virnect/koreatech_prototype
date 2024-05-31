@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 public class toast_Base : MonoBehaviour, IToast
@@ -11,8 +12,10 @@ public class toast_Base : MonoBehaviour, IToast
     private CanvasGroup canvasGroup;
     private RectTransform rect;
     private Coroutine coroutine = null;
+    public bool isOpen;
+    private Action act = null;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         tmp_Toast = gameObject.Search<TMP_Text>(nameof(tmp_Toast));
         go_Root = gameObject.Search(nameof(go_Root)).gameObject;
@@ -24,14 +27,48 @@ public class toast_Base : MonoBehaviour, IToast
         rect.anchoredPosition = Vector3.zero;
     }
 
-    public virtual void Show(string message, float duration = 0f, Action act = null)
+    public virtual void Show(string message, Action act = null)
     {
+        gameObject.SetActive(true);
+        isOpen = true;
+        if (act != null)
+        {
+            this.act = act;
+        }
+
         tmp_Toast.text = message;
         if (coroutine != null)
         {
             StopCoroutine(coroutine);
         }
-        coroutine = StartCoroutine(Co_Show(duration, act));
+
+        coroutine = StartCoroutine(Co_Show());
+    }
+
+    public virtual void ShowHide(string message, float duration = 0f, Action act = null)
+    {
+        gameObject.SetActive(true);
+        isOpen = true;
+        tmp_Toast.text = message;
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+        }
+
+        coroutine = StartCoroutine(Co_Animation(duration, act));
+    }
+
+    public virtual void Hide(Action act = null)
+    {
+        if (act!=null)
+        {
+            this.act = act;
+        }
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+        }
+        coroutine = StartCoroutine(Co_Hide());
     }
 
     IEnumerator Co_CanvasAlpha(float start, float end)
@@ -65,17 +102,35 @@ public class toast_Base : MonoBehaviour, IToast
         canvasGroup.alpha = end;
     }
 
-    IEnumerator Co_Show(float duration = 0f, Action act = null)
+    IEnumerator Co_Animation(float duration = 0f, Action act = null)
+    {
+        this.act = act;
+
+        yield return Co_Show();
+        yield return new WaitForSeconds(duration);
+        yield return Co_Hide();
+    }
+    IEnumerator Co_Show()
     {
         StartCoroutine(Co_Transform(0f, -20f));
         yield return Co_CanvasAlpha(0f, 1f);
-        if (duration == 0f)
+    }
+
+    IEnumerator Co_Hide()
+    {
+        if (!isOpen)
         {
             yield break;
         }
-        yield return new WaitForSeconds(duration);
+        isOpen = false;
         StartCoroutine(Co_Transform(-20f, 0f));
         yield return Co_CanvasAlpha(1f, 0f);
         act?.Invoke();
+        act = null;
+    }
+
+    public virtual void SetData<T>(T t) where T : class
+    {
+
     }
 }

@@ -1,9 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class panel_Base : MonoBehaviour, IPanel
 {
+    public Action act_opend;
+    protected virtual IEnumerator Action_Opening()
+    {
+        yield return null;
+    }
+    protected virtual void Action_Opened()
+    {
+
+    }
     public ePanelAnimation ePanelAnimation = ePanelAnimation.None;
 
     public GameObject go_Root { get; private set; }
@@ -32,20 +42,21 @@ public class panel_Base : MonoBehaviour, IPanel
         animationPivot_DisAppear.Add(ePanelAnimation.Bottom, new Vector2(0.5f,1f));
     }
 
-    public virtual void Open()
+    public virtual void Open(Action act = null)
     {
         gameObject.SetActive(true);
-        StartCoroutine(Co_OpenAnimation());
+        StartCoroutine(Co_OpenAnimation(act));
     }
-    public virtual void Close()
+    public virtual void Close(Action act = null)
     {
-        StartCoroutine(Co_CloseAnimation());
+        StartCoroutine(Co_CloseAnimation(act));
     }
 
-    IEnumerator Co_OpenAnimation()
+    IEnumerator Co_OpenAnimation(Action act = null)
     {
         if (ePanelAnimation != ePanelAnimation.None)
         {
+            StartCoroutine(Action_Opening());
             float curTime = 0f;
             float durTime = 0.3f;
             while (curTime < 1f)
@@ -54,9 +65,12 @@ public class panel_Base : MonoBehaviour, IPanel
                 rect.pivot = Vector3.Lerp(animationPivot_DisAppear[ePanelAnimation], animationPivot_Appear[ePanelAnimation], EasingFunction.EaseOutExpo(0f, 1f, curTime));
                 yield return null;
             }
+            act?.Invoke();
+            Action_Opened();
         }
     }
-    IEnumerator Co_CloseAnimation()
+
+    IEnumerator Co_CloseAnimation(Action act = null)
     {
         if (ePanelAnimation != ePanelAnimation.None)
         {
@@ -68,6 +82,7 @@ public class panel_Base : MonoBehaviour, IPanel
                 rect.pivot = Vector3.Lerp(animationPivot_Appear[ePanelAnimation], animationPivot_DisAppear[ePanelAnimation], EasingFunction.EaseInExpo(0f, 1f, curTime));
                 yield return null;
             }
+            act?.Invoke();
         }
         gameObject.SetActive(false);
     }
