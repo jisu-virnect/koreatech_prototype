@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -172,6 +172,14 @@ public static partial class Util
     }
 
 
+    public static void lossyscale(Transform tr, Transform parent, float scale)
+    {
+
+        tr.SetParent(null);
+        tr.localScale = Vector3.one * scale;
+        tr.SetParent(parent);
+        tr.localPosition = Vector3.zero;
+    }
 
 
     #region enum 관련

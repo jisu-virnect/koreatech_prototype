@@ -47,14 +47,14 @@ public class UIManager : MonoBehaviour
         return panel_Base as T;
     }
 
-    public panel_Base OpenPanel<T>(string stackName = "", Action act = null) where T : panel_Base
+    public T OpenPanel<T>(string stackName = "", Action act = null) where T : panel_Base
     {
-        panel_Base panel_Base = GetPanel<T>(stackName);
+        T panel_Base = GetPanel<T>(stackName);
         panel_Base.Open(act);
         return panel_Base;
     }
 
-    public panel_Base ClosePanel<T>() where T : panel_Base
+    public T ClosePanel<T>() where T : panel_Base
     {
         panel_Base panel_Base = default;
         for (int i = 0; i < panel_Bases.Length; i++)
@@ -66,7 +66,7 @@ public class UIManager : MonoBehaviour
                 break;
             }
         }
-        return panel_Base;
+        return panel_Base as T;
     }
     public void ClosePanels(string stackName)
     {
@@ -91,7 +91,7 @@ public class UIManager : MonoBehaviour
         for (int i = 0; i < popup_Bases.Length; i++)
         {
             popup_Base = popup_Bases[i];
-            if (popup_Base as T)
+            if (popup_Base is T)
             {
                 break;
             }

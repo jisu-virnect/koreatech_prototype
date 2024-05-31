@@ -16,7 +16,6 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     public TMP_Text tmp_LocalAvatarName;
 
 
-    public Transform target;
     private float dist = 0f;
 
     private eServiceMode serviceMode = eServiceMode.None;
@@ -126,7 +125,7 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
 
     #region handler
     /// <summary>
-    /// ½ºÆäÀÌ¼È Á¢¼Ó»óÅÂº¯°æ ÀÌº¥Æ®
+    /// ìŠ¤í˜ì´ì…œ ì ‘ì†ìƒíƒœë³€ê²½ ì´ë²¤íŠ¸
     /// </summary>
     /// <param name="status"></param>
     private void HandleConnectionStatusChanged(ServerConnectionStatus status)
@@ -152,7 +151,7 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     }
 
     /// <summary>
-    /// ÃÖÃÊ ¼­¹ö¿¡¼­ ¹Ş´Â ÇÁ·ÎÆÛÆ¼(ÇöÀç ¹æ »óÅÂ¿¡ µû¸¥ UI º¯°æ)
+    /// ìµœì´ˆ ì„œë²„ì—ì„œ ë°›ëŠ” í”„ë¡œí¼í‹°(í˜„ì¬ ë°© ìƒíƒœì— ë”°ë¥¸ UI ë³€ê²½)
     /// </summary>
     private void FirstGetServerProperties()
     {
@@ -261,42 +260,11 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     {
         SpatialBridge.coreGUIService.DisplayToastMessage(message);
     }
+    //GameObject go_Outline;
+    int idx = 0;
     void NoneMode()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            UIManager.instance.OpenPanel<panel_TopNavigation>("a");
-            UIManager.instance.OpenPanel<panel_Install>("a");
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            UIManager.instance.ClosePanels("a");
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            UIManager.instance.ShowHideToast<toast_Base>("aaa", 1f);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            //UIManager.instance.ShowHideToast<toast_Base>("bbb");
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            UIManager.instance.ShowHideToast<toast_Base>("ccc", 0.5f);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            UIManager.instance.OpenPanel<panel_GlobalMessage>().SetData<string>("aaaa");
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha7))
-        {
-            UIManager.instance.OpenPanel<panel_GlobalMessage>().SetData<string>("bbbbb");
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            UIManager.instance.OpenPanel<panel_TopNavigation>();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha9))
         {
         }
     }

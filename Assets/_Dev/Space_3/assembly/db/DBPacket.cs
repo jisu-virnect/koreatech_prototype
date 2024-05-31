@@ -14,7 +14,9 @@ public class Section
 {
     public int index;
     public string type;
+    public string title_image;
     public string title;
+    public string content;
     public string step1;
     public string step2;
 }
@@ -36,8 +38,9 @@ public class SafetyTools
 {
     public int index;
     public string title;
-    public string summary;
-    public string caption;
+    public string content;
+    public string content_image;
+    public int targetTransform;
 }
 
 [Serializable]

@@ -1,3 +1,4 @@
+using SpatialSys.UnitySDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,22 +34,36 @@ public class go_Check_Environment : MonoBehaviour
 
     private void OnClick_Submit()
     {
-        //ÆË¾÷ ¿ÀÇÂ
+        //íŒì—… ì˜¤í”ˆ
         popup_Basic popup_Basic = UIManager.instance.GetPopup<popup_Basic>();
         popup_Basic.SetData(new packet_popup_Basic(checkEnvironment.popuptitle, checkEnvironment.popupsummary));
 
-        //Ã¼Å© ½Ã ¹öÆ° ºñÈ°¼ºÈ­
+        //ì²´í¬ ì‹œ ë²„íŠ¼ ë¹„í™œì„±í™”
         img_Check1.gameObject.SetActive(true);
         btn_Submit.interactable = false;
 
-        //³²Àº Ã¼Å©°³¼ö Ä«¿îÆ®
+        //ë‚¨ì€ ì²´í¬ê°œìˆ˜ ì¹´ìš´íŠ¸
         panel_Check_Environment.remainCheckEnvironment--;
         if(panel_Check_Environment.remainCheckEnvironment == 0)
         {
             popup_Basic.SetAction(() =>
             {
+                Space_3.instance.Control_VirtualCamera(eVirtualCameraState.none);
+                Space_3.instance.Control_PlayerMovement(false);
                 UIManager.instance
-                    .ShowHideToast<toast_Basic>("[ÀÛ¾÷ÇöÀå Á¶»ç] ´Ü°è°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù. [¾ÈÀü Àåºñ] ´Ü°è·Î ³Ñ¾î°©´Ï´Ù.", 2f)
+                    .ShowHideToast<toast_Basic>("[ì‘ì—…í˜„ì¥ ì¡°ì‚¬] ë‹¨ê³„ê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤. [ì•ˆì „ ì¥ë¹„] ë‹¨ê³„ë¡œ ë„˜ì–´ê°‘ë‹ˆë‹¤.", 2f, () =>
+                    {
+                        UIManager.instance.ClosePanel<panel_Check_Environment>();
+                        UIManager.instance.GetPanel<panel_TopNavigation>().NextStep();
+
+                        UIManager.instance
+                        .ShowHideToast<toast_Basic>("ë¹„ê³„ ì‘ì—…ì— í•„ìš”í•œ ì•ˆì „ ì¥ë¹„ë¥¼ í™•ì¸í•©ë‹ˆë‹¤.", 2f, () =>
+                        {
+                            UIManager.instance.OpenPanel<panel_SafetyTools>().ResetStep();
+                            //ì²´í¬í¬ì¸íŠ¸ë“¤ ì¼œì£¼ê¸°
+                        })
+                        .SetData(new packet_toast_basic(eToastColor.blue, eToastIcon.toast_idle));
+                    })
                     .SetData(new packet_toast_basic(eToastColor.green, eToastIcon.toast_success));
             });
         }

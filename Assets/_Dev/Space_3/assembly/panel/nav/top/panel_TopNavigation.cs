@@ -21,6 +21,11 @@ public class panel_TopNavigation : panel_Base
         steps[0].SetText(section.step1);
         steps[1].SetText(section.step2);
     }
+    protected override IEnumerator Action_Opening()
+    {
+        yield return null;
+        Util.RefreshLayout(gameObject, "img_BG");
+    }
 
     public void NextStep()
     {

@@ -125,8 +125,16 @@ public class toast_Base : MonoBehaviour, IToast
         isOpen = false;
         StartCoroutine(Co_Transform(-20f, 0f));
         yield return Co_CanvasAlpha(1f, 0f);
-        act?.Invoke();
-        act = null;
+
+        if (act != null)
+        {
+            int hashCode = act.GetHashCode();
+            act?.Invoke();
+            if(hashCode == act.GetHashCode())
+            {
+                act = null;
+            }
+        }
     }
 
     public virtual void SetData<T>(T t) where T : class

@@ -2,12 +2,12 @@ ManifestFileVersion: 1
 CompatibilityAssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: space-3_0
-      Hash: 03d05834c432bc2a5ea267eb4c7d73ab
-      CRC: 1810965601
+      Name: space-7_0
+      Hash: 118b7ecb36629f859dc370b63344b6c0
+      CRC: 2959161777
       Dependencies: {}
     Info_1:
-      Name: space-3_csharp-assembly
-      Hash: eb202201d717b01dfb68058c631e657c
-      CRC: 613721777
+      Name: space-7_csharp-assembly
+      Hash: 3bef11d098c20ec387a6118af36cf50d
+      CRC: 4183315299
       Dependencies: {}

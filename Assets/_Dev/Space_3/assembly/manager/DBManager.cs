@@ -32,7 +32,7 @@ public class DBManager : MonoBehaviour
         Sections            = Util.FromJsonList<Section>            (GetText(eDBName.db_section.ToString()));
 
         CheckEnvironments   = Util.FromJsonList<CheckEnvironment>   (GetText(eDBName.db_before_check_environment.ToString()));
-        SafetyToolies       = Util.FromJsonList<SafetyTools>        (GetText(eDBName.db_before_check_environment.ToString()));
+        SafetyToolies       = Util.FromJsonList<SafetyTools>        (GetText(eDBName.db_before_safetytools.ToString()));
 
         Installs            = Util.FromJsonList<Install>            (GetText(eDBName.db_work_install.ToString()));
         CheckInstalls       = Util.FromJsonList<CheckInstall>       (GetText(eDBName.db_work_check_install.ToString()));

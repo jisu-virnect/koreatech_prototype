@@ -65,8 +65,8 @@ public class panel_Install : panel_Base
 
         Section section = DBManager.instance.Sections.FirstOrDefault(x => x.index == 1);
 
-        UIManager.instance.OpenPanel<panel_TopNavigation>("trigger").SetData(section);
-        UIManager.instance.OpenPanel<panel_TriggerMenu>("trigger").SetData(section);
+        UIManager.instance.OpenPanel<panel_TopNavigation>(Define.trigger).SetData(section);
+        UIManager.instance.OpenPanel<panel_TriggerMenu>(Define.trigger).SetData(section);
 
         Space_3.instance.Control_PlayerMovement(true);
         Space_3.instance.Control_VirtualCamera(eVirtualCameraState.none);
@@ -104,7 +104,7 @@ public class panel_Install : panel_Base
 
 
     /// <summary>
-    /// ½ÃÄö½ºµ¥ÀÌÅÍ ÃÊ±âÈ­
+    /// ì‹œí€€ìŠ¤ë°ì´í„° ì´ˆê¸°í™”
     /// </summary>
     /// <param name="item"></param>
     private void CreateSequenceUI()
@@ -119,7 +119,7 @@ public class panel_Install : panel_Base
     }
 
     /// <summary>
-    /// ½ÃÄö½º »èÁ¦
+    /// ì‹œí€€ìŠ¤ ì‚­ì œ
     /// </summary>
     private void DestroySequenceUI()
     {
@@ -228,7 +228,7 @@ public class panel_Install : panel_Base
                 else
                     serverProperties["idinstall"] = sequenceIndex;
 
-                // SetServerProperties ¸Ş¼­µå È£Ãâ
+                // SetServerProperties ë©”ì„œë“œ í˜¸ì¶œ
                 SpatialBridge.networkingService.SetServerProperties(serverProperties);
                 break;
             case RemoteEventIDs.Checklist:

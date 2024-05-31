@@ -6,8 +6,10 @@ using UnityEngine.UI;
 
 public class panel_Check_Environment : panel_Base
 {
+    public int remainCheckEnvironment { get; set; }
     private GameObject go_Check_Environment;
     private ScrollRect sview_;
+
     protected override void Awake()
     {
         base.Awake();
@@ -15,7 +17,6 @@ public class panel_Check_Environment : panel_Base
         sview_ = gameObject.Search<ScrollRect>(nameof(sview_));
     }
 
-    public int remainCheckEnvironment { get; set; }
     public override void Open(Action act = null)
     {
         base.Open();
@@ -31,7 +32,7 @@ public class panel_Check_Environment : panel_Base
         }
 
         Space_3.instance.Control_PlayerMovement(false);
-        Space_3.instance.Control_VirtualCamera(eVirtualCameraState.vcam_install);
+        Space_3.instance.Control_VirtualCamera(eVirtualCameraState.vcam_before);
     }
     protected override IEnumerator Action_Opening()
     {
@@ -43,9 +44,7 @@ public class panel_Check_Environment : panel_Base
     public override void Close(Action act = null)
     {
         base.Close();
-        UIManager.instance.HideToast<toast_Base>();
-        Space_3.instance.Control_PlayerMovement(true);
-        Space_3.instance.Control_VirtualCamera(eVirtualCameraState.none);
+        //UIManager.instance.HideToast<toast_Basic>();
     }
 
     private void Update()

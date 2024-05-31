@@ -9,12 +9,16 @@ using UnityEngine.UI;
 public class panel_TriggerMenu : panel_Base
 {
     private TMP_Text tmp_Title;
+    private TMP_Text tmp_Content;
+    private Image img_Title;
     private Button btn_StartContent;
     protected override void Awake()
     {
         base.Awake();
 
+        img_Title = gameObject.Search<Image>(nameof(img_Title));
         tmp_Title = gameObject.Search<TMP_Text>(nameof(tmp_Title));
+        tmp_Content = gameObject.Search<TMP_Text>(nameof(tmp_Content));
 
         btn_StartContent = gameObject.Search<Button>(nameof(btn_StartContent));
         btn_StartContent.onClick.AddListener(OnClick_StartContent);
@@ -26,16 +30,11 @@ public class panel_TriggerMenu : panel_Base
         base.SetData(t);
         Section section = t as Section;
         eSectionType = Util.String2Enum<eSectionType>(section.type);
+        img_Title.sprite = ResourceManager.instance.LoadDataSprite(section.title_image);
         tmp_Title.text = section.title;
-        Util.RefreshLayout(gameObject, "go_Root2");
+        tmp_Content.text = section.content;
     }
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            Util.RefreshLayout(gameObject, "go_Root2");
-        }
-    }
+
 
     private void OnClick_StartContent()
     {
@@ -45,7 +44,7 @@ public class panel_TriggerMenu : panel_Base
             case eSectionType.before:
                 UIManager.instance.GetPanel<panel_TopNavigation>().NextStep();
 
-                UIManager.instance.ShowToast<toast_Base>("È­¸é ¿ìÃø¿¡¼­ ÀÛ¾÷ÇöÀå ÀûÇÕ¼ºÀ» È®ÀÎÇÕ´Ï´Ù.")
+                UIManager.instance.ShowToast<toast_Base>("í™”ë©´ ìš°ì¸¡ì—ì„œ ì‘ì—…í˜„ì¥ ì í•©ì„±ì„ í™•ì¸í•©ë‹ˆë‹¤.")
                     .SetData(new packet_toast_basic(eToastColor.blue, eToastIcon.toast_idle));
                 
                 UIManager.instance.OpenPanel<panel_PlanMap>(Define.before);
@@ -55,7 +54,7 @@ public class panel_TriggerMenu : panel_Base
                 UIManager.instance.OpenPanel<panel_Install>();
                 break;
             case eSectionType.after:
-                UIManager.instance.OpenPanel<panel_Install>();
+                //UIManager.instance.OpenPanel<panel_Install>();
                 break;
             default:
                 break;
