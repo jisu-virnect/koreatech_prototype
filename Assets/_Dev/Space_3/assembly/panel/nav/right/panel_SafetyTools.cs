@@ -1,3 +1,4 @@
+using Cinemachine;
 using SpatialSys.UnitySDK;
 using System;
 using System.Collections;
@@ -48,6 +49,7 @@ public class panel_SafetyTools : panel_Base
             popup_Success.SetData(new packet_popup_Basic("완료", "[작업 안전]을 완료하였습니다.\n원하는 구역으로 이동하여 체험을 다시 진행할 수 있습니다."));
             popup_Success.SetAction(() =>
             {
+                Space_3.instance.Control_VirtualCamera();
                 Space_3.instance.Control_PlayerMovement(true);
                 UIManager.instance.ClosePanel<panel_PlanMap>();
                 UIManager.instance.GetPanel<panel_TopNavigation>().ResetStep();
@@ -85,6 +87,9 @@ public class panel_SafetyTools : panel_Base
         targetOutlines.Clear();
     }
 
+    float far = 0.05f;
+    float zoom = 0.4f;
+
     private void SetTargetOutlines()
     {
         for (int i = 0; i < safetyToolies.Count; i++)
@@ -99,7 +104,8 @@ public class panel_SafetyTools : panel_Base
                 if (targetTransform != null)
                 {
                     GameObject go_Outline = Instantiate(ResourceManager.instance.LoadData<GameObject>(nameof(go_Outline)));
-                    Util.lossyscale(go_Outline.transform, targetTransform, 0.2f);
+
+                    Util.lossyscale(go_Outline.transform, targetTransform, far);
 
                     if (!targetOutlines.ContainsKey(HumanBodyBones))
                     {
@@ -122,7 +128,7 @@ public class panel_SafetyTools : panel_Base
             if (targetOutlines.ContainsKey(HumanBodyBones))
             {
                 GameObject prevTargetOutline = targetOutlines[HumanBodyBones];
-                Util.lossyscale(prevTargetOutline.transform, prevTargetOutline.transform.parent, 0.2f);
+                Util.lossyscale(prevTargetOutline.transform, prevTargetOutline.transform.parent, far);
             }
         }
         index++;
@@ -133,11 +139,14 @@ public class panel_SafetyTools : panel_Base
         if (targetOutlines.ContainsKey(HumanBodyBones))
         {
             GameObject targetOutline = targetOutlines[HumanBodyBones];
-            Util.lossyscale(targetOutline.transform, targetOutline.transform.parent, 0.4f);
+            Util.lossyscale(targetOutline.transform, targetOutline.transform.parent, zoom);
 
             //카메라 포커싱
-            SpatialBridge.cameraService.SetTargetOverride(targetOutline.transform, SpatialCameraMode.Actor);
-            Space_3.instance.Control_PlayerMovement(false);
+            //SpatialBridge.cameraService.SetTargetOverride(targetOutline.transform, SpatialCameraMode.Actor);
+            //Space_3.instance.Control_PlayerMovement(false);
+            Outline(targetOutline.transform, 0.2f, zoom);
+            CinemachineVirtualCamera virtualCamera = Space_3.instance.Control_VirtualCamera(Util.String2Enum<eVirtualCameraState>("vcam_" + prevSafetyTools.title));
+            StartCoroutine(SetVirtualCamera(virtualCamera, targetOutline.transform.parent));
         }
 
         tmp_Index.text = $"{prevSafetyTools.index + 1} / {safetyToolies.Count}";
@@ -146,5 +155,50 @@ public class panel_SafetyTools : panel_Base
         img_Content.sprite = ResourceManager.instance.LoadDataSprite(prevSafetyTools.content_image);
 
         tmp_Content.text = prevSafetyTools.content;
+    }
+
+    private IEnumerator SetVirtualCamera(CinemachineVirtualCamera virtualCamera, Transform target)
+    {                    
+        virtualCamera.gameObject.transform.position = target.position + Vector3.ProjectOnPlane(target.forward, Vector3.up).normalized * 2f + Vector3.up * 1f;
+        
+        while (virtualCamera.enabled)
+        {
+            virtualCamera.transform.LookAt(target);
+            yield return null;
+        }
+    }
+
+    Coroutine co_Outline = null;
+    void Outline(Transform outline, float st, float en)
+    {
+        if (co_Outline != null)
+        {
+            StopCoroutine(co_Outline);
+        }
+        co_Outline = StartCoroutine(Co_Outline(outline,st,en));
+    }
+
+    private IEnumerator Co_Outline(Transform outline, float st, float en)
+    {
+        float curTime;
+        float durTime;
+        while (true)
+        {
+            curTime = 0f;
+            durTime = 0.2f;
+            while (curTime < 1f)
+            {
+                Util.lossyscale(outline, outline.parent, Mathf.Lerp(st, en, EasingFunction.EaseOutCirc(0f, 1f, curTime += Time.deltaTime / durTime)));
+                yield return null;
+            }
+            curTime = 0f;
+            durTime = 0.4f;
+            while (curTime < 1f)
+            {
+                Util.lossyscale(outline, outline.parent, Mathf.Lerp(en, st, EasingFunction.EaseInCirc(0f,1f, curTime += Time.deltaTime / durTime)));
+                yield return null;
+            }
+            yield return null;
+        }
     }
 }

@@ -10,15 +10,15 @@ public enum SEQUENCE_STATE
 public enum eBuildScaffold
 {
     stump = 0,
-    piiler, //¹ŞÄ§ÆÇ
+    piiler, //ë°›ì¹¨íŒ
     stump_piller,
-    catgut, //¾ÈÀü±×¹°
+    catgut, //ì•ˆì „ê·¸ë¬¼
     work_scaffolding,
     railing,
     wall_jont,
-    ladder, //Á¶ÀÎÆ®
-    bracing, //ÆÄÀÌÇÁ
-    net, //»ç´Ù¸®
+    ladder, //ì¡°ì¸íŠ¸
+    bracing, //íŒŒì´í”„
+    net, //ì‚¬ë‹¤ë¦¬
     //wall,
 }
 
@@ -73,6 +73,10 @@ public enum eVirtualCameraState
     vcam_before,
     vcam_install,
     vcam_after,
+    vcam_ì•ˆì „ëª¨,
+    vcam_ë³´ì•ˆê²½,
+    vcam_ì•ˆì „ëŒ€,
+    vcam_ì•ˆì „í™”,
 }
 public enum eActive
 {

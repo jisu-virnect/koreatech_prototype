@@ -6,6 +6,7 @@ using TMPro;
 using System;
 using Cinemachine;
 using System.Linq;
+using System.Runtime;
 
 public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
 {
@@ -44,7 +45,7 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
 
     CinemachineVirtualCamera prevVirtualCamera = null;
 
-    public void Control_VirtualCamera(eVirtualCameraState eVirtualCameraState = eVirtualCameraState.none)
+    public CinemachineVirtualCamera Control_VirtualCamera(eVirtualCameraState eVirtualCameraState = eVirtualCameraState.none)
     {
         if (prevVirtualCamera != null)
         {
@@ -55,10 +56,12 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
         {
             prevVirtualCamera = virtualCameras[eVirtualCameraState];
             prevVirtualCamera.enabled = true;
+            return prevVirtualCamera;
         }
+        return null;
     }
 
-    private void Update()
+    private void TestMode()
     {
         //LocalAvatarName();
         //LookAtCamera(HMD.transform);
@@ -110,6 +113,44 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
             }
         }
     }
+    //int idid=0;
+    //public GameObject cube1;
+    //public GameObject cube2;
+    private void Update()
+    {
+        //Transform spine = SpatialBridge.actorService.localActor.avatar.GetAvatarBoneTransform(HumanBodyBones.Spine);
+        //cube1.transform.position = spine.position + Vector3.ProjectOnPlane(spine.forward, Vector3.up).normalized * 3f + Vector3.up * 2f;
+        //cube1.transform.LookAt(transform);
+        //Transform head = SpatialBridge.actorService.localActor.avatar.GetAvatarBoneTransform(HumanBodyBones.Head);
+        //cube2.transform.position = head.position + Vector3.ProjectOnPlane(head.forward, Vector3.up).normalized * 3f + Vector3.up * 2f;
+        //cube2.transform.LookAt(transform);
+
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)) SpatialBridge.actorService.localActor.avatar.SetAvatarBody(AssetType.EmbeddedAsset, "0");
+        if (Input.GetKeyDown(KeyCode.Alpha2)) SpatialBridge.actorService.localActor.avatar.SetAvatarBody(AssetType.EmbeddedAsset, "1");
+        if (Input.GetKeyDown(KeyCode.Alpha3)) SpatialBridge.actorService.localActor.avatar.SetAvatarBody(AssetType.EmbeddedAsset, "2");
+        if (Input.GetKeyDown(KeyCode.Alpha4)) SpatialBridge.actorService.localActor.avatar.SetAvatarBody(AssetType.EmbeddedAsset, "3");
+        //if (Input.GetKeyDown(KeyCode.Alpha5))
+        //{
+
+        //    Transform targetTransform = SpatialBridge.actorService.localActor.avatar.GetAvatarBoneTransform((HumanBodyBones)idid);
+        //    Debug.Log(targetTransform.name);
+        //    if (targetTransform != null)
+        //    {
+        //        GameObject go_Outline = Instantiate(ResourceManager.instance.LoadData<GameObject>(nameof(go_Outline)));
+
+        //        Util.lossyscale(go_Outline.transform, targetTransform, 0.2f);
+
+        //        go_Outline.transform.rotation = Quaternion.identity;
+        //        CinemachineVirtualCamera virtualCamera = Space_3.instance.Control_VirtualCamera(Util.String2Enum<eVirtualCameraState>("vcam_안전모"));
+        //        //virtualCamera.gameObject.transform.position = go_Outline.transform.transform.position + Vector3.ProjectOnPlane(go_Outline.transform.forward.normalized,Vector3.up).normalized go_Outline.transform.forward.normalized * 2f + go_Outline.transform.up.normalized * 2f;
+        //        virtualCamera.gameObject.transform.LookAt(go_Outline.transform);
+        //        //virtualCamera.gameObject.SetActive(false);
+        //    }
+        //    idid++;
+        //}
+        //TestMode();
+    }
 
     private void OnEnable()
     {
@@ -138,9 +179,11 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
                 break;
             case ServerConnectionStatus.Connected:
 
+                SpatialBridge.inputService.SetEmoteBindingsEnabled(false);
                 SpatialBridge.coreGUIService.SetCoreGUIOpen(SpatialCoreGUITypeFlags.All, false);
                 SpatialBridge.coreGUIService.SetCoreGUIOpen(SpatialCoreGUITypeFlags.ParticipantsList, true);
                 SpatialBridge.cameraService.rotationMode = SpatialCameraRotationMode.DragToRotate;
+                SpatialBridge.actorService.localActor.avatar.SetAvatarBody(AssetType.EmbeddedAsset, "3");
                 FirstGetServerProperties();
                 break;
             case ServerConnectionStatus.Disconnecting:
@@ -271,6 +314,11 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
 
     public void Control_PlayerMovement(bool active)
     {
+        StartCoroutine(Co_Control_PlayerMovement(active));
+    }
+    private IEnumerator Co_Control_PlayerMovement(bool active)
+    {
+        yield return null;
         if (active)
         {
             SpatialBridge.inputService.ReleaseInputCapture(this);

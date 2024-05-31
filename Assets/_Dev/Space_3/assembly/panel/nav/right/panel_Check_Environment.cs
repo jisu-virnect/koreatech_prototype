@@ -49,12 +49,12 @@ public class panel_Check_Environment : panel_Base
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            UIManager.instance.ClosePanels(Define.before);
-            UIManager.instance.OpenPanel<panel_TriggerMenu>(Define.trigger);
-            UIManager.instance.GetPanel<panel_TopNavigation>().ResetStep();
-        }
+        //if(Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    UIManager.instance.ClosePanels(Define.before);
+        //    UIManager.instance.OpenPanel<panel_TriggerMenu>(Define.trigger);
+        //    UIManager.instance.GetPanel<panel_TopNavigation>().ResetStep();
+        //}
     }
 
     private void ClearElement()

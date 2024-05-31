@@ -22,7 +22,16 @@ MonoBehaviour:
   scene: {fileID: 102900000, guid: 6ca6861d595dd264e8ae60b227aa5d8e, type: 3}
   csharpAssembly: {fileID: 5897886265953266890, guid: 9dcf8ec24af9f504fb26c6770b8eedaf,
     type: 3}
-  embeddedPackageAssets: []
+  embeddedPackageAssets:
+  - id: 0
+    asset: {fileID: 133948647381453173, guid: b487930927cf31149aaa926fd4e74c51, type: 3}
+  - id: 1
+    asset: {fileID: 3684378051352137467, guid: 67dd8c2e78d6def458f30330958b6a50, type: 3}
+  - id: 2
+    asset: {fileID: -4855574702353171492, guid: db5b98a0ce8d59348a51d4652fd51ae5,
+      type: 3}
+  - id: 3
+    asset: {fileID: 2884532770008596808, guid: a21b8e25f90ef03448a8267ef7fd2ea4, type: 3}
   settings:
     serverInstancingEnabled: 1
     serverCapacitySetting: 1

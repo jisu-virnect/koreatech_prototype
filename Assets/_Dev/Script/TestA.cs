@@ -14,7 +14,7 @@ public class TestA : MonoBehaviour
 
     void SetMaterialTransparent(Material standardShaderMaterial)
     {
-        // URP/Lit ¼ÎÀÌ´õ »ç¿ë
+        // URP/Lit ì…°ì´ë” ì‚¬ìš©
         standardShaderMaterial.SetFloat("_Surface", 1); // 0 = Opaque, 1 = Transparent
         //mat.SetInt("_Blend", (int)UnityEngine.Rendering.BlendMode.One);
         standardShaderMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
@@ -25,28 +25,30 @@ public class TestA : MonoBehaviour
         standardShaderMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
         standardShaderMaterial.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
 
-        // Alpha °ª ¼³Á¤ (Åõ¸íµµ ¼³Á¤)
+        // Alpha ê°’ ì„¤ì • (íˆ¬ëª…ë„ ì„¤ì •)
         Color color = standardShaderMaterial.color;
-        color.a = 0f; // ¿øÇÏ´Â Åõ¸íµµ °ª (0.0f¿¡¼­ 1.0f »çÀÌ)
+        color.a = 0f; // ì›í•˜ëŠ” íˆ¬ëª…ë„ ê°’ (0.0fì—ì„œ 1.0f ì‚¬ì´)
         standardShaderMaterial.color = color;
 
-        // ¾ËÆÄ Å¬¸®ÇÎ ºñÈ°¼ºÈ­
+        // ì•ŒíŒŒ í´ë¦¬í•‘ ë¹„í™œì„±í™”
         standardShaderMaterial.SetFloat("_Cutoff", 0.0f);
 
-        // URP Å°¿öµå ¼³Á¤
+        // URP í‚¤ì›Œë“œ ì„¤ì •
         standardShaderMaterial.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
         standardShaderMaterial.DisableKeyword("_SURFACE_TYPE_OPAQUE");
     }
 
+    public GameObject cube;
     private void Update()
     {
+        //transform.rotation = Quaternion.identity;
+        cube.transform.position = transform.position + Vector3.ProjectOnPlane(transform.forward.normalized, Vector3.up).normalized * 3f + Vector3.up * 2f;
+        cube.transform.LookAt(transform);
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
 
-            for (int i = 0; i < materials.Length; i++)
-            {
-                materials[i].color = Color.white;
-            }
+
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {

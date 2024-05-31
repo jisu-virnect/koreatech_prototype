@@ -1,47 +1,47 @@
 {
-"Date": "2024-06-01 오전 2:11:53",
+"Date": "2024-06-01 오전 6:22:13",
 "UnityVersion": "2021.3.21f1",
 "com.unity.scriptablebuildpipeline": "1.21.1",
 "traceEvents": [
-{"name": "AssetDatabase.SaveAssets", "ph": "X", "dur": 1068.8, "tid": 1, "ts": 29120, "pid": 1}
-,{"name": "SwitchToBuildPlatform", "ph": "X", "dur": 96.1999999999961, "tid": 1, "ts": 42858, "pid": 1}
-,{"name": "RebuildSpriteAtlasCache", "ph": "X", "dur": 86.5000000000009, "tid": 1, "ts": 43144, "pid": 1}
-,{"name": "BuildPlayerScripts", "ph": "X", "dur": 2339178.6, "tid": 1, "ts": 43273, "pid": 1}
-,{"name": "PostScriptsCallback", "ph": "X", "dur": 109.600000000228, "tid": 1, "ts": 2382679, "pid": 1}
-,{"name": "CalculateSceneDependencyData", "ph": "X", "dur": 755964, "tid": 1, "ts": 2382863, "pid": 1}
-,{"name": "Calculate Scene Dependencies", "ph": "X", "dur": 754431.6, "tid": 1, "ts": 2384379, "pid": 1, "args": {"0":"6ca6861d595dd264e8ae60b227aa5d8e"}}
-,{"name": "CalculateCustomDependencyData", "ph": "X", "dur": 740.400000000136, "tid": 1, "ts": 3138986, "pid": 1}
-,{"name": "CalculateAssetDependencyData", "ph": "X", "dur": 6856.40000000012, "tid": 1, "ts": 3139847, "pid": 1}
-,{"name": "Gathering Cache Entries to Load", "ph": "X", "dur": 3.90000000015789, "tid": 1, "ts": 3141353, "pid": 1}
-,{"name": "Calculate Asset Dependencies", "ph": "X", "dur": 1344.39999999995, "tid": 1, "ts": 3141359, "pid": 1, "args": {"0":"3592e5d5b222c534bb26d16c0bb86507"}}
-,{"name": "Gathering Cache Entries to Save", "ph": "X", "dur": 2789.60000000006, "tid": 1, "ts": 3142706, "pid": 1}
-,{"name": "StripUnusedSpriteSources", "ph": "X", "dur": 400.700000000143, "tid": 1, "ts": 3146801, "pid": 1}
-,{"name": "PostDependencyCallback", "ph": "X", "dur": 94.9000000000524, "tid": 1, "ts": 3147268, "pid": 1}
-,{"name": "GenerateBundlePacking", "ph": "X", "dur": 5672.09999999977, "tid": 1, "ts": 3147418, "pid": 1}
-,{"name": "GenerateBundleCommands", "ph": "X", "dur": 19773.2999999998, "tid": 1, "ts": 3153186, "pid": 1}
-,{"name": "GenerateSubAssetPathMaps", "ph": "X", "dur": 461.600000000089, "tid": 1, "ts": 3173057, "pid": 1}
-,{"name": "GenerateBundleMaps", "ph": "X", "dur": 1732.99999999972, "tid": 1, "ts": 3173589, "pid": 1}
-,{"name": "Temporary Map Creations", "ph": "X", "dur": 757.300000000214, "tid": 1, "ts": 3174407, "pid": 1}
-,{"name": "Populate BuildReferenceMaps", "ph": "X", "dur": 25.9999999998399, "tid": 1, "ts": 3175167, "pid": 1}
-,{"name": "Populate BuildUsageTagSet", "ph": "X", "dur": 128.100000000359, "tid": 1, "ts": 3175193, "pid": 1}
-,{"name": "PostPackingCallback", "ph": "X", "dur": 97.1999999997024, "tid": 1, "ts": 3175401, "pid": 1}
-,{"name": "WriteSerializedFiles", "ph": "X", "dur": 1046992.5, "tid": 1, "ts": 3175572, "pid": 1}
-,{"name": "RunCachedOperation", "ph": "X", "dur": 1043876.7, "tid": 1, "ts": 3178687, "pid": 1, "args": {"0":"Total Entries: 2, Processed: 2, Cached: 0"}}
-,{"name": "Process Entries", "ph": "X", "dur": 1043120, "tid": 1, "ts": 3178715, "pid": 1}
-,{"name": "Writing SceneBundleWriteOperation", "ph": "X", "dur": 962036.9, "tid": 1, "ts": 3179060, "pid": 1, "args": {"0":"CAB-95936abbea7fc7f96e8dbdea4e541373.sharedAssets"}}
-,{"name": "Writing AssetBundleWriteOperation", "ph": "X", "dur": 3030.99999999995, "tid": 1, "ts": 4213280, "pid": 1, "args": {"0":"CAB-9c764410adba8191364022573243ddb3"}}
-,{"name": "Process Cached Entries", "ph": "X", "dur": 11.0999999997148, "tid": 1, "ts": 4221838, "pid": 1}
-,{"name": "ArchiveAndCompressBundles", "ph": "X", "dur": 2585671.3, "tid": 1, "ts": 4222708, "pid": 1}
-,{"name": "CreateWorkItems", "ph": "X", "dur": 1921.90000000028, "tid": 1, "ts": 4224058, "pid": 1}
-,{"name": "CopyingCachedFiles", "ph": "X", "dur": 9.60000000031869, "tid": 1, "ts": 4225985, "pid": 1}
-,{"name": "ArchiveItems", "ph": "X", "dur": 2578127.9, "tid": 1, "ts": 4226126, "pid": 1, "args": {"0":"Archiving 2 Bundles"}}
-,{"name": "ArchiveSingleItem", "ph": "X", "dur": 12390.2, "tid": 559, "ts": 4226165, "pid": 1, "args": {"0":"space-7_csharp-assembly"}}
-,{"name": "Copying From Cache", "ph": "X", "dur": 845.499999999999, "tid": 559, "ts": 4237708, "pid": 1, "args": {"0":"C:\\github\\koreatech_prototype\\Temp\\ContentBuildData\\space-7_csharp-assembly -> C:\\github\\koreatech_prototype\\Exports\\WebGL\\space-7_csharp-assembly"}}
-,{"name": "ArchiveSingleItem", "ph": "X", "dur": 2576179.8, "tid": 496, "ts": 4226164, "pid": 1, "args": {"0":"space-7_0"}}
-,{"name": "Copying From Cache", "ph": "X", "dur": 6391.80000000033, "tid": 496, "ts": 6795950, "pid": 1, "args": {"0":"C:\\github\\koreatech_prototype\\Temp\\ContentBuildData\\space-7_0 -> C:\\github\\koreatech_prototype\\Exports\\WebGL\\space-7_0"}}
-,{"name": "PostArchiveProcessing", "ph": "X", "dur": 2194.90000000042, "tid": 1, "ts": 6805517, "pid": 1}
-,{"name": "AppendBundleHash", "ph": "X", "dur": 168.999999999869, "tid": 1, "ts": 6808493, "pid": 1}
-,{"name": "GenerateLinkXml", "ph": "X", "dur": 148.400000000038, "tid": 1, "ts": 6808720, "pid": 1}
-,{"name": "PostWritingCallback", "ph": "X", "dur": 85.5000000001382, "tid": 1, "ts": 6808924, "pid": 1}
+{"name": "AssetDatabase.SaveAssets", "ph": "X", "dur": 1153.4, "tid": 1, "ts": 4572, "pid": 1}
+,{"name": "SwitchToBuildPlatform", "ph": "X", "dur": 93.0999999999997, "tid": 1, "ts": 32923, "pid": 1}
+,{"name": "RebuildSpriteAtlasCache", "ph": "X", "dur": 84.8000000000013, "tid": 1, "ts": 33202, "pid": 1}
+,{"name": "BuildPlayerScripts", "ph": "X", "dur": 2358097.5, "tid": 1, "ts": 33335, "pid": 1}
+,{"name": "PostScriptsCallback", "ph": "X", "dur": 129.500000000007, "tid": 1, "ts": 2391665, "pid": 1}
+,{"name": "CalculateSceneDependencyData", "ph": "X", "dur": 805992.5, "tid": 1, "ts": 2391872, "pid": 1}
+,{"name": "Calculate Scene Dependencies", "ph": "X", "dur": 804462.6, "tid": 1, "ts": 2393385, "pid": 1, "args": {"0":"6ca6861d595dd264e8ae60b227aa5d8e"}}
+,{"name": "CalculateCustomDependencyData", "ph": "X", "dur": 752.29999999965, "tid": 1, "ts": 3198028, "pid": 1}
+,{"name": "CalculateAssetDependencyData", "ph": "X", "dur": 6704.20000000013, "tid": 1, "ts": 3198895, "pid": 1}
+,{"name": "Gathering Cache Entries to Load", "ph": "X", "dur": 3.70000000020809, "tid": 1, "ts": 3200355, "pid": 1}
+,{"name": "Calculate Asset Dependencies", "ph": "X", "dur": 1410.80000000011, "tid": 1, "ts": 3200360, "pid": 1, "args": {"0":"3592e5d5b222c534bb26d16c0bb86507"}}
+,{"name": "Gathering Cache Entries to Save", "ph": "X", "dur": 2637.90000000017, "tid": 1, "ts": 3201773, "pid": 1}
+,{"name": "StripUnusedSpriteSources", "ph": "X", "dur": 400.59999999994, "tid": 1, "ts": 3205699, "pid": 1}
+,{"name": "PostDependencyCallback", "ph": "X", "dur": 94.7000000001026, "tid": 1, "ts": 3206170, "pid": 1}
+,{"name": "GenerateBundlePacking", "ph": "X", "dur": 5181.19999999999, "tid": 1, "ts": 3206321, "pid": 1}
+,{"name": "GenerateBundleCommands", "ph": "X", "dur": 37050.2000000001, "tid": 1, "ts": 3211595, "pid": 1}
+,{"name": "GenerateSubAssetPathMaps", "ph": "X", "dur": 459.700000000339, "tid": 1, "ts": 3248742, "pid": 1}
+,{"name": "GenerateBundleMaps", "ph": "X", "dur": 1987.60000000038, "tid": 1, "ts": 3249276, "pid": 1}
+,{"name": "Temporary Map Creations", "ph": "X", "dur": 863.400000000183, "tid": 1, "ts": 3250181, "pid": 1}
+,{"name": "Populate BuildReferenceMaps", "ph": "X", "dur": 27.5000000001455, "tid": 1, "ts": 3251047, "pid": 1}
+,{"name": "Populate BuildUsageTagSet", "ph": "X", "dur": 187.5, "tid": 1, "ts": 3251075, "pid": 1}
+,{"name": "PostPackingCallback", "ph": "X", "dur": 99.2000000001099, "tid": 1, "ts": 3251345, "pid": 1}
+,{"name": "WriteSerializedFiles", "ph": "X", "dur": 1158409.9, "tid": 1, "ts": 3251518, "pid": 1}
+,{"name": "RunCachedOperation", "ph": "X", "dur": 1141028.7, "tid": 1, "ts": 3268898, "pid": 1, "args": {"0":"Total Entries: 2, Processed: 2, Cached: 0"}}
+,{"name": "Process Entries", "ph": "X", "dur": 1140259.6, "tid": 1, "ts": 3268932, "pid": 1}
+,{"name": "Writing SceneBundleWriteOperation", "ph": "X", "dur": 1053812.8, "tid": 1, "ts": 3269294, "pid": 1, "args": {"0":"CAB-95936abbea7fc7f96e8dbdea4e541373.sharedAssets"}}
+,{"name": "Writing AssetBundleWriteOperation", "ph": "X", "dur": 2952.29999999992, "tid": 1, "ts": 4400718, "pid": 1, "args": {"0":"CAB-9c764410adba8191364022573243ddb3"}}
+,{"name": "Process Cached Entries", "ph": "X", "dur": 10.1999999997133, "tid": 1, "ts": 4409194, "pid": 1}
+,{"name": "ArchiveAndCompressBundles", "ph": "X", "dur": 2814182.5, "tid": 1, "ts": 4410068, "pid": 1}
+,{"name": "CreateWorkItems", "ph": "X", "dur": 2106.60000000007, "tid": 1, "ts": 4411442, "pid": 1}
+,{"name": "CopyingCachedFiles", "ph": "X", "dur": 10.2999999999156, "tid": 1, "ts": 4413553, "pid": 1}
+,{"name": "ArchiveItems", "ph": "X", "dur": 2806008.5, "tid": 1, "ts": 4413699, "pid": 1, "args": {"0":"Archiving 2 Bundles"}}
+,{"name": "ArchiveSingleItem", "ph": "X", "dur": 2804033.1, "tid": 1369, "ts": 4413740, "pid": 1, "args": {"0":"space-7_0"}}
+,{"name": "Copying From Cache", "ph": "X", "dur": 7690.00000000005, "tid": 1369, "ts": 7210081, "pid": 1, "args": {"0":"C:\\github\\koreatech_prototype\\Temp\\ContentBuildData\\space-7_0 -> C:\\github\\koreatech_prototype\\Exports\\WebGL\\space-7_0"}}
+,{"name": "ArchiveSingleItem", "ph": "X", "dur": 12287.6, "tid": 1309, "ts": 4413739, "pid": 1, "args": {"0":"space-7_csharp-assembly"}}
+,{"name": "Copying From Cache", "ph": "X", "dur": 592.400000000001, "tid": 1309, "ts": 4425433, "pid": 1, "args": {"0":"C:\\github\\koreatech_prototype\\Temp\\ContentBuildData\\space-7_csharp-assembly -> C:\\github\\koreatech_prototype\\Exports\\WebGL\\space-7_csharp-assembly"}}
+,{"name": "PostArchiveProcessing", "ph": "X", "dur": 2334.29999999953, "tid": 1, "ts": 7221150, "pid": 1}
+,{"name": "AppendBundleHash", "ph": "X", "dur": 171.600000000581, "tid": 1, "ts": 7224358, "pid": 1}
+,{"name": "GenerateLinkXml", "ph": "X", "dur": 150.899999999638, "tid": 1, "ts": 7224586, "pid": 1}
+,{"name": "PostWritingCallback", "ph": "X", "dur": 93.4999999999491, "tid": 1, "ts": 7224792, "pid": 1}
 ]
 }
