@@ -1,4 +1,5 @@
-
+using SpatialSys.UnitySDK;
+using UnityEngine;
 public enum SEQUENCE_STATE
 {
     BEFORE,
@@ -93,12 +94,12 @@ public enum eActive
 public enum eDBName
 {
     db_section,
-    db_before_check_environment,
-    db_before_safetytools,
-    db_work_install,
-    db_work_check_install,
-    db_after_workscaffold,
-    db_after_uninstall,
+    db_check_environment,
+    db_safetytools,
+    db_install,
+    db_check_install,
+    db_workscaffold,
+    db_uninstall,
 }
 public enum eSectionType
 {

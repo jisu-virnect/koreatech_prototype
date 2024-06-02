@@ -1,8 +1,4 @@
 using SpatialSys.UnitySDK;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.Search;
 using UnityEngine;
 
 public class go_Section : MonoBehaviour
@@ -14,7 +10,7 @@ public class go_Section : MonoBehaviour
     {
         InitTriggerEvent();
         //SetAnimation(false);
-        SetTriggerZone(1f, 0f);
+        SetTriggerZone(0f, 1f);
         SetTriggerWireframe(new Color(0.3f, 1f, 0.3f, 0.5f), new Color(0.3f, 1f, 0.3f, 0f));
     }
     /// <summary>
@@ -34,7 +30,7 @@ public class go_Section : MonoBehaviour
     private void OnTriggerEnter_Spatial(string name)
     {
         SetTriggerWireframe(new Color(0.3f, 1f, 0.3f, 0f), new Color(0.3f, 1f, 0.3f, 0.5f));
-        SetTriggerZone(0f, 1f);
+        SetTriggerZone(1f, 0f);
         var remoteEventSubIDs = Util.String2Enum<RemoteEventSubIDs_Space>(name);
 #if UNITY_EDITOR
         switch (remoteEventSubIDs)
@@ -59,7 +55,7 @@ public class go_Section : MonoBehaviour
     private void OnTriggerExit_Spatial(string name)
     {
         SetTriggerWireframe(new Color(0.3f, 1f, 0.3f, 0.5f), new Color(0.3f, 1f, 0.3f, 0f));
-        SetTriggerZone(1f, 0f);
+        SetTriggerZone(0f, 1f);
         var remoteEventSubIDs = Util.String2Enum<RemoteEventSubIDs_Space>(name);
         switch (remoteEventSubIDs)
         {
@@ -69,7 +65,7 @@ public class go_Section : MonoBehaviour
 #if UNITY_EDITOR
                 Space_3.instance.Trigger_World();
 #else
-                SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.SpaceState, new object[] { RemoteEventSubIDs.world.ToString() });
+                SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.SpaceState, new object[] { RemoteEventSubIDs_Space.world.ToString() });
 #endif
                 break;
             default:
@@ -87,7 +83,7 @@ public class go_Section : MonoBehaviour
         for (int i = 0; i < mr_Zones.Length; i++)
         {
             MeshRenderer go_Zone = mr_Zones[i];
-            Util.ShaderFade_Float(go_Zone, "_Line2InvertedThickness", st, en);
+            Util.ShaderFade_Float(go_Zone, "_Alpha", st, en);
         }
     }
 

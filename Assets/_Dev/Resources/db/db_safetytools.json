@@ -1,0 +1,30 @@
+[
+	{
+		"index" : 0,
+		"title" : "안전모",
+		"content" : "물체가 떨어지거나 날아올 위험 또는 근로자가\n추락할 위험이 있는 작업 시 착용합니다.",
+		"content_image":"안전모",
+		"targetTransform":10
+	},
+	{
+		"index" : 1,
+		"title" : "보안경",
+		"content" : "물체가 흩날릴 위험이 있는 작업 시 사용합니다.",
+		"content_image":"보안경",
+		"targetTransform":10
+	},
+	{
+		"index" : 2,
+		"title" : "안전대",
+		"content" : "높이 또는 깊이 2m 이상의 추락 위험이\n있는 장소에서 작업 시 착용합니다.",
+		"content_image":"안전대",
+		"targetTransform": 8
+	},
+	{
+		"index" : 3,
+		"title" : "안전화",
+		"content" : "물체의 낙하, 충격, 물체의 끼임, 감전 또는\n정전기의 대전에 의한 위험이 있는 작업 시 착용합니다.",
+		"content_image":"안전화",
+		"targetTransform":5
+	}
+]

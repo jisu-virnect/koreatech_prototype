@@ -326,7 +326,7 @@ public static partial class Util
                 standardShaderMaterial.DisableKeyword("_ALPHATEST_ON");
                 standardShaderMaterial.EnableKeyword("_ALPHABLEND_ON");
                 standardShaderMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-                standardShaderMaterial.renderQueue = 3000;
+                standardShaderMaterial.renderQueue = 3001;
                 standardShaderMaterial.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
                 standardShaderMaterial.DisableKeyword("_SURFACE_TYPE_OPAQUE");
                 break;

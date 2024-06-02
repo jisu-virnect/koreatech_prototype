@@ -3,22 +3,30 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class panel_Install : panel_Base
 {
-    public scaffold01_1 scaffold01_1;
+    private int installIndex;
+    private GameObject go_Install;
 
-    private GameObject go_SequencePreviewRoot;
-    private int sequenceIndex;
+    private GameObject scaffold;
+    private GameObject scaffold_wire;
+    private scaffold01_1 scaffold01_1;
+
+    private List<Install> installs; 
+
+    private List<go_Install> go_Installs = new List<go_Install>();
+    private go_Install prevInstall = null;
+
 
     private Button btn_Next;
-    private Button btn_Prev;
-    private Button btn_Close;
-
-    private List<Space_3_Sequence> sequences = new List<Space_3_Sequence>();
-    private Space_3_Sequence prevSequence = null;
+    //private Button btn_Prev;
+    //private Button btn_Close;
+    private Image img_Next;
+    private TMP_Text tmp_Next;
 
     protected override void Awake()
     {
@@ -28,17 +36,32 @@ public class panel_Install : panel_Base
 
     private void GetComponent()
     {
-        go_SequencePreviewRoot = gameObject.SearchGameObject(nameof(go_SequencePreviewRoot));
+        installs  = DBManager.instance.Installs;
+
+        scaffold = ResourceManager.instance.LoadData<GameObject>(nameof(scaffold));
+        scaffold01_1 = scaffold.GetComponent<scaffold01_1>();
+        scaffold_wire = ResourceManager.instance.LoadData<GameObject>(nameof(scaffold_wire));
 
         btn_Next = gameObject.Search<Button>(nameof(btn_Next));
         btn_Next.onClick.AddListener(NextSequence);
 
-        btn_Prev = gameObject.Search<Button>(nameof(btn_Prev));
-        btn_Prev.onClick.AddListener(PrevSequence);
+        //btn_Prev = gameObject.Search<Button>(nameof(btn_Prev));
+        //btn_Prev.onClick.AddListener(PrevSequence);
 
-        btn_Close = gameObject.Search<Button>(nameof(btn_Close));
-        btn_Close.onClick.AddListener(()=> Close());
+        //btn_Close = gameObject.Search<Button>(nameof(btn_Close));
+        //btn_Close.onClick.AddListener(()=> Close());
+
+        ScrollRect sview_Install = gameObject.Search<ScrollRect>(nameof(sview_Install));
+        content = sview_Install.content;
+
+        //caching prefab
+        go_Install = ResourceManager.instance.LoadData<GameObject>(nameof(go_Install));
+
+        img_Next = gameObject.Search<Image>(nameof(img_Next));
+        tmp_Next = gameObject.Search<TMP_Text>(nameof(tmp_Next));
+        
     }
+    private RectTransform content;
 
     public override void Open(Action act = null)
     {
@@ -46,74 +69,53 @@ public class panel_Install : panel_Base
 
         ResetSequence();
 
-        Space_3.instance.Control_PlayerMovement(false);
-        Space_3.instance.Control_VirtualCamera(eVirtualCameraState.vcam_install);
+        //Space_3.instance.Control_PlayerMovement(false);
+        //Space_3.instance.Control_VirtualCamera(eVirtualCameraState.vcam_install);
     }
 
     public override void Close(Action act = null)
     {
         base.Close();
 
-        prevSequence = null;
-        sequenceIndex = -1;
+        prevInstall = null;
+        installIndex = -1;
 
-        scaffold01_1.Action_ResetObjects();
+        //scaffold01_1.Action_ResetObjects();
         DestroySequenceUI();
 
 
-        Section section = DBManager.instance.Sections.FirstOrDefault(x => x.index == 1);
+        //Section section = DBManager.instance.Sections.FirstOrDefault(x => x.index == 1);
 
-        UIManager.instance.OpenPanel<panel_TopNavigation>(Define.trigger).SetData(section);
-        UIManager.instance.OpenPanel<panel_TriggerMenu>(Define.trigger).SetData(section);
+        //UIManager.instance.OpenPanel<panel_TopNavigation>(Define.trigger).SetData(section);
+        //UIManager.instance.OpenPanel<panel_TriggerMenu>(Define.trigger).SetData(section);
 
-        Space_3.instance.Control_PlayerMovement(true);
-        Space_3.instance.Control_VirtualCamera(eVirtualCameraState.none);
+        //Space_3.instance.Control_PlayerMovement(true);
+        //Space_3.instance.Control_VirtualCamera(eVirtualCameraState.none);
+
+        SpatialBridge.cameraService.ClearTargetOverride();
+
+        UIManager.instance.OpenPanel<panel_TopNavigation>().NextStep();
+        UIManager.instance.OpenPanel<panel_Check_Install>();
     }
 
-    private void Update()
+    public void ResetSequence()
     {
-//        if (!SpatialBridge.networkingService.isMasterClient)
-//        {
-//            return;
-//        }
+        installIndex = -1;
+        prevInstall = null;
 
-//        if (Input.GetKeyDown(KeyCode.Alpha1))
-//        {
-//#if UNITY_EDITOR
-//            PrevSequence();
-//#else
-//            SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.Uninstall);
-//#endif
-//        }
-//        if (Input.GetKeyDown(KeyCode.Alpha2))
-//        {
-//#if UNITY_EDITOR
-//            NextSequence();
-//#else
-//            SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.Install);
-//#endif
-//        }
-//        if (Input.GetKeyDown(KeyCode.Alpha3))
-//        {
-//            ResetSequence();
-//        }
-    }
+        btn_Next.interactable = true;
+        img_Next.gameObject.SetActive(false);
 
+        scaffold01_1.Action_ResetObjects();
 
+        DestroySequenceUI();
+        CreateSequenceUI();
+        NextSequence();
 
-    /// <summary>
-    /// 시퀀스데이터 초기화
-    /// </summary>
-    /// <param name="item"></param>
-    private void CreateSequenceUI()
-    {
-        for (int i = 0; i < DBManager.instance.Installs.Count; i++)
-        {
-            Install install = DBManager.instance.Installs[i];
-            Space_3_Sequence space_3_Sequence = Instantiate(ResourceManager.instance.LoadData<GameObject>("go_Install"), go_SequencePreviewRoot.transform).GetComponent<Space_3_Sequence>();
-            sequences.Add(space_3_Sequence);
-            space_3_Sequence.SetData(install);
-        }
+        GameObject target_CheckInstall = ResourceManager.instance.LoadData<GameObject>(nameof(target_CheckInstall));
+        SpatialBridge.actorService.localActor.avatar.SetPositionRotation(target_CheckInstall.transform.position, target_CheckInstall.transform.rotation);
+
+        SpatialBridge.cameraService.SetTargetOverride(ResourceManager.instance.LoadData<GameObject>("target_Install").transform, SpatialCameraMode.Actor);
     }
 
     /// <summary>
@@ -121,53 +123,81 @@ public class panel_Install : panel_Base
     /// </summary>
     private void DestroySequenceUI()
     {
-        for (int i = go_SequencePreviewRoot.transform.childCount - 1; i >= 0; i--)
+        scaffold_wire.SetActive(false);
+
+        for (int i = content.childCount - 1; i >= 0; i--)
         {
-            Destroy(go_SequencePreviewRoot.transform.GetChild(i).gameObject);
+            Destroy(content.GetChild(i).gameObject);
         }
-        sequences.Clear();
+        go_Installs.Clear();
     }
 
-
-    public void ResetSequence()
+    /// <summary>
+    /// 시퀀스데이터 초기화
+    /// </summary>
+    /// <param name="item"></param>
+    private void CreateSequenceUI()
     {
-        sequenceIndex = -1;
-        prevSequence = null;
-        scaffold01_1.Action_ResetObjects();
-        DestroySequenceUI();
-        CreateSequenceUI();
-        NextSequence();
+        scaffold_wire.SetActive(true);
+
+        for (int i = 0; i < installs.Count; i++)
+        {
+            Install install = installs[i];
+            go_Install temp = Instantiate(go_Install, content).GetComponent<go_Install>();
+            go_Installs.Add(temp);
+            temp.InitData(install);
+        }
     }
 
+    /// <summary>
+    /// 다음 시퀀스로 넘기기
+    /// </summary>
     public void NextSequence()
     {
-        if (prevSequence != null)
+        if(installIndex > go_Installs.Count - 2)
         {
-            prevSequence.SetSequenceState(SEQUENCE_STATE.AFTER);
-            scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)sequenceIndex, BlendMode.Opaque, prevSequence.sequence);
-            scaffold01_1.Action_scaffold_Position((eBuildScaffold)sequenceIndex, BlendMode.Opaque, prevSequence.sequence);
+            btn_Next.interactable = false;
+            tmp_Next.text = "설치 완료";
+            img_Next.gameObject.SetActive(true);
+
+            UIManager.instance.ShowHideToast<toast_Basic>("[비계 설치] 단계가 완료되었습니다. [비계 점검] 단계로 넘어갑니다.", 3f, () =>
+            {
+                UIManager.instance.GetPanel<panel_TopNavigation>().NextStep();
+                Close();
+
+            }).SetData(new packet_toast_basic(eToastColor.green, eToastIcon.toast_success));
+
         }
-        if (sequences.Count > sequenceIndex + 1)
+        else
         {
-            sequenceIndex++;
-            prevSequence = sequences[sequenceIndex];
+            if (prevInstall != null)
+            {
+                //prevInstall.SetData(SEQUENCE_STATE.BEFORE);
+                scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
+                scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
+            }
+            if (go_Installs.Count > installIndex + 1)
+            {
+                installIndex++;
+                prevInstall = go_Installs[installIndex];
 
-            prevSequence.SetSequenceState(SEQUENCE_STATE.FOCUS);
-            scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)sequenceIndex, BlendMode.Transparent, prevSequence.sequence);
-            scaffold01_1.Action_scaffold_Position((eBuildScaffold)sequenceIndex, BlendMode.Transparent, prevSequence.sequence);
-            scaffold01_1.Action_scaffold_Active((eBuildScaffold)sequenceIndex, true);
+                prevInstall.SetData(SEQUENCE_STATE.AFTER);
+                scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.sequence);
+                scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.sequence);
+                scaffold01_1.Action_scaffold_Active((eBuildScaffold)installIndex, true);
 
+                tmp_Next.text = (installIndex + 1).ToString() + "단계 설치하기";
+            }
         }
     }
-
     public void GotoSequence(int sequence)
     {
-        if (sequenceIndex < sequence)
+        if (installIndex < sequence)
         {
             NextSequence();
             GotoSequence(sequence);
         }
-        if (sequenceIndex > sequence)
+        if (installIndex > sequence)
         {
             PrevSequence();
             GotoSequence(sequence);
@@ -176,19 +206,19 @@ public class panel_Install : panel_Base
 
     public void PrevSequence()
     {
-        if (sequenceIndex > 0)
+        if (installIndex > 0)
         {
-            prevSequence.SetSequenceState(SEQUENCE_STATE.BEFORE);
-            scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)sequenceIndex, BlendMode.Opaque, prevSequence.sequence);
-            scaffold01_1.Action_scaffold_Position((eBuildScaffold)sequenceIndex, BlendMode.Opaque, prevSequence.sequence);
-            scaffold01_1.Action_scaffold_Active((eBuildScaffold)sequenceIndex, false);
-            sequenceIndex--;
+            prevInstall.SetData(SEQUENCE_STATE.BEFORE);
+            scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
+            scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
+            scaffold01_1.Action_scaffold_Active((eBuildScaffold)installIndex, false);
+            installIndex--;
 
-            prevSequence = sequences[sequenceIndex];
-            prevSequence.SetSequenceState(SEQUENCE_STATE.FOCUS);
-            scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)sequenceIndex, BlendMode.Transparent, prevSequence.sequence);
-            scaffold01_1.Action_scaffold_Position((eBuildScaffold)sequenceIndex, BlendMode.Transparent, prevSequence.sequence);
-            scaffold01_1.Action_scaffold_Active((eBuildScaffold)sequenceIndex, true);
+            prevInstall = go_Installs[installIndex];
+            //prevInstall.SetData(SEQUENCE_STATE.AFTER);
+            scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.sequence);
+            scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.sequence);
+            scaffold01_1.Action_scaffold_Active((eBuildScaffold)installIndex, true);
         }
     }
 
@@ -225,9 +255,9 @@ public class panel_Install : panel_Base
                 NextSequence();
 
                 if(!serverProperties.ContainsKey("idinstall"))
-                    serverProperties.Add("idinstall", sequenceIndex);
+                    serverProperties.Add("idinstall", installIndex);
                 else
-                    serverProperties["idinstall"] = sequenceIndex;
+                    serverProperties["idinstall"] = installIndex;
 
                 // SetServerProperties 메서드 호출
                 SpatialBridge.networkingService.SetServerProperties(serverProperties);

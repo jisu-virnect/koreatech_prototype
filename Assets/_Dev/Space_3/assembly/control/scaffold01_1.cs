@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SpatialSys.UnitySDK;
-using UnityEngine.Rendering;
+
 public class scaffold01_1 : MonoBehaviour
 {
     public Dictionary<eBuildScaffold, GameObject> objList { get; private set; } = new Dictionary<eBuildScaffold, GameObject>();
@@ -34,6 +33,18 @@ public class scaffold01_1 : MonoBehaviour
         foreach (var item in objList.Values)
         {
             item.SetActive(false);
+        }
+        Action_ObjectsColliderEnable(false);
+    }
+
+    /// <summary>
+    /// 전체 오브젝트 비활성화
+    /// </summary>
+    public void Action_ObjectsColliderEnable(bool enable)
+    {
+        foreach (var item in objList.Values)
+        {
+            item.GetComponent<Collider>().enabled = enable;
         }
     }
 

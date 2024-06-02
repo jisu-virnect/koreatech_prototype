@@ -57,7 +57,7 @@ public class ResourceManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("데이터가 없습니다.");
+            Debug.Log("데이터가 없습니다 : " + resourceName);
             return null;
         }
     }

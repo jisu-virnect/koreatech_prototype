@@ -37,7 +37,6 @@ public class Space_3_Sequence : MonoBehaviour
         GetComponent();
         this.sequence = install;
         SetInstallData(install);
-        SetSequenceState(SEQUENCE_STATE.BEFORE);
     }
 
     public void SetInstallData(Install install)

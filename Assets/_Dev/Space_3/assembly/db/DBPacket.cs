@@ -58,7 +58,8 @@ public class CheckInstall
     public int index;
     public string title;
     public string summary;
-    public string renderMode;
+    public bool suitable;
+    public bool ischecked;
 }
 
 

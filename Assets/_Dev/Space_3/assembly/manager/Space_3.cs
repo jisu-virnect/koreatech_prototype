@@ -498,19 +498,15 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            UIManager.instance.OpenPanel<panel_Install>();
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            UIManager.instance.ClosePanel<panel_Install>();
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            UIManager.instance.OpenPanel<panel_Check_Install>();
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            UIManager.instance.ClosePanel<panel_Check_Install>();
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {

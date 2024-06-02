@@ -41,7 +41,7 @@ public class panel_TopNavigation : panel_Base
         }
     }
 
-    public void ClearStep()
+    private void ClearStep()
     {
         for (int i = 0; i < steps.Length; i++)
         {
