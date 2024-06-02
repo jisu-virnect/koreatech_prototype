@@ -19,7 +19,7 @@ public class ResourceManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ÀÏ¹İ À¯´ÏÆ¼ ¿ÀºêÁ§Æ® ·Îµå
+    /// ì¼ë°˜ ìœ ë‹ˆí‹° ì˜¤ë¸Œì íŠ¸ ë¡œë“œ
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="resourceName"></param>
@@ -32,13 +32,18 @@ public class ResourceManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("µ¥ÀÌÅÍ°¡ ¾ø½À´Ï´Ù.");
+            Debug.Log("ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.");
             return null;
         }
     }
 
+    public T Instantiate<T>(string resourceName, Transform parent = null) where T : Object
+    {
+        return Instantiate(LoadData<T>(resourceName), parent);
+    }
+
     /// <summary>
-    /// ½ºÇÁ¶óÀÌÆ® ·Îµå
+    /// ìŠ¤í”„ë¼ì´íŠ¸ ë¡œë“œ
     /// </summary>
     /// <param name="resourceName"></param>
     /// <returns></returns>
@@ -52,7 +57,7 @@ public class ResourceManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("µ¥ÀÌÅÍ°¡ ¾ø½À´Ï´Ù.");
+            Debug.Log("ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.");
             return null;
         }
     }

@@ -5,34 +5,19 @@ using UnityEngine;
 
 public class go_Section : MonoBehaviour
 {
-    private GameObject go_PolygonGrid_Glow;
     private Animator animator;
-    private SpatialTriggerEvent triggerEvent;
     private void Awake()
     {
-        go_PolygonGrid_Glow = gameObject.Search(nameof(go_PolygonGrid_Glow)).gameObject;
+        InitTriggerEvent();
 
+        GameObject go_PolygonGrid_Glow = gameObject.Search(nameof(go_PolygonGrid_Glow)).gameObject;
         animator = go_PolygonGrid_Glow.GetComponent<Animator>();
         SetAnimation(false);
-
-        InitTriggerEvent();
-    }
-
-    public void SetAnimation(bool active)
-    {
-        if (active)
-        {
-            animator.Play(Define.polygonGrid_Glow_Appear, -1, 0);
-        }
-        else
-        {
-            animator.Play(Define.polygonGrid_Glow_DisAppear, -1, 0);
-        }
     }
 
     private void InitTriggerEvent()
     {
-        triggerEvent = gameObject.Search<SpatialTriggerEvent>(nameof(triggerEvent));
+        SpatialTriggerEvent triggerEvent = gameObject.Search<SpatialTriggerEvent>(nameof(triggerEvent));
         triggerEvent.onEnterEvent.unityEvent.AddListener(() => OnTriggerEnter_Spatial(name));
         triggerEvent.onExitEvent.unityEvent.AddListener(() => OnTriggerExit_Spatial(name));
     }
@@ -40,17 +25,17 @@ public class go_Section : MonoBehaviour
     private void OnTriggerEnter_Spatial(string name)
     {
         SetAnimation(true);
-        var remoteEventSubIDs = Util.String2Enum<RemoteEventSubIDs>(name);
+        var remoteEventSubIDs = Util.String2Enum<RemoteEventSubIDs_Space>(name);
 #if UNITY_EDITOR
         switch (remoteEventSubIDs)
         {
-            case RemoteEventSubIDs.before:
+            case RemoteEventSubIDs_Space.before:
                Space_3.instance.Trigger_BeforeZone();
                 break;
-            case RemoteEventSubIDs.install:
+            case RemoteEventSubIDs_Space.install:
                 Space_3.instance.Trigger_InstallZone();
                 break;
-            case RemoteEventSubIDs.after:
+            case RemoteEventSubIDs_Space.after:
                 Space_3.instance.Trigger_AfterZone();
                 break;
             default:
@@ -64,12 +49,12 @@ public class go_Section : MonoBehaviour
     private void OnTriggerExit_Spatial(string name)
     {
         SetAnimation(false);
-        var remoteEventSubIDs = Util.String2Enum<RemoteEventSubIDs>(name);
+        var remoteEventSubIDs = Util.String2Enum<RemoteEventSubIDs_Space>(name);
         switch (remoteEventSubIDs)
         {
-            case RemoteEventSubIDs.install:
-            case RemoteEventSubIDs.before:
-            case RemoteEventSubIDs.after:
+            case RemoteEventSubIDs_Space.install:
+            case RemoteEventSubIDs_Space.before:
+            case RemoteEventSubIDs_Space.after:
 #if UNITY_EDITOR
                 Space_3.instance.Trigger_World();
 #else
@@ -78,6 +63,22 @@ public class go_Section : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+
+    /// <summary>
+    /// 폴리곤그리드 애니메이션
+    /// </summary>
+    /// <param name="active"></param>
+    private void SetAnimation(bool active)
+    {
+        if (active)
+        {
+            animator.Play(Define.polygonGrid_Glow_Appear, -1, 0);
+        }
+        else
+        {
+            animator.Play(Define.polygonGrid_Glow_DisAppear, -1, 0);
         }
     }
 

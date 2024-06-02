@@ -8,8 +8,6 @@ using UnityEngine.UI;
 
 public class panel_Install : panel_Base
 {
-    //public GameObject prefab_go_Sequence;
-
     public scaffold01_1 scaffold01_1;
 
     private GameObject go_SequencePreviewRoot;
@@ -210,7 +208,10 @@ public class panel_Install : panel_Base
     {
 
     }
+
     Dictionary<string, object> serverProperties = new Dictionary<string, object>();
+
+
     private void HandleEventReceived(NetworkingRemoteEventArgs args)
     {
         switch ((RemoteEventIDs)args.eventID)
@@ -230,10 +231,6 @@ public class panel_Install : panel_Base
 
                 // SetServerProperties 메서드 호출
                 SpatialBridge.networkingService.SetServerProperties(serverProperties);
-                break;
-            case RemoteEventIDs.Checklist:
-                break;
-            case RemoteEventIDs.Checkout:
                 break;
             case RemoteEventIDs.Uninstall:
                 PrevSequence();

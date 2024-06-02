@@ -24,21 +24,28 @@ public enum eBuildScaffold
 
 public enum RemoteEventIDs : byte
 {
+    //기본 spatial eventId
     SendMagicNumber = 0,
-    PrivateMessage = 10,
-    SpaceState = 11,
-    // Add more events here
-    Install=22,
-    Uninstall = 32,
-    Checklist=40,
-    Checkout = 50,
+    PrivateMessage = 1,
+
+    //custom eventId
+    //내가 어떤 섹션에 있는지?
+    SpaceState,
+
+    //섹션별로
+    CheckEnvironment,
+    SafetyTools,
+    Install,
+    CheckInstall,
+    Work,
+    Uninstall,
 }
 
-public enum RemoteEventSubIDs : byte
+public enum RemoteEventSubIDs_Space : byte
 {
     world,
-    install,
     before,
+    install,
     after,
 }
 public enum BlendMode
