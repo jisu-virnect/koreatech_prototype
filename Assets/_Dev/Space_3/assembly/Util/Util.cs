@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -123,7 +124,9 @@ public static partial class Util
     /// <returns></returns>
     public static GameObject SearchGameObject(this GameObject _obj, string _name)
     {
-        return Search(_obj.transform, _name).gameObject;
+        Transform trnasform = Search(_obj.transform, _name);
+        return trnasform != null ? trnasform.gameObject : null;
+
     }
 
     /// <summary>
@@ -356,5 +359,78 @@ public static partial class Util
     }
 
 
+    #endregion
+
+
+    #region renderer,material,shader
+    //독립적으로 코루틴 돌아가게 하기 위한 dictionary
+    private static Dictionary<int , Coroutine> coroutines = new Dictionary<int, Coroutine>();
+
+    /// <summary>
+    /// shader의 특정 float 값 fade 처리
+    /// </summary>
+    /// <param name="meshRenderer"></param>
+    /// <param name="name"></param>
+    /// <param name="st"></param>
+    /// <param name="en"></param>
+    public static void ShaderFade_Float(MeshRenderer meshRenderer, string name, float st, float en, float duration = 0.5f)
+    {
+        int id = meshRenderer.GetInstanceID();
+        Coroutine currentCoroutine = null;
+
+        if (coroutines.ContainsKey(id))
+        {
+            currentCoroutine = coroutines[id];
+        }
+
+        if (currentCoroutine != null)
+        {
+            Space_3.instance.StopCoroutine(currentCoroutine);
+            coroutines.Remove(id);
+        }
+
+        currentCoroutine = Space_3.instance.StartCoroutine(Co_ShaderFade_Float(meshRenderer, name, st, en, duration));
+        coroutines.Add(id, currentCoroutine);
+    }
+
+    /// shader의 특정 color 값 fade 처리
+    public static void ShaderFade_Color(MeshRenderer meshRenderer, string name, Color st, Color en, float duration = 0.5f)
+    {
+        int id = meshRenderer.GetInstanceID();
+        Coroutine currentCoroutine = null;
+
+        if (coroutines.ContainsKey(id))
+        {
+            currentCoroutine = coroutines[id];
+        }
+
+        if (currentCoroutine != null)
+        {
+            Space_3.instance.StopCoroutine(currentCoroutine);
+            coroutines.Remove(id);
+        }
+
+        currentCoroutine = Space_3.instance.StartCoroutine(Co_ShaderFade_Color(meshRenderer, name, st, en, duration));
+        coroutines.Add(id, currentCoroutine);
+    }
+
+    private static IEnumerator Co_ShaderFade_Float(MeshRenderer meshRenderer, string name, float st, float en, float duration)
+    {
+        float curTime = 0;
+        while (curTime < 1f)
+        {
+            meshRenderer.material.SetFloat(name, Mathf.Lerp(st, en, curTime += Time.deltaTime / duration));
+            yield return null;
+        }
+    }
+    private static IEnumerator Co_ShaderFade_Color(MeshRenderer meshRenderer, string name, Color st, Color en, float duration)
+    {
+        float curTime = 0;
+        while (curTime < 1f)
+        {
+            meshRenderer.material.SetColor(name, Color.Lerp(st, en, curTime += Time.deltaTime / duration));
+            yield return null;
+        }
+    }
     #endregion
 }
