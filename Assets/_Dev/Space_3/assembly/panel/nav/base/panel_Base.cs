@@ -24,7 +24,7 @@ public class panel_Base : MonoBehaviour, IPanel
 
     protected virtual void Awake()
     {
-        go_Root = gameObject.Search(nameof(go_Root)).gameObject;
+        go_Root = gameObject.SearchGameObject(nameof(go_Root)).gameObject;
         if (go_Root != null )
         {
             rect = go_Root.GetComponent<RectTransform>();

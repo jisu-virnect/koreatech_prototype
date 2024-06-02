@@ -1,19 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using SpatialSys.UnitySDK;
 using UnityEngine.UI;
-using System.Threading.Tasks;
 
 public static partial class Util
 {
-    public static Sprite Tex2Sprite(Texture2D _tex)
-    {
-        return Sprite.Create(_tex, new Rect(0, 0, _tex.width, _tex.height), new Vector2(0.5f, 0.5f));
-    }
+    #region Json - json기본기능
 
-    // JSON 배열을 파싱하는 헬퍼 메서드
+    /// <summary>
+    /// JSON 배열을 파싱하는 헬퍼 메서드
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="json"></param>
+    /// <returns></returns>
     public static T[] FromJsonArray<T>(string json)
     {
         string newJson = "{ \"array\": " + json + "}";
@@ -21,38 +20,25 @@ public static partial class Util
         return wrapper.array;
     }
 
+    /// <summary>
+    /// JSON 배열을 파싱하는 헬퍼 메서드
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="json"></param>
+    /// <returns></returns>
     public static List<T> FromJsonList<T>(string json)
     {
         return new List<T>(FromJsonArray<T>(json));
     }
 
-    /// <summary>
-    /// GetComponentsInChildren 강화버전 (비활성화 상태도 호출가능)
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="_target"></param>
-    /// <returns></returns>
-    public static List<T> GetComponentsInChildrenPlus<T>(this Transform _target) where T : Component
-    {
-        List<T> list = new List<T>();
-        GetComponentsInChildrenPlus(_target, ref list);
-        return list;
-    }
-    private static void GetComponentsInChildrenPlus<T>(this Transform _target, ref List<T> list) where T : Component
-    {
-        for (int i = 0; i < _target.childCount; ++i)
-        {
-            Transform childTr = _target.GetChild(i);
-            if (childTr.TryGetComponent(out T t))
-            {
-                list.Add(t);
-            }
-            GetComponentsInChildrenPlus(childTr, ref list);
-        }
-    }
+    #endregion
+
+
+
+    #region Dictionary - 딕셔너리 하위 STL 추가,제거 기능
 
     /// <summary>
-    /// 딕셔너리의 벨류의 리스트에 데이터 추가
+    /// 딕셔너리의 값인 리스트에 데이터 추가
     /// </summary>
     /// <typeparam name="T1">타입1</typeparam>
     /// <typeparam name="T2">타입2</typeparam>
@@ -67,6 +53,15 @@ public static partial class Util
         }
         dic[key].Add(data);
     }
+
+    /// <summary>
+    /// 딕셔너리 값인 큐에 데이터 추가
+    /// </summary>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
+    /// <param name="dic"></param>
+    /// <param name="key"></param>
+    /// <param name="data"></param>
     public static void DicQueue<T1, T2>(ref Dictionary<T1, Queue<T2>> dic, T1 key, T2 data)
     {
         if (!dic.ContainsKey(key))
@@ -76,7 +71,11 @@ public static partial class Util
         dic[key].Enqueue(data);
     }
 
+    #endregion
 
+
+
+    #region Search - 이름으로 GameObject or Transform 하위의 GameObject or Component 찾기
 
     /// <summary>
     /// 해당 오브젝트 하위에서 특정 이름의 컴포넌트 서치
@@ -116,17 +115,15 @@ public static partial class Util
         }
     }
 
-
-
     /// <summary>
     /// 해당 오브젝트 하위에서 특정 이름의 트랜스폼 서치
     /// </summary>
     /// <param name="_obj"></param>
     /// <param name="_name"></param>
     /// <returns></returns>
-    public static Transform Search(this GameObject _obj, string _name)
+    public static GameObject SearchGameObject(this GameObject _obj, string _name)
     {
-        return Search(_obj.transform, _name);
+        return Search(_obj.transform, _name).gameObject;
     }
 
     /// <summary>
@@ -171,18 +168,11 @@ public static partial class Util
         }
     }
 
-
-    public static void lossyscale(Transform tr, Transform parent, float scale)
-    {
-
-        tr.SetParent(null);
-        tr.localScale = Vector3.one * scale;
-        tr.SetParent(parent);
-        tr.localPosition = Vector3.zero;
-    }
+    #endregion
 
 
-    #region enum 관련
+
+    #region Enum - 이넘 의 길이, string to enum 등의 기능
 
     /// <summary>
     /// enum을 stringArray로 변환
@@ -237,8 +227,37 @@ public static partial class Util
     {
         return ((int)obj).ToString();
     }
+
     #endregion
 
+
+
+    #region Etc - 분류하기엔 크기가 작은 기능들
+
+    /// <summary>
+    /// 고정스케일로 변경
+    /// </summary>
+    /// <param name="tr"></param>
+    /// <param name="parent"></param>
+    /// <param name="scale"></param>
+    public static void lossyscale(Transform tr, Transform parent, float scale)
+    {
+
+        tr.SetParent(null);
+        tr.localScale = Vector3.one * scale;
+        tr.SetParent(parent);
+        tr.localPosition = Vector3.zero;
+    }
+
+    /// <summary>
+    /// 텍스쳐를 스프라이트로 변경
+    /// </summary>
+    /// <param name="_tex"></param>
+    /// <returns></returns>
+    public static Sprite Tex2Sprite(Texture2D _tex)
+    {
+        return Sprite.Create(_tex, new Rect(0, 0, _tex.width, _tex.height), new Vector2(0.5f, 0.5f));
+    }
 
     /// <summary>
     /// 컨텐츠사이즈피터 버그가 있어 레이아웃 갱신하는 함수
@@ -256,8 +275,11 @@ public static partial class Util
         LayoutRebuilder.ForceRebuildLayoutImmediate(rectTr);
     }
 
-
-
+    /// <summary>
+    /// 렌더모드 변경(Opaque,Transparent)
+    /// </summary>
+    /// <param name="standardShaderMaterial"></param>
+    /// <param name="blendMode"></param>
     public static void ChangeRenderMode(Material standardShaderMaterial, BlendMode blendMode)
     {
         switch (blendMode)
@@ -307,5 +329,32 @@ public static partial class Util
                 break;
         }
     }
-}
 
+    /// <summary>
+    /// GetComponentsInChildren 강화버전 (비활성화 상태도 호출가능)
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="_target"></param>
+    /// <returns></returns>
+    public static List<T> GetComponentsInChildrenPlus<T>(this Transform _target) where T : Component
+    {
+        List<T> list = new List<T>();
+        GetComponentsInChildrenPlus(_target, ref list);
+        return list;
+    }
+    private static void GetComponentsInChildrenPlus<T>(this Transform _target, ref List<T> list) where T : Component
+    {
+        for (int i = 0; i < _target.childCount; ++i)
+        {
+            Transform childTr = _target.GetChild(i);
+            if (childTr.TryGetComponent(out T t))
+            {
+                list.Add(t);
+            }
+            GetComponentsInChildrenPlus(childTr, ref list);
+        }
+    }
+
+
+    #endregion
+}

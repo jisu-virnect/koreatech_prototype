@@ -28,7 +28,7 @@ public class panel_Install : panel_Base
 
     private void GetComponent()
     {
-        go_SequencePreviewRoot = gameObject.Search(nameof(go_SequencePreviewRoot)).gameObject;
+        go_SequencePreviewRoot = gameObject.SearchGameObject(nameof(go_SequencePreviewRoot));
 
         btn_Next = gameObject.Search<Button>(nameof(btn_Next));
         btn_Next.onClick.AddListener(NextSequence);

@@ -14,8 +14,8 @@ public class go_CheckMember : MonoBehaviour
     private void Awake()
     {
         tmp_Index = gameObject.Search<TMP_Text>(nameof(tmp_Index));
-        go_Position_Host = gameObject.Search(nameof(go_Position_Host)).gameObject;
-        go_Position_Guest = gameObject.Search(nameof(go_Position_Guest)).gameObject;
+        go_Position_Host = gameObject.SearchGameObject(nameof(go_Position_Host));
+        go_Position_Guest = gameObject.SearchGameObject(nameof(go_Position_Guest));
         tmp_MemberName = gameObject.Search<TMP_Text>(nameof(tmp_MemberName));
     }
 

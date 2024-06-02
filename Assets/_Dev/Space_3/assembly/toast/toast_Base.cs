@@ -18,7 +18,7 @@ public class toast_Base : MonoBehaviour, IToast
     protected virtual void Awake()
     {
         tmp_Toast = gameObject.Search<TMP_Text>(nameof(tmp_Toast));
-        go_Root = gameObject.Search(nameof(go_Root)).gameObject;
+        go_Root = gameObject.SearchGameObject(nameof(go_Root));
         
         canvasGroup = go_Root.GetComponent<CanvasGroup>();
         canvasGroup.alpha = 0f;

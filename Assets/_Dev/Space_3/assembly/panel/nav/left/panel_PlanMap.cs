@@ -33,20 +33,20 @@ public class panel_PlanMap : panel_Base
         btn_Hide = gameObject.Search<Button>(nameof(btn_Hide));
         btn_Hide.onClick.AddListener(OnClick_Hide);
 
-        go_FloorPlan = gameObject.Search(nameof(go_FloorPlan)).gameObject;
-        go_Elevation = gameObject.Search(nameof(go_Elevation)).gameObject;
+        go_FloorPlan = gameObject.SearchGameObject(nameof(go_FloorPlan));
+        go_Elevation = gameObject.SearchGameObject(nameof(go_Elevation));
 
         OnClick_Show();
     }
 
     private void OnClick_FloorPlan()
     {
-        UIManager.instance.OpenPopup<popup_InstallMapDetail>().SetData(new packet_mapdata("��鵵", "bg_floorplan"));
+        UIManager.instance.OpenPopup<popup_InstallMapDetail>().SetData(new packet_mapdata("평면도", "bg_floorplan"));
     }
 
     private void OnClick_Elevation()
     {
-        UIManager.instance.OpenPopup<popup_InstallMapDetail>().SetData(new packet_mapdata("�Ը鵵", "bg_elevation"));
+        UIManager.instance.OpenPopup<popup_InstallMapDetail>().SetData(new packet_mapdata("입면도", "bg_elevation"));
     }
 
     private void OnClick_Show()

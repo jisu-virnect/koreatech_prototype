@@ -10,7 +10,7 @@ public class go_Section : MonoBehaviour
     {
         InitTriggerEvent();
 
-        GameObject go_PolygonGrid_Glow = gameObject.Search(nameof(go_PolygonGrid_Glow)).gameObject;
+        GameObject go_PolygonGrid_Glow = gameObject.SearchGameObject(nameof(go_PolygonGrid_Glow)).gameObject;
         animator = go_PolygonGrid_Glow.GetComponent<Animator>();
         SetAnimation(false);
     }

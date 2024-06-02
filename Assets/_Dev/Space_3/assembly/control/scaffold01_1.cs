@@ -18,7 +18,7 @@ public class scaffold01_1 : MonoBehaviour
         {
             string objName = objNames[i];
             eBuildScaffold enumName = Util.String2Enum<eBuildScaffold>(objName);
-            GameObject obj = gameObject.Search(objName).gameObject;
+            GameObject obj = gameObject.SearchGameObject(objName);
 
             objList.Add(enumName, obj);
             transformList.Add(enumName, obj.transform.position);
@@ -27,7 +27,7 @@ public class scaffold01_1 : MonoBehaviour
     }
 
     /// <summary>
-    /// ÀüÃ¼ ¿ÀºêÁ§Æ® ºñÈ°¼ºÈ­
+    /// ì „ì²´ ì˜¤ë¸Œì íŠ¸ ë¹„í™œì„±í™”
     /// </summary>
     public void Action_ResetObjects()
     {
@@ -38,7 +38,7 @@ public class scaffold01_1 : MonoBehaviour
     }
 
     /// <summary>
-    /// ¿ÀºêÁ§Æ® ºí¸µÅ©
+    /// ì˜¤ë¸Œì íŠ¸ ë¸”ë§í¬
     /// </summary>
     /// <param name="eBuildScaffold"></param>
     /// <param name="blendMode"></param>
@@ -54,7 +54,7 @@ public class scaffold01_1 : MonoBehaviour
     }
 
     /// <summary>
-    /// ¿ÀºêÁ§Æ® ÇÃ·ÎÆÃ
+    /// ì˜¤ë¸Œì íŠ¸ í”Œë¡œíŒ…
     /// </summary>
     /// <param name="eBuildScaffold"></param>
     /// <param name="blendMode"></param>
@@ -74,7 +74,7 @@ public class scaffold01_1 : MonoBehaviour
     }
 
     /// <summary>
-    /// ¿ÀºêÁ§Æ® ºí¸µÅ©
+    /// ì˜¤ë¸Œì íŠ¸ ë¸”ë§í¬
     /// </summary>
     /// <param name="materials"></param>
     /// <param name="Transparent"></param>
@@ -132,7 +132,7 @@ public class scaffold01_1 : MonoBehaviour
     }
 
     /// <summary>
-    /// ¿ÀºêÁ§Æ® ÇÃ·ÎÆÃ
+    /// ì˜¤ë¸Œì íŠ¸ í”Œë¡œíŒ…
     /// </summary>
     /// <param name="eBuildScaffold"></param>
     /// <param name="Transparent"></param>
