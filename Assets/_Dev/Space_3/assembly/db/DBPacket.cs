@@ -58,8 +58,8 @@ public class CheckInstall
     public int index;
     public string title;
     public string summary;
-    public bool suitable;
-    public bool ischecked;
+    public bool isSuitable;
+    public bool isChecked;
 }
 
 

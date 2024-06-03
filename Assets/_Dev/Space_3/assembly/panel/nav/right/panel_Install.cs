@@ -16,7 +16,7 @@ public class panel_Install : panel_Base
     private GameObject scaffold_wire;
     private scaffold01_1 scaffold01_1;
 
-    private List<Install> installs; 
+    private List<Install> installs;
 
     private List<go_Install> go_Installs = new List<go_Install>();
     private go_Install prevInstall = null;
@@ -36,7 +36,7 @@ public class panel_Install : panel_Base
 
     private void GetComponent()
     {
-        installs  = DBManager.instance.Installs;
+        installs = DBManager.instance.Installs;
 
         scaffold = ResourceManager.instance.LoadData<GameObject>(nameof(scaffold));
         scaffold01_1 = scaffold.GetComponent<scaffold01_1>();
@@ -59,7 +59,7 @@ public class panel_Install : panel_Base
 
         img_Next = gameObject.Search<Image>(nameof(img_Next));
         tmp_Next = gameObject.Search<TMP_Text>(nameof(tmp_Next));
-        
+
     }
     private RectTransform content;
 
@@ -154,7 +154,25 @@ public class panel_Install : panel_Base
     /// </summary>
     public void NextSequence()
     {
-        if(installIndex > go_Installs.Count - 2)
+        if (prevInstall != null)
+        {
+            //prevInstall.SetData(SEQUENCE_STATE.BEFORE);
+            scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
+            scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
+        }
+        if (go_Installs.Count > installIndex + 1)
+        {
+            installIndex++;
+            prevInstall = go_Installs[installIndex];
+
+            prevInstall.SetData(SEQUENCE_STATE.AFTER);
+            scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.sequence);
+            scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.sequence);
+            scaffold01_1.Action_scaffold_Active((eBuildScaffold)installIndex, true);
+
+            tmp_Next.text = (installIndex + 1).ToString() + "단계 설치하기";
+        }
+        else
         {
             btn_Next.interactable = false;
             tmp_Next.text = "설치 완료";
@@ -166,29 +184,8 @@ public class panel_Install : panel_Base
                 Close();
 
             }).SetData(new packet_toast_basic(eToastColor.green, eToastIcon.toast_success));
-
         }
-        else
-        {
-            if (prevInstall != null)
-            {
-                //prevInstall.SetData(SEQUENCE_STATE.BEFORE);
-                scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
-                scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
-            }
-            if (go_Installs.Count > installIndex + 1)
-            {
-                installIndex++;
-                prevInstall = go_Installs[installIndex];
 
-                prevInstall.SetData(SEQUENCE_STATE.AFTER);
-                scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.sequence);
-                scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.sequence);
-                scaffold01_1.Action_scaffold_Active((eBuildScaffold)installIndex, true);
-
-                tmp_Next.text = (installIndex + 1).ToString() + "단계 설치하기";
-            }
-        }
     }
     public void GotoSequence(int sequence)
     {
@@ -254,7 +251,7 @@ public class panel_Install : panel_Base
             case RemoteEventIDs.Install:
                 NextSequence();
 
-                if(!serverProperties.ContainsKey("idinstall"))
+                if (!serverProperties.ContainsKey("idinstall"))
                     serverProperties.Add("idinstall", installIndex);
                 else
                     serverProperties["idinstall"] = installIndex;

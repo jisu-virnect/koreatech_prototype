@@ -11,6 +11,15 @@ public static class Define
     public const string after = nameof(after);
     public const string world = nameof(world);
 
+    public const string btn_370 = nameof(btn_370);
+    public const string btn_370_disabled = nameof(btn_370_disabled);
+    public const string btn_370_enabled = nameof(btn_370_enabled);
+    public const string btn_370_finished = nameof(btn_370_finished);
+
+
+    public const string check_Off = nameof(check_Off);
+    public const string check_On = nameof(check_On);
+
     public static Color red = Color.red;
     public static Color blue = Color.blue;
     public static Color green = Color.green;

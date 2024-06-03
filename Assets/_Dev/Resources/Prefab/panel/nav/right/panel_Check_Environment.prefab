@@ -1271,7 +1271,7 @@ GameObject:
   - component: {fileID: 6001548355925261330}
   - component: {fileID: 1722842358218453936}
   m_Layer: 5
-  m_Name: go_SequencePreviewRoot
+  m_Name: go_SubRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
