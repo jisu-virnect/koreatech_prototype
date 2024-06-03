@@ -16,8 +16,8 @@ public class panel_Check_Install : panel_Base
     private Dictionary<int, go_Check_Install> go_Check_Installs = new Dictionary<int, go_Check_Install>();
     private RectTransform content;
 
-    private GameObject scaffold;
-    private scaffold01_1 scaffold01_1;
+    //private GameObject scaffold;
+    //private scaffold01_1 scaffold01_1;
 
     private Button btn_Checked;
     private Image btn_Image;
@@ -25,6 +25,32 @@ public class panel_Check_Install : panel_Base
     private TMP_Text tmp_Checked;
 
     ScrollRect sview_Check_Install;
+
+    private int remainCheckCount; //남은 체크 카운트
+
+    private GameObject ladder;
+    private GameObject ladder_error;
+    private GameObject trigger_8;
+    private GameObject go_사다리;
+
+    private GameObject work_scaffolding;
+    private GameObject work_scaffolding_error;
+    private GameObject trigger_9;
+    private GameObject go_작업발판;
+
+    public void SetLadder(bool active)
+    {
+        ladder.SetActive(active);
+        ladder_error.SetActive(!active);
+        trigger_8.SetActive(active);
+    }
+    public void SetScaffolding(bool active)
+    {
+        work_scaffolding.SetActive(active);
+        work_scaffolding_error.SetActive(!active);
+        trigger_9.SetActive(active);
+    }
+
     protected override void Awake()
     {
         base.Awake();
@@ -34,10 +60,6 @@ public class panel_Check_Install : panel_Base
         go_Check_Install = ResourceManager.instance.LoadData<GameObject>(nameof(go_Check_Install));
         sview_Check_Install = gameObject.Search<ScrollRect>(nameof(sview_Check_Install));
         content = sview_Check_Install.content;
-
-        //gameobject
-        scaffold = ResourceManager.instance.LoadData<GameObject>(nameof(scaffold));
-        scaffold01_1 = scaffold.GetComponent<scaffold01_1>();
 
         //component
         btn_Checked = gameObject.Search<Button>(nameof(btn_Checked));
@@ -55,6 +77,70 @@ public class panel_Check_Install : panel_Base
             item.onEnterEvent.unityEvent.AddListener(() => OnTriggerEnter_Check_Install(Index));
             item.onExitEvent.unityEvent.AddListener(() => OnTriggerExit_Check_Install(Index));
         }
+
+        //spatial interation
+        ladder = ResourceManager.instance.LoadData<GameObject>(nameof(ladder));
+        ladder_error = ResourceManager.instance.LoadData<GameObject>(nameof(ladder_error));
+        trigger_8 = ResourceManager.instance.LoadData<GameObject>(nameof(trigger_8));
+        go_사다리 = ResourceManager.instance.LoadData<GameObject>(nameof(go_사다리));
+
+        work_scaffolding = ResourceManager.instance.LoadData<GameObject>(nameof(work_scaffolding));
+        work_scaffolding_error = ResourceManager.instance.LoadData<GameObject>(nameof(work_scaffolding_error));
+        trigger_9 = ResourceManager.instance.LoadData<GameObject>(nameof(trigger_9));
+        go_작업발판 = ResourceManager.instance.LoadData<GameObject>(nameof(go_작업발판));
+
+        target_CheckInstall = ResourceManager.instance.LoadData<GameObject>(nameof(target_CheckInstall));
+    }
+    private GameObject target_CheckInstall;
+
+    public override void Open(Action act = null)
+    {
+        base.Open(act);
+
+        //지도갱신
+        packet_mapdata[] packet_Mapdatas = new packet_mapdata[] { new packet_mapdata("강관비계", "plan5") };
+        packet_mapdata_root packet_Mapdata_Root = new packet_mapdata_root();
+        packet_Mapdata_Root.title = "조립 시 안전 기준";
+        packet_Mapdata_Root.packet_mapdatas = packet_Mapdatas;
+        UIManager.instance.OpenPanel<panel_PlanMap>().SetData(packet_Mapdata_Root);
+
+        UIManager.instance.ShowToast<toast_Basic>("비계점검을 시작합니다. 점검대상으로 이동해 주세요.")
+            .SetData(new packet_toast_basic(eToastColor.blue, eToastIcon.toast_idle));
+
+        ResetData();
+        InitData();
+        IsTriggered_Button(0, false);
+
+        //텔레포트
+        SpatialBridge.actorService.localActor.avatar.SetPositionRotation(target_CheckInstall.transform.position, target_CheckInstall.transform.rotation);
+
+        //못나가게 콜라이더 활성화
+        ResourceManager.instance.LoadData<GameObject>("wall").SetActive(true);
+
+        //F 인터렉션 활성화
+        go_사다리.SetActive(true);
+        go_작업발판.SetActive(true);
+
+        SetLadder(false);
+        SetScaffolding(false);
+    }
+    
+    public override void Close(Action act = null)
+    {
+        base.Close(act);
+
+        //벽 콜라이더 제거
+        ResourceManager.instance.LoadData<GameObject>("wall").SetActive(false);
+
+        //F인터렉션 비활성화
+        //go_사다리.SetActive(false);
+        //go_작업발판.SetActive(false);
+        SetLadder(false);
+        SetScaffolding(false);
+
+        //텔레포트
+        SpatialBridge.actorService.localActor.avatar.SetPositionRotation(target_CheckInstall.transform.position, target_CheckInstall.transform.rotation);
+
     }
     protected override IEnumerator Action_Opening()
     {
@@ -62,32 +148,12 @@ public class panel_Check_Install : panel_Base
         sview_Check_Install.verticalScrollbar.value = 0;
     }
 
-    private int remainCheckCount; //남은 체크 카운트
-
-    public override void Open(Action act = null)
-    {
-        base.Open(act);
-        scaffold01_1.Action_ObjectsColliderEnable(true);
-
-        ResetData();
-        InitData();
-    }
-
-    public override void Close(Action act = null)
-    {
-        base.Close(act);
-        scaffold01_1.Action_ResetObjects();
-    }
-
     /// <summary>
     /// 기존 데이터 삭제
     /// </summary>
     private void ResetData()
     {
-        for (int i = content.childCount - 1; i >= 0; i--)
-        {
-            Destroy(content.GetChild(i).gameObject);
-        }
+        Util.DestroyChildrenGameObject(content);
         go_Check_Installs.Clear();
         remainCheckCount = 0;
         img_Checked.gameObject.SetActive(false);
@@ -100,7 +166,7 @@ public class panel_Check_Install : panel_Base
             GameObject go = Instantiate(go_Check_Install, content);
             go_Check_Install script = go.GetComponent<go_Check_Install>();
 
-            CheckInstall checkInstall = checkInstalls[i];
+            CheckInstall checkInstall = checkInstalls[i].DeepCopy();
             script.SetData(checkInstall);
 
             go_Check_Installs.Add(checkInstall.index, script);
@@ -121,6 +187,7 @@ public class panel_Check_Install : panel_Base
         IsTriggered_Button(checkInstall.index, true);
         ResourceManager.instance.LoadData<GameObject>("outline_" + index).SetActive(true);
     }
+
     private void OnTriggerExit_Check_Install(int index)
     {
         go_Check_Install go_Check_Install = go_Check_Installs[index];
@@ -133,6 +200,7 @@ public class panel_Check_Install : panel_Base
         IsTriggered_Button(checkInstall.index, false);
         ResourceManager.instance.LoadData<GameObject>("outline_" + index).SetActive(false);
     }
+
     private int triggeredIndex;
 
     /// <summary>
@@ -184,6 +252,17 @@ public class panel_Check_Install : panel_Base
                 btn_Image.sprite = ResourceManager.instance.LoadDataSprite("btn_370_finished");
                 tmp_Checked.text = "점검완료";
                 img_Checked.gameObject.SetActive(true);
+
+                popup_Success popup_Success = UIManager.instance.OpenPopup<popup_Success>();
+                popup_Success.SetData(new packet_popup_Basic("완료", "[작업 안전]을 완료하였습니다.\n원하는 구역으로 이동하여 체험을 다시 진행할 수 있습니다."));
+                popup_Success.SetAction(() =>
+                {
+                    UIManager.instance.HideToast<toast_Basic>();
+                    UIManager.instance.ClosePanel<panel_PlanMap>();
+                    UIManager.instance.GetPanel<panel_TopNavigation>().ResetStep();
+                    UIManager.instance.OpenPanel<panel_TriggerMenu>();
+                    Close();
+                });
             }
         }
     }

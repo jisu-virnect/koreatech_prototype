@@ -1,7 +1,9 @@
+using SpatialSys.UnitySDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -238,6 +240,14 @@ public static partial class Util
 
     #region Etc - 분류하기엔 크기가 작은 기능들
 
+    public static void DestroyChildrenGameObject(Transform transform)
+    {
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            GameObject.Destroy(transform.GetChild(i).gameObject);
+        }
+    }
+
     /// <summary>
     /// 고정스케일로 변경
     /// </summary>
@@ -430,6 +440,51 @@ public static partial class Util
         while (curTime < 1f)
         {
             meshRenderer.material.SetColor(name, Color.Lerp(st, en, curTime += Time.deltaTime / duration));
+            yield return null;
+        }
+    }
+
+    public static void LookAtCamera(Transform transform, Vector3 target)
+    {
+        transform.LookAt(2 * transform.position - target);
+        transform.eulerAngles = transform.eulerAngles.y * Vector3.up;
+    }
+
+    public static void CanvasGroupAlpha(CanvasGroup canvasGroup, float st, float en, float duration)
+    {
+        int id = canvasGroup.GetInstanceID();
+        Coroutine currentCoroutine = null;
+
+        if (coroutines.ContainsKey(id))
+        {
+            currentCoroutine = coroutines[id];
+        }
+
+        if (currentCoroutine != null)
+        {
+            Space_3.instance.StopCoroutine(currentCoroutine);
+            coroutines.Remove(id);
+        }
+
+        currentCoroutine = Space_3.instance.StartCoroutine(Co_CanvasGroupAlpha(canvasGroup, st, en, duration));
+        coroutines.Add(id, currentCoroutine);
+    }
+
+    /// <summary>
+    /// 캔버스그룹 알파 변경
+    /// </summary>
+    /// <param name="meshRenderer"></param>
+    /// <param name="name"></param>
+    /// <param name="st"></param>
+    /// <param name="en"></param>
+    /// <param name="duration"></param>
+    /// <returns></returns>
+    private static IEnumerator Co_CanvasGroupAlpha(CanvasGroup canvasGroup, float st, float en, float duration)
+    {
+        float curTime = 0;
+        while (curTime < 1f)
+        {
+            canvasGroup.alpha = Mathf.Lerp(st, en, curTime += Time.deltaTime / duration);
             yield return null;
         }
     }

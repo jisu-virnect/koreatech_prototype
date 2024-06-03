@@ -5,6 +5,13 @@ public class go_Section : MonoBehaviour
 {
     private MeshRenderer mr_Wireframe;
     private MeshRenderer[] mr_Zones;
+    private CanvasGroup canvasGroup;
+
+    private void Awake()
+    {
+        canvasGroup = gameObject.Search<CanvasGroup>("Canvas_Title");
+        canvasGroup.alpha = 1f;
+    }
 
     private void Start()
     {
@@ -12,6 +19,9 @@ public class go_Section : MonoBehaviour
         //SetAnimation(false);
         SetTriggerZone(0f, 1f);
         SetTriggerWireframe(new Color(0.3f, 1f, 0.3f, 0.5f), new Color(0.3f, 1f, 0.3f, 0f));
+        SetTriggerCanvasGroup(0f, 1f);
+
+
     }
     /// <summary>
     /// 트리거이벤트 초기화
@@ -30,9 +40,10 @@ public class go_Section : MonoBehaviour
     private void OnTriggerEnter_Spatial(string name)
     {
         SetTriggerWireframe(new Color(0.3f, 1f, 0.3f, 0f), new Color(0.3f, 1f, 0.3f, 0.5f));
+        SetTriggerCanvasGroup(1f, 0f);
         SetTriggerZone(1f, 0f);
         var remoteEventSubIDs = Util.String2Enum<RemoteEventSubIDs_Space>(name);
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         switch (remoteEventSubIDs)
         {
             case RemoteEventSubIDs_Space.before:
@@ -47,26 +58,27 @@ public class go_Section : MonoBehaviour
             default:
                 break;
         }
-#else
-        SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.SpaceState, new object[] { remoteEventSubIDs.ToString() });
-#endif
+//#else
+//        SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.SpaceState, new object[] { remoteEventSubIDs.ToString() });
+//#endif
     }
 
     private void OnTriggerExit_Spatial(string name)
     {
         SetTriggerWireframe(new Color(0.3f, 1f, 0.3f, 0.5f), new Color(0.3f, 1f, 0.3f, 0f));
         SetTriggerZone(0f, 1f);
+        SetTriggerCanvasGroup(0f, 1f);
         var remoteEventSubIDs = Util.String2Enum<RemoteEventSubIDs_Space>(name);
         switch (remoteEventSubIDs)
         {
             case RemoteEventSubIDs_Space.install:
             case RemoteEventSubIDs_Space.before:
             case RemoteEventSubIDs_Space.after:
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
                 Space_3.instance.Trigger_World();
-#else
-                SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.SpaceState, new object[] { RemoteEventSubIDs_Space.world.ToString() });
-#endif
+//#else
+//                SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.SpaceState, new object[] { RemoteEventSubIDs_Space.world.ToString() });
+//#endif
                 break;
             default:
                 break;
@@ -95,6 +107,10 @@ public class go_Section : MonoBehaviour
     private void SetTriggerWireframe(Color st, Color en)
     {
         Util.ShaderFade_Color(mr_Wireframe, "_TintColor", st, en);
+    }
+    private void SetTriggerCanvasGroup(float st, float en)
+    {
+        Util.CanvasGroupAlpha(canvasGroup, st, en, 0.3f);
     }
 
 

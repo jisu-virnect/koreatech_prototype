@@ -17,7 +17,7 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     public Dictionary<eVirtualCameraState, CinemachineVirtualCamera> virtualCameras { get; private set; }
         = new Dictionary<eVirtualCameraState, CinemachineVirtualCamera>();
 
-
+    GameObject localavatar_point;
     #region unity
     private void Awake()
     {
@@ -27,6 +27,7 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     private void Start()
     {
         Trigger_World();
+        StartCoroutine(Co_LocalAvatarPoint());
     }
     private void Update()
     {
@@ -105,8 +106,8 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     {
         SpatialBridge.networkingService.onConnectionStatusChanged += HandleConnectionStatusChanged; // 서버상태 변경
         SpatialBridge.networkingService.remoteEvents.onEvent += HandleEventReceived; // RPC
-        SpatialBridge.actorService.onActorJoined += HandlerActorJoined; // 멤버 접속
-        SpatialBridge.actorService.onActorLeft += HandlerActorLeft; // 멤버 나감
+        //SpatialBridge.actorService.onActorJoined += HandlerActorJoined; // 멤버 접속
+        //SpatialBridge.actorService.onActorLeft += HandlerActorLeft; // 멤버 나감
     }
 
     /// <summary>
@@ -116,8 +117,18 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     {
         SpatialBridge.networkingService.onConnectionStatusChanged -= HandleConnectionStatusChanged; // 서버상태 변경
         SpatialBridge.networkingService.remoteEvents.onEvent -= HandleEventReceived; // RPC
-        SpatialBridge.actorService.onActorJoined -= HandlerActorJoined; // 멤버 접속
-        SpatialBridge.actorService.onActorLeft -= HandlerActorLeft; // 멤버 나감
+        //SpatialBridge.actorService.onActorJoined -= HandlerActorJoined; // 멤버 접속
+        //SpatialBridge.actorService.onActorLeft -= HandlerActorLeft; // 멤버 나감
+    }
+
+    IEnumerator Co_LocalAvatarPoint()
+    {
+        localavatar_point = gameObject.SearchGameObject(nameof(localavatar_point));
+        while (true)
+        {
+            localavatar_point.transform.position = SpatialBridge.actorService.localActor.avatar.position + Vector3.up * 50f;
+            yield return null;
+        }
     }
 
     /// <summary>
@@ -249,21 +260,21 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     /// 액터 조인 핸들러
     /// </summary>
     /// <param name="args"></param>
-    private void HandlerActorJoined(ActorJoinedEventArgs args)
-    {
-        IActor actor = SpatialBridge.actorService.actors[args.actorNumber];
-        AddMember(actor);
-    }
+    //private void HandlerActorJoined(ActorJoinedEventArgs args)
+    //{
+    //    IActor actor = SpatialBridge.actorService.actors[args.actorNumber];
+    //    AddMember(actor);
+    //}
 
-    /// <summary>
-    /// 액터 나감 핸들러
-    /// </summary>
-    /// <param name="args"></param>
-    private void HandlerActorLeft(ActorLeftEventArgs args)
-    {
-        IActor actor = SpatialBridge.actorService.actors[args.actorNumber];
-        RemoveMember(actor);
-    }
+    ///// <summary>
+    ///// 액터 나감 핸들러
+    ///// </summary>
+    ///// <param name="args"></param>
+    //private void HandlerActorLeft(ActorLeftEventArgs args)
+    //{
+    //    IActor actor = SpatialBridge.actorService.actors[args.actorNumber];
+    //    RemoveMember(actor);
+    //}
 
     /// <summary>
     /// 최초 방 진입시 멤버추가
@@ -320,6 +331,7 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
         UIManager.instance.OpenPanel<panel_TopNavigation>(Define.trigger).SetData(section);
         UIManager.instance.OpenPanel<panel_TriggerMenu>(Define.trigger).SetData(section);
     }
+
     #endregion
 
     #region test mode
@@ -537,22 +549,22 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     #endregion
 
     #region avatarName
-    public GameObject HMD;
-    public TMP_Text tmp_LocalAvatarName;
+    //public GameObject HMD;
+    //public TMP_Text tmp_LocalAvatarName;
 
-    private void LocalAvatarName()
-    {
-        var avator = SpatialBridge.actorService.localActor.avatar;
-        var head = avator.GetAvatarBoneTransform(HumanBodyBones.Head);
-        if (HMD != null && head != null)
-        {
-            HMD.transform.position = head.position + Vector3.up * 0.3f;
-            if (tmp_LocalAvatarName != null)
-            {
-                tmp_LocalAvatarName.text = SpatialBridge.actorService.localActor.displayName;
-            }
-        }
-    }
+    //private void LocalAvatarName()
+    //{
+    //    var avator = SpatialBridge.actorService.localActor.avatar;
+    //    var head = avator.GetAvatarBoneTransform(HumanBodyBones.Head);
+    //    if (HMD != null && head != null)
+    //    {
+    //        HMD.transform.position = head.position + Vector3.up * 0.3f;
+    //        if (tmp_LocalAvatarName != null)
+    //        {
+    //            tmp_LocalAvatarName.text = SpatialBridge.actorService.localActor.displayName;
+    //        }
+    //    }
+    //}
     private void LookAtCamera(Transform tr)
     {
         var camera = SpatialBridge.cameraService;

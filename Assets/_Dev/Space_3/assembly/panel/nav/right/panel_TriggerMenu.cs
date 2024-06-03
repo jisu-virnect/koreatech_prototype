@@ -12,6 +12,9 @@ public class panel_TriggerMenu : panel_Base
     private TMP_Text tmp_Content;
     private Image img_Title;
     private Button btn_StartContent;
+
+    private eSectionType eSectionType;
+
     protected override void Awake()
     {
         base.Awake();
@@ -23,7 +26,6 @@ public class panel_TriggerMenu : panel_Base
         btn_StartContent = gameObject.Search<Button>(nameof(btn_StartContent));
         btn_StartContent.onClick.AddListener(OnClick_StartContent);
     }
-    private eSectionType eSectionType;
 
     public override void SetData<T>(T t)
     {
@@ -35,7 +37,6 @@ public class panel_TriggerMenu : panel_Base
         tmp_Content.text = section.content;
     }
 
-
     private void OnClick_StartContent()
     {
         Close();
@@ -44,28 +45,18 @@ public class panel_TriggerMenu : panel_Base
         {
             case eSectionType.before:
                 {
-                    UIManager.instance.ShowToast<toast_Basic>("화면 우측에서 작업현장 적합성을 확인합니다.")
-                        .SetData(new packet_toast_basic(eToastColor.blue, eToastIcon.toast_idle));
-
-                    packet_mapdata[] packet_Mapdatas = new packet_mapdata[] { new packet_mapdata("평면도", "plan3"), new packet_mapdata("입면도", "plan4") };
-                    UIManager.instance.OpenPanel<panel_PlanMap>(Define.before).SetData(packet_Mapdatas);
-
                     UIManager.instance.OpenPanel<panel_Check_Environment>(Define.before);
                 }
                 break;
             case eSectionType.install:
                 {
-                    UIManager.instance.ShowToast<toast_Basic>("화면 우측에 표시된 순서대로 비계를 설치합니다.")
-                        .SetData(new packet_toast_basic(eToastColor.blue, eToastIcon.toast_idle));
-
-                    packet_mapdata[] packet_Mapdatas = new packet_mapdata[] { new packet_mapdata("평면도", "plan3"), new packet_mapdata("입면도", "plan4") };
-                    UIManager.instance.OpenPanel<panel_PlanMap>(Define.before).SetData(packet_Mapdatas);
-
                     UIManager.instance.OpenPanel<panel_Install>(Define.before);
                 }
                 break;
             case eSectionType.after:
-                //UIManager.instance.OpenPanel<panel_Install>();
+                {
+                    UIManager.instance.OpenPanel<panel_Check_Install>(Define.before);
+                }
                 break;
             default:
                 break;

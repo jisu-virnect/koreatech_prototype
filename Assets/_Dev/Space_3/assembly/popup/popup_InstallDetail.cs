@@ -12,6 +12,7 @@ public class popup_InstallDetail : popup_Base
         base.Awake();
         tmp_SequenceDetail = gameObject.Search<TMP_Text>(nameof(tmp_SequenceDetail));
     }
+
     public override void SetData<T>(T t)
     {
         Install sequence = t as Install;

@@ -23,7 +23,7 @@
 	{
 		"index":3,
 		"title":"a",
-		"summary":"작업발판의 폭은 40cm 이상 확보하고, 2곳 이상 고정하였는가?\n환기 불충분 등 질식위험, 인화성・가연성 물질로 인한 \n화재 위험 등",
+		"summary":"비계 설치・해체 작업 시 작업발판을\n설치하고, 안전대를 착용하는가?",
 		"isSuitable":true,
 		"isChecked" : true
 	},
@@ -37,7 +37,7 @@
 	{
 		"index":5,
 		"title":"a",
-		"summary":"비계 작업발판 상・하 간 이동을 위한 \n승강설비는 설치하였는가?",
+		"summary":"비계 기둥(1.85m 이하), 띠장(2m 이하)\n등 부재의 설치 간격은 적정한가?",
 		"isSuitable":true,
 		"isChecked" : true
 	},
@@ -58,14 +58,14 @@
 	{
 		"index":8,
 		"title":"a",
-		"summary":"비계 기둥(1.85m 이하), 띠장(2m 이하)\n등 부재의 설치 간격은 적정한가?",
+		"summary":"비계 작업발판 상・하 간 이동을 위한 \n승강설비는 설치하였는가?",
 		"isSuitable":true,
 		"isChecked" : false
 	},
 	{
 		"index":9,
 		"title":"a",
-		"summary":"비계 설치・해체 작업 시 작업발판을\n설치하고, 안전대를 착용하는가?",
+		"summary":"작업발판의 폭은 40cm 이상 확보하고, 2곳 이상 고정하였는가?\n환기 불충분 등 질식위험, 인화성・가연성 물질로 인한 \n화재 위험 등",
 		"isSuitable":true,
 		"isChecked" : false
 	}

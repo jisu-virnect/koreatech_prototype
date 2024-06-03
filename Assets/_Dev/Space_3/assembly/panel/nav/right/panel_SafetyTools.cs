@@ -45,7 +45,7 @@ public class panel_SafetyTools : panel_Base
             DestroyTargetOutlines();
             Close();
 
-            popup_Success popup_Success = UIManager.instance.GetPopup<popup_Success>();
+            popup_Success popup_Success = UIManager.instance.OpenPopup<popup_Success>();
             popup_Success.SetData(new packet_popup_Basic("완료", "[작업 안전]을 완료하였습니다.\n원하는 구역으로 이동하여 체험을 다시 진행할 수 있습니다."));
             popup_Success.SetAction(() =>
             {
@@ -159,7 +159,7 @@ public class panel_SafetyTools : panel_Base
 
     private IEnumerator SetVirtualCamera(CinemachineVirtualCamera virtualCamera, Transform target)
     {                    
-        virtualCamera.gameObject.transform.position = target.position + Vector3.ProjectOnPlane(target.forward, Vector3.up).normalized * 2f + Vector3.up * 1f;
+        virtualCamera.gameObject.transform.position = target.position + Vector3.ProjectOnPlane(target.forward, Vector3.up).normalized * 1f + Vector3.up * 1f;
         
         while (virtualCamera.enabled)
         {

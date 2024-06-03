@@ -3,11 +3,20 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class panel_TopNavigation : panel_Base
 {
     private int stepIdx = -1;
     public view_Step[] steps;
+    private Image img_Arrow;
+    private GameObject go_Step_2;
+    protected override void Awake()
+    {
+        base.Awake();
+        img_Arrow = gameObject.Search<Image>(nameof(img_Arrow));
+        go_Step_2 = gameObject.SearchGameObject(nameof(go_Step_2));
+    }
 
     private void Start()
     {
@@ -20,6 +29,9 @@ public class panel_TopNavigation : panel_Base
         Section section = t as Section;
         steps[0].SetText(section.step1);
         steps[1].SetText(section.step2);
+
+        go_Step_2.SetActive(section.step2 == "" ? false : true);
+        img_Arrow.gameObject.SetActive(section.step2 == "" ? false : true);
     }
     protected override IEnumerator Action_Opening()
     {

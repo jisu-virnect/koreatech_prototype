@@ -2,12 +2,12 @@ ManifestFileVersion: 1
 CompatibilityAssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: space-7_0
-      Hash: 50c624fc04699e17b2cb94bc858c7862
-      CRC: 1405268163
+      Name: space-koreadtech-prototype_0
+      Hash: 7921fe2f5bdc189ed2a7fddac4cab778
+      CRC: 2643203084
       Dependencies: {}
     Info_1:
-      Name: space-7_csharp-assembly
-      Hash: 33934e0aea0cefb9282cf71e0dff054a
-      CRC: 3720220110
+      Name: space-koreadtech-prototype_csharp-assembly
+      Hash: 8b64c4355886acbb32269fcdefa8986d
+      CRC: 3996866524
       Dependencies: {}

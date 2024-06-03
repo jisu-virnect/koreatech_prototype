@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling.Memory.Experimental;
 using UnityEngine.UI;
 
 public class panel_Check_Environment : panel_Base
@@ -17,22 +18,41 @@ public class panel_Check_Environment : panel_Base
         sview_ = gameObject.Search<ScrollRect>(nameof(sview_));
     }
 
-    public override void Open(Action act = null)
+    /// <summary>
+    /// 기본 프리팹 데이터
+    /// </summary>
+    private void SetData()
     {
-        base.Open();
-        ClearElement();
-
-        remainCheckEnvironment = 0;
-
+        Util.DestroyChildrenGameObject(sview_.content);
         List<CheckEnvironment> checkEnvironments = DBManager.instance.CheckEnvironments;
         for (int i = 0; i < checkEnvironments.Count; i++)
         {
             GameObject go = Instantiate(go_Check_Environment, sview_.content);
             go.GetComponent<go_Check_Environment>().SetData(checkEnvironments[i]);
         }
+    }
 
+    public override void Open(Action act = null)
+    {
+        base.Open();
+
+        remainCheckEnvironment = 0;
+
+        SetData();
+
+        //캐릭터 이동, 카메라 제어
         Space_3.instance.Control_PlayerMovement(false);
         Space_3.instance.Control_VirtualCamera(eVirtualCameraState.vcam_before);
+
+        //ui
+        packet_mapdata_root packet_Mapdata_Root = new packet_mapdata_root();
+        packet_Mapdata_Root.title = "비계작업안전 시공도서";
+        packet_Mapdata_Root.packet_mapdatas = new packet_mapdata[] { new packet_mapdata("평면도", "plan1"), new packet_mapdata("입면도", "plan2") };
+        UIManager.instance.OpenPanel<panel_PlanMap>(Define.before).SetData(packet_Mapdata_Root);
+
+        UIManager.instance.ShowToast<toast_Basic>("화면 우측에서 작업현장 적합성을 확인합니다.")
+            .SetData(new packet_toast_basic(eToastColor.blue, eToastIcon.toast_idle));
+
     }
     protected override IEnumerator Action_Opening()
     {
@@ -40,28 +60,4 @@ public class panel_Check_Environment : panel_Base
         sview_.verticalScrollbar.value = 0;
     }
 
-
-    public override void Close(Action act = null)
-    {
-        base.Close();
-        //UIManager.instance.HideToast<toast_Basic>();
-    }
-
-    private void Update()
-    {
-        //if(Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    UIManager.instance.ClosePanels(Define.before);
-        //    UIManager.instance.OpenPanel<panel_TriggerMenu>(Define.trigger);
-        //    UIManager.instance.GetPanel<panel_TopNavigation>().ResetStep();
-        //}
-    }
-
-    private void ClearElement()
-    {
-        for (int i = sview_.content.childCount - 1; i >= 0; i--)
-        {
-            Destroy(sview_.content.GetChild(i).gameObject);
-        }
-    }
 }

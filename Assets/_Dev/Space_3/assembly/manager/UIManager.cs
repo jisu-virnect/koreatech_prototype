@@ -96,13 +96,12 @@ public class UIManager : MonoBehaviour
                 break;
             }
         }
-        popup_Base.Open();
         return popup_Base as T;
     }
 
-    public popup_Base OpenPopup<T>() where T : popup_Base
+    public T OpenPopup<T>() where T : popup_Base
     {
-        popup_Base popup_Base = GetPopup<T>();
+        T popup_Base = GetPopup<T>();
         popup_Base.Open();
         return popup_Base;
     }

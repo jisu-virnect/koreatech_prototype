@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Profiling.Memory.Experimental;
 using UnityEngine.UI;
 
 public class panel_Install : panel_Base
@@ -23,8 +24,9 @@ public class panel_Install : panel_Base
 
 
     private Button btn_Next;
-    //private Button btn_Prev;
-    //private Button btn_Close;
+    private Button btn_Prev;
+    private Button btn_Close;
+
     private Image img_Next;
     private TMP_Text tmp_Next;
 
@@ -45,11 +47,11 @@ public class panel_Install : panel_Base
         btn_Next = gameObject.Search<Button>(nameof(btn_Next));
         btn_Next.onClick.AddListener(NextSequence);
 
-        //btn_Prev = gameObject.Search<Button>(nameof(btn_Prev));
-        //btn_Prev.onClick.AddListener(PrevSequence);
+        btn_Prev = gameObject.Search<Button>(nameof(btn_Prev));
+        btn_Prev.onClick.AddListener(PrevSequence);
 
-        //btn_Close = gameObject.Search<Button>(nameof(btn_Close));
-        //btn_Close.onClick.AddListener(()=> Close());
+        btn_Close = gameObject.Search<Button>(nameof(btn_Close));
+        btn_Close.onClick.AddListener(() => Close());
 
         ScrollRect sview_Install = gameObject.Search<ScrollRect>(nameof(sview_Install));
         content = sview_Install.content;
@@ -60,6 +62,7 @@ public class panel_Install : panel_Base
         img_Next = gameObject.Search<Image>(nameof(img_Next));
         tmp_Next = gameObject.Search<TMP_Text>(nameof(tmp_Next));
 
+        ClearData();
     }
     private RectTransform content;
 
@@ -67,73 +70,56 @@ public class panel_Install : panel_Base
     {
         base.Open();
 
-        ResetSequence();
+        SetData();
 
-        //Space_3.instance.Control_PlayerMovement(false);
-        //Space_3.instance.Control_VirtualCamera(eVirtualCameraState.vcam_install);
+        //ui
+        packet_mapdata_root packet_Mapdata_Root = new packet_mapdata_root();
+        packet_Mapdata_Root.title = "비계작업안전 시공도서";
+        packet_Mapdata_Root.packet_mapdatas = new packet_mapdata[] { new packet_mapdata("평면도", "plan3"), new packet_mapdata("입면도", "plan4") }; ;
+        UIManager.instance.OpenPanel<panel_PlanMap>(Define.before).SetData(packet_Mapdata_Root);
+
+        UIManager.instance.ShowToast<toast_Basic>("화면 우측에 표시된 순서대로 비계를 설치합니다.")
+            .SetData(new packet_toast_basic(eToastColor.blue, eToastIcon.toast_idle));
+
+        //카메라타겟 고정
+        SpatialBridge.cameraService.SetTargetOverride(ResourceManager.instance.LoadData<GameObject>("target_Install").transform, SpatialCameraMode.Actor);
+
+        //캐릭터고정
+        Space_3.instance.Control_PlayerMovement(false);
     }
-
     public override void Close(Action act = null)
     {
         base.Close();
+        ClearData();
 
-        prevInstall = null;
-        installIndex = -1;
+        UIManager.instance.HideToast<toast_Basic>();
+        UIManager.instance.GetPanel<panel_TopNavigation>().ResetStep();
+        UIManager.instance.OpenPanel<panel_TriggerMenu>();
+        UIManager.instance.ClosePanel<panel_PlanMap>();
 
-        //scaffold01_1.Action_ResetObjects();
-        DestroySequenceUI();
-
-
-        //Section section = DBManager.instance.Sections.FirstOrDefault(x => x.index == 1);
-
-        //UIManager.instance.OpenPanel<panel_TopNavigation>(Define.trigger).SetData(section);
-        //UIManager.instance.OpenPanel<panel_TriggerMenu>(Define.trigger).SetData(section);
-
-        //Space_3.instance.Control_PlayerMovement(true);
-        //Space_3.instance.Control_VirtualCamera(eVirtualCameraState.none);
-
+        //카메라타겟 리셋
         SpatialBridge.cameraService.ClearTargetOverride();
 
-        UIManager.instance.OpenPanel<panel_TopNavigation>().NextStep();
-        UIManager.instance.OpenPanel<panel_Check_Install>();
+        //캐릭터 이동가능
+        Space_3.instance.Control_PlayerMovement(true);
+    }
+    private void SetData()
+    {
+        CreateSequenceUI();
+        NextSequence();
     }
 
-    public void ResetSequence()
+    private void ClearData()
     {
         installIndex = -1;
         prevInstall = null;
-
-        btn_Next.interactable = true;
-        img_Next.gameObject.SetActive(false);
-
-        scaffold01_1.Action_ResetObjects();
-
         DestroySequenceUI();
-        CreateSequenceUI();
-        NextSequence();
-
-        GameObject target_CheckInstall = ResourceManager.instance.LoadData<GameObject>(nameof(target_CheckInstall));
-        SpatialBridge.actorService.localActor.avatar.SetPositionRotation(target_CheckInstall.transform.position, target_CheckInstall.transform.rotation);
-
-        SpatialBridge.cameraService.SetTargetOverride(ResourceManager.instance.LoadData<GameObject>("target_Install").transform, SpatialCameraMode.Actor);
+        scaffold01_1.Action_ResetObjects();
     }
 
-    /// <summary>
-    /// 시퀀스 삭제
-    /// </summary>
-    private void DestroySequenceUI()
-    {
-        scaffold_wire.SetActive(false);
-
-        for (int i = content.childCount - 1; i >= 0; i--)
-        {
-            Destroy(content.GetChild(i).gameObject);
-        }
-        go_Installs.Clear();
-    }
 
     /// <summary>
-    /// 시퀀스데이터 초기화
+    /// 시퀀스UI 생성
     /// </summary>
     /// <param name="item"></param>
     private void CreateSequenceUI()
@@ -144,9 +130,19 @@ public class panel_Install : panel_Base
         {
             Install install = installs[i];
             go_Install temp = Instantiate(go_Install, content).GetComponent<go_Install>();
-            go_Installs.Add(temp);
             temp.InitData(install);
+            go_Installs.Add(temp);
         }
+    }
+
+    /// <summary>
+    /// 시퀀스UI 삭제
+    /// </summary>
+    private void DestroySequenceUI()
+    {
+        scaffold_wire.SetActive(false);
+        Util.DestroyChildrenGameObject(content);
+        go_Installs.Clear();
     }
 
     /// <summary>
@@ -160,6 +156,7 @@ public class panel_Install : panel_Base
             scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
             scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
         }
+
         if (go_Installs.Count > installIndex + 1)
         {
             installIndex++;
@@ -170,23 +167,42 @@ public class panel_Install : panel_Base
             scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.sequence);
             scaffold01_1.Action_scaffold_Active((eBuildScaffold)installIndex, true);
 
-            tmp_Next.text = (installIndex + 1).ToString() + "단계 설치하기";
+            //tmp_Next.text = (installIndex + 1).ToString() + "단계 설치하기";
         }
         else
         {
-            btn_Next.interactable = false;
-            tmp_Next.text = "설치 완료";
-            img_Next.gameObject.SetActive(true);
-
-            UIManager.instance.ShowHideToast<toast_Basic>("[비계 설치] 단계가 완료되었습니다. [비계 점검] 단계로 넘어갑니다.", 3f, () =>
-            {
-                UIManager.instance.GetPanel<panel_TopNavigation>().NextStep();
-                Close();
-
-            }).SetData(new packet_toast_basic(eToastColor.green, eToastIcon.toast_success));
+            //NextStep();
         }
-
     }
+
+    /// <summary>
+    /// 다음스탭 - 체크인스톨
+    /// </summary>
+    private void NextStep()
+    {
+        btn_Next.interactable = false;
+        tmp_Next.text = "설치 완료";
+        img_Next.gameObject.SetActive(true);
+
+        UIManager.instance.ShowHideToast<toast_Basic>("[비계 설치] 단계가 완료되었습니다. [비계 점검] 단계로 넘어갑니다.", 3f, () =>
+        {
+            Close();
+
+            //상단네비 다음스탭
+            UIManager.instance.GetPanel<panel_TopNavigation>().NextStep();
+
+            ////지도갱신
+            //packet_mapdata[] packet_Mapdatas = new packet_mapdata[] { new packet_mapdata("강관비계", "plan5") };
+            //packet_mapdata_root packet_Mapdata_Root = new packet_mapdata_root();
+            //packet_Mapdata_Root.title = "조립 시 안전 기준";
+            //packet_Mapdata_Root.packet_mapdatas = packet_Mapdatas;
+            //UIManager.instance.GetPanel<panel_PlanMap>().SetData(packet_Mapdata_Root);
+
+            UIManager.instance.OpenPanel<panel_Check_Install>();
+
+        }).SetData(new packet_toast_basic(eToastColor.green, eToastIcon.toast_success));
+    }
+
     public void GotoSequence(int sequence)
     {
         if (installIndex < sequence)
@@ -201,6 +217,9 @@ public class panel_Install : panel_Base
         }
     }
 
+    /// <summary>
+    /// 이전시퀀스
+    /// </summary>
     public void PrevSequence()
     {
         if (installIndex > 0)

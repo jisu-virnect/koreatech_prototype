@@ -10,7 +10,6 @@ Material:
   m_Name: Hologram KM_test
   m_Shader: {fileID: 4800000, guid: e99f8b80b1693284587af0c131f61f3d, type: 3}
   m_ValidKeywords:
-  - _DISSOLVEFEATURE_ON
   - _GRAINFEATURE_ON
   - _LINE2FEATURE_ON
   - _POSITIONFEATURE_Y
@@ -64,7 +63,7 @@ Material:
     - _ColorGlitchAffect: 0.5
     - _ColorGlitchFeature: 0
     - _CullMode: 0
-    - _DissolveFeature: 1
+    - _DissolveFeature: 0
     - _DissolveHide: 0.15
     - _FresnelAlphaPower: 2
     - _FresnelAlphaScale: 1
@@ -79,12 +78,12 @@ Material:
     - _Line1Hardness: 1.45
     - _Line1InvertedThickness: 0
     - _Line1Speed: -3.57
-    - _Line2Alpha: 0.43
+    - _Line2Alpha: 0.07
     - _Line2Feature: 1
-    - _Line2Frequency: 2
-    - _Line2Hardness: 1
+    - _Line2Frequency: 0.04
+    - _Line2Hardness: 0.87
     - _Line2InvertedThickness: 0
-    - _Line2Speed: -1
+    - _Line2Speed: -0.5
     - _LineBothFeature: 0
     - _LineGlitchFeature: 0
     - _LineGlitchFrequency: 0.2
@@ -105,7 +104,7 @@ Material:
     - _RandomGlitchConstant: 0
     - _RandomGlitchFeature: 0
     - _RandomGlitchTiling: 2.83
-    - _RandomOffset: 92463.71
+    - _RandomOffset: 91729.5
     - _SoftIntersection1Affect: 1
     - _SoftIntersection1Distance: 0
     - _SoftIntersection1Feature: 0

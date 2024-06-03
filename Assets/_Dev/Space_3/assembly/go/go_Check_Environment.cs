@@ -35,7 +35,7 @@ public class go_Check_Environment : MonoBehaviour
     private void OnClick_Submit()
     {
         //팝업 오픈
-        popup_Basic popup_Basic = UIManager.instance.GetPopup<popup_Basic>();
+        popup_Basic popup_Basic = UIManager.instance.OpenPopup<popup_Basic>();
         popup_Basic.SetData(new packet_popup_Basic(checkEnvironment.popuptitle, checkEnvironment.popupsummary));
 
         //체크 시 버튼 비활성화

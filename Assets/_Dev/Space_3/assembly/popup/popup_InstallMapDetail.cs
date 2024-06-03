@@ -27,6 +27,12 @@ public class popup_InstallMapDetail : popup_Base
     }
 }
 
+public class packet_mapdata_root
+{
+    public string title;
+    public packet_mapdata[] packet_mapdatas;
+}
+
 public class packet_mapdata
 {
     public string mapdata;

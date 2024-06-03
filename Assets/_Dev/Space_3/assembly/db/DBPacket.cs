@@ -60,6 +60,17 @@ public class CheckInstall
     public string summary;
     public bool isSuitable;
     public bool isChecked;
+
+    public CheckInstall DeepCopy()
+    {
+        CheckInstall checkInstall = new CheckInstall();
+        checkInstall.index = index;
+        checkInstall.title      = title;
+        checkInstall.summary    = summary;
+        checkInstall.isSuitable = isSuitable;
+        checkInstall.isChecked  = isChecked;
+        return checkInstall;
+    }
 }
 
 
