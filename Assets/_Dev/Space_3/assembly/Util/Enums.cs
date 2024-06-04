@@ -44,10 +44,10 @@ public enum RemoteEventIDs : byte
 
 public enum RemoteEventSubIDs_Space : byte
 {
-    world,
-    before,
-    install,
-    after,
+    before=0,
+    install=1,
+    after=2,
+    world=10,
 }
 public enum BlendMode
 {

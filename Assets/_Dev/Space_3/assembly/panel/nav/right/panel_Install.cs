@@ -51,7 +51,11 @@ public class panel_Install : panel_Base
         btn_Prev.onClick.AddListener(PrevSequence);
 
         btn_Close = gameObject.Search<Button>(nameof(btn_Close));
-        btn_Close.onClick.AddListener(() => Close());
+        btn_Close.onClick.AddListener(() =>
+        {
+            SoundManager.instance.PlayEffect(eAudioClips.effect_close);
+            Close();
+        });
 
         ScrollRect sview_Install = gameObject.Search<ScrollRect>(nameof(sview_Install));
         content = sview_Install.content;
@@ -78,7 +82,8 @@ public class panel_Install : panel_Base
         packet_Mapdata_Root.packet_mapdatas = new packet_mapdata[] { new packet_mapdata("평면도", "plan3"), new packet_mapdata("입면도", "plan4") }; ;
         UIManager.instance.OpenPanel<panel_PlanMap>(Define.before).SetData(packet_Mapdata_Root);
 
-        UIManager.instance.ShowToast<toast_Basic>("화면 우측에 표시된 순서대로 비계를 설치합니다.")
+        SoundManager.instance.PlayVoice(eAudioClips.voice_2_toast_guide);
+        UIManager.instance.ShowToast<toast_Basic>("비계 설치 또는 해체 버튼을 눌러 순서를 확인합니다.")
             .SetData(new packet_toast_basic(eToastColor.blue, eToastIcon.toast_idle));
 
         //카메라타겟 고정
@@ -150,6 +155,7 @@ public class panel_Install : panel_Base
     /// </summary>
     public void NextSequence()
     {
+        SoundManager.instance.PlayEffect(eAudioClips.effect_next);
         if (prevInstall != null)
         {
             //prevInstall.SetData(SEQUENCE_STATE.BEFORE);
@@ -222,6 +228,7 @@ public class panel_Install : panel_Base
     /// </summary>
     public void PrevSequence()
     {
+        SoundManager.instance.PlayEffect(eAudioClips.effect_prev);
         if (installIndex > 0)
         {
             prevInstall.SetData(SEQUENCE_STATE.BEFORE);

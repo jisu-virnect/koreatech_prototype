@@ -103,8 +103,8 @@ public class panel_Check_Install : panel_Base
         packet_Mapdata_Root.title = "조립 시 안전 기준";
         packet_Mapdata_Root.packet_mapdatas = packet_Mapdatas;
         UIManager.instance.OpenPanel<panel_PlanMap>().SetData(packet_Mapdata_Root);
-
-        UIManager.instance.ShowToast<toast_Basic>("비계점검을 시작합니다. 점검대상으로 이동해 주세요.")
+        SoundManager.instance.PlayVoice(eAudioClips.voice_3_toast_guide);
+        UIManager.instance.ShowToast<toast_Basic>("표시된 지점으로 이동하여 점검을 완료하세요.")
             .SetData(new packet_toast_basic(eToastColor.blue, eToastIcon.toast_idle));
 
         ResetData();
@@ -253,6 +253,7 @@ public class panel_Check_Install : panel_Base
                 tmp_Checked.text = "점검완료";
                 img_Checked.gameObject.SetActive(true);
 
+                SoundManager.instance.PlayVoice(eAudioClips.voice_1_2_modal_end);
                 popup_Success popup_Success = UIManager.instance.OpenPopup<popup_Success>();
                 popup_Success.SetData(new packet_popup_Basic("완료", "[작업 안전]을 완료하였습니다.\n원하는 구역으로 이동하여 체험을 다시 진행할 수 있습니다."));
                 popup_Success.SetAction(() =>

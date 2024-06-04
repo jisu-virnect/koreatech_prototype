@@ -25,10 +25,12 @@ public class popup_Base : MonoBehaviour, IPopup
     public virtual void Open()
     {
         gameObject.SetActive(true);
+        SoundManager.instance.PlayEffect(eAudioClips.effect_screen);
     }
     public virtual void Close()
     {
         gameObject.SetActive(false);
+        SoundManager.instance.PlayEffect(eAudioClips.effect_close);
         Action_Closing();
         Action_Closed();
     }

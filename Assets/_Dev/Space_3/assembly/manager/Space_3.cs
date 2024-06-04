@@ -28,6 +28,8 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     {
         Trigger_World();
         StartCoroutine(Co_LocalAvatarPoint());
+
+        SoundManager.instance.PlayVoice(eAudioClips.voice_0_toast_guide);
     }
     private void Update()
     {
@@ -236,16 +238,8 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
                         case RemoteEventSubIDs_Space.world:
                             Trigger_World();
                             break;
-                        case RemoteEventSubIDs_Space.before:
-                            Trigger_BeforeZone();
-                            break;
-                        case RemoteEventSubIDs_Space.install:
-                            Trigger_InstallZone();
-                            break;
-                        case RemoteEventSubIDs_Space.after:
-                            Trigger_AfterZone();
-                            break;
                         default:
+                            Trigger_Zone((int)remoteEventSubIDs);
                             break;
                     }
                 }
@@ -306,30 +300,17 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
         UIManager.instance.OpenPanel<panel_GlobalMessage>(Define.world);
         UIManager.instance.OpenPanel<panel_MiniMap>(Define.world);
         UIManager.instance.OpenPanel<panel_CustomKey>(Define.world);
+        //SoundManager.instance.PlayEffect("effect_gate");
     }
-    public void Trigger_BeforeZone()
+    public void Trigger_Zone(int zoneIndex)
     {
         UIManager.instance.ClosePanels(Define.world);
-
-        Section section = DBManager.instance.Sections.FirstOrDefault(x => x.index == 0);
+        SoundManager.instance.PlayVoice(Util.String2Enum<eAudioClips>("voice_t_" + (zoneIndex + 1).ToString()));
+        Section section = DBManager.instance.Sections.FirstOrDefault(x => x.index == zoneIndex);
         UIManager.instance.OpenPanel<panel_TopNavigation>(Define.trigger).SetData(section);
         UIManager.instance.OpenPanel<panel_TriggerMenu>(Define.trigger).SetData(section);
-    }
-    public void Trigger_InstallZone()
-    {
-        UIManager.instance.ClosePanels(Define.world);
 
-        Section section = DBManager.instance.Sections.FirstOrDefault(x => x.index == 1);
-        UIManager.instance.OpenPanel<panel_TopNavigation>(Define.trigger).SetData(section);
-        UIManager.instance.OpenPanel<panel_TriggerMenu>(Define.trigger).SetData(section);
-    }
-    public void Trigger_AfterZone()
-    {
-        UIManager.instance.ClosePanels(Define.world);
-
-        Section section = DBManager.instance.Sections.FirstOrDefault(x => x.index == 2);
-        UIManager.instance.OpenPanel<panel_TopNavigation>(Define.trigger).SetData(section);
-        UIManager.instance.OpenPanel<panel_TriggerMenu>(Define.trigger).SetData(section);
+        SoundManager.instance.PlayEffect(eAudioClips.effect_gate);
     }
 
     #endregion

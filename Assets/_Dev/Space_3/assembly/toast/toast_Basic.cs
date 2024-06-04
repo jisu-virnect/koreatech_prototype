@@ -35,7 +35,16 @@ public class toast_Basic : toast_Base
         base.SetData(t);
         packet_Toast_Basic = t as packet_toast_basic;
         SetToastBasicAddOn();
+        if (packet_Toast_Basic.eToastIcon == eToastIcon.toast_success)
+        {
+            SoundManager.instance.PlayEffect(eAudioClips.effect_success);
+        }
+        else
+        {
+            SoundManager.instance.PlayEffect(eAudioClips.effect_screen);
+        }
     }
+
 
     private void SetToastBasicAddOn()
     {

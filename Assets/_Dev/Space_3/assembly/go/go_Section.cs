@@ -44,20 +44,7 @@ public class go_Section : MonoBehaviour
         SetTriggerZone(1f, 0f);
         var remoteEventSubIDs = Util.String2Enum<RemoteEventSubIDs_Space>(name);
 //#if UNITY_EDITOR
-        switch (remoteEventSubIDs)
-        {
-            case RemoteEventSubIDs_Space.before:
-               Space_3.instance.Trigger_BeforeZone();
-                break;
-            case RemoteEventSubIDs_Space.install:
-                Space_3.instance.Trigger_InstallZone();
-                break;
-            case RemoteEventSubIDs_Space.after:
-                Space_3.instance.Trigger_AfterZone();
-                break;
-            default:
-                break;
-        }
+        Space_3.instance.Trigger_Zone((int)remoteEventSubIDs);
 //#else
 //        SpatialBridge.networkingService.remoteEvents.RaiseEventAll((byte)RemoteEventIDs.SpaceState, new object[] { remoteEventSubIDs.ToString() });
 //#endif

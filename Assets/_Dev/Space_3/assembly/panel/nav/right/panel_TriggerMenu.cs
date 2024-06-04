@@ -40,6 +40,7 @@ public class panel_TriggerMenu : panel_Base
     private void OnClick_StartContent()
     {
         Close();
+        SoundManager.instance.PlayEffect(eAudioClips.effect_click);
         UIManager.instance.GetPanel<panel_TopNavigation>().NextStep();
         switch (eSectionType)
         {

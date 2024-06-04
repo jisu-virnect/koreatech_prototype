@@ -40,10 +40,14 @@ public class panel_SafetyTools : panel_Base
 
     private void OnClick_Confirm()
     {
+        SoundManager.instance.PlayEffect(eAudioClips.effect_click);
+
         if (index == safetyToolies.Count-1)
         {
             DestroyTargetOutlines();
             Close();
+
+            SoundManager.instance.PlayVoice(eAudioClips.voice_1_2_modal_end);
 
             popup_Success popup_Success = UIManager.instance.OpenPopup<popup_Success>();
             popup_Success.SetData(new packet_popup_Basic("완료", "[작업 안전]을 완료하였습니다.\n원하는 구역으로 이동하여 체험을 다시 진행할 수 있습니다."));
@@ -120,6 +124,7 @@ public class panel_SafetyTools : panel_Base
 
     private void NextStep()
     {
+
         HumanBodyBones HumanBodyBones;
         //기존 아웃라인포인트 릴리즈
         if (prevSafetyTools != null)
@@ -133,6 +138,7 @@ public class panel_SafetyTools : panel_Base
         }
         index++;
         prevSafetyTools = safetyToolies[index];
+        SoundManager.instance.PlayVoice(Util.String2Enum<eAudioClips>("voice_1_2_modal_" + (prevSafetyTools.index+1).ToString()));
 
         //아웃라인포인트 잡아주기
         HumanBodyBones = (HumanBodyBones)prevSafetyTools.targetTransform;

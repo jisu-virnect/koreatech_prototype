@@ -49,6 +49,11 @@ public class toast_Base : MonoBehaviour, IToast
     {
         gameObject.SetActive(true);
         isOpen = true;
+        if (act != null)
+        {
+            this.act = act;
+        }
+
         tmp_Toast.text = message;
         if (coroutine != null)
         {

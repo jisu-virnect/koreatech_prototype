@@ -50,6 +50,7 @@ public class panel_Check_Environment : panel_Base
         packet_Mapdata_Root.packet_mapdatas = new packet_mapdata[] { new packet_mapdata("평면도", "plan1"), new packet_mapdata("입면도", "plan2") };
         UIManager.instance.OpenPanel<panel_PlanMap>(Define.before).SetData(packet_Mapdata_Root);
 
+        SoundManager.instance.PlayVoice(eAudioClips.voice_1_1_toast_guide);
         UIManager.instance.ShowToast<toast_Basic>("화면 우측에서 작업현장 적합성을 확인합니다.")
             .SetData(new packet_toast_basic(eToastColor.blue, eToastIcon.toast_idle));
 

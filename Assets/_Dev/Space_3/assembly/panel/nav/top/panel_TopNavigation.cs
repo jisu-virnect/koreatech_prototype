@@ -41,7 +41,8 @@ public class panel_TopNavigation : panel_Base
 
     public void NextStep()
     {
-        if(stepIdx >= steps.Length-1)
+        SoundManager.instance.PlayEffect(eAudioClips.effect_screen);
+        if (stepIdx >= steps.Length-1)
         {
             return;
         }

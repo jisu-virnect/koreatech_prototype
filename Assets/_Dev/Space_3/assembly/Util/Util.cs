@@ -209,7 +209,15 @@ public static partial class Util
     public static T String2Enum<T>(string _str)
     {
         try { return (T)Enum.Parse(typeof(T), _str); }
-        catch { return (T)Enum.Parse(typeof(T), "none"); }
+        catch 
+        {
+            try { return (T)Enum.Parse(typeof(T), "none"); }
+            catch
+            {
+                Debug.LogError(_str + " enum 없음");
+                return default;
+            }
+        }
     }
 
     /// <summary>
