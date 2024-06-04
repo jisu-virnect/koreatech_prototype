@@ -40,12 +40,14 @@ public class panel_Check_Install : panel_Base
 
     public void SetLadder(bool active)
     {
+        SoundManager.instance.PlayEffect(eAudioClips.effect_click);
         ladder.SetActive(active);
         ladder_error.SetActive(!active);
         trigger_8.SetActive(active);
     }
     public void SetScaffolding(bool active)
     {
+        SoundManager.instance.PlayEffect(eAudioClips.effect_click);
         work_scaffolding.SetActive(active);
         work_scaffolding_error.SetActive(!active);
         trigger_9.SetActive(active);
@@ -232,6 +234,7 @@ public class panel_Check_Install : panel_Base
     /// </summary>
     public void OnClick_Check_Install()
     {
+        SoundManager.instance.PlayEffect(eAudioClips.effect_click);
         if(remainCheckCount > 0)
         {
             //오브젝트 체크 갱신

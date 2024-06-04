@@ -3,11 +3,11 @@ CompatibilityAssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: space-koreadtech-prototype_0
-      Hash: 8e8388a59e7299a092a7f0df80a7078b
-      CRC: 727452472
+      Hash: 9ef378ca485caaa580fed726ea1fcd4f
+      CRC: 1069142913
       Dependencies: {}
     Info_1:
       Name: space-koreadtech-prototype_csharp-assembly
-      Hash: 80c5f207e6ec57a03d0b988aa5398719
-      CRC: 1208775268
+      Hash: 0a20843334435e271f0c340d9c016bfd
+      CRC: 1753549798
       Dependencies: {}

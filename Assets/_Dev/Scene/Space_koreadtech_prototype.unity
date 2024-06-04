@@ -21740,7 +21740,7 @@ PrefabInstance:
     - target: {fileID: 4772936248508202232, guid: 6608a972c3568134fb34610038f46cf5,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 165
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4772936248508202232, guid: 6608a972c3568134fb34610038f46cf5,
         type: 3}
@@ -70647,7 +70647,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1456345779}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 27.45, y: 0.01, z: -6.43}
+  m_LocalPosition: {x: 27.45, y: 0.55, z: -6.43}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -87022,6 +87022,11 @@ PrefabInstance:
       value: plant_20231011_F
       objectReference: {fileID: 0}
     - target: {fileID: 2955937573326455053, guid: 05bd03625e31b3f4f989f0e1b18ad08a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7293790506377349910, guid: 05bd03625e31b3f4f989f0e1b18ad08a,
         type: 3}
       propertyPath: m_IsActive
       value: 1

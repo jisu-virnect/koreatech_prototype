@@ -165,7 +165,7 @@ public class panel_SafetyTools : panel_Base
 
     private IEnumerator SetVirtualCamera(CinemachineVirtualCamera virtualCamera, Transform target)
     {                    
-        virtualCamera.gameObject.transform.position = target.position + Vector3.ProjectOnPlane(target.forward, Vector3.up).normalized * 0.5f + Vector3.up * 1f;
+        virtualCamera.gameObject.transform.position = target.position + Vector3.ProjectOnPlane(target.forward, Vector3.up).normalized * 1f + Vector3.up * 0.5f;
         
         while (virtualCamera.enabled)
         {
