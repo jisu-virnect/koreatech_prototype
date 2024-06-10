@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class go_Check_Install : MonoBehaviour
 {
     private TMP_Text tmp_Index;
-    private TMP_Text tmp_Summary;
+    public TMP_Text tmp_Summary { get; set; }
     private Image img_Suitable;
     private Image img_Unsuitable;
 

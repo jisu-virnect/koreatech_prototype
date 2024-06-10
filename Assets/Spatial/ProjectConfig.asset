@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ProjectConfig
   m_EditorClassIdentifier: 
   _configVersion: 1
-  _defaultWorldID: ax8vwu54u1s059utrh6gc
+  _defaultWorldID: w9y1owmkqxj2hok06xi8y
   _packages:
   - {fileID: 11400000, guid: f9f137dea7f63477ba0010b47000a828, type: 2}
   - {fileID: 11400000, guid: 72ffea1652c674c0a9800acaee82a68a, type: 2}
@@ -32,3 +32,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 85709a16e4921514899e5fd9b933979a, type: 2}
   - {fileID: 11400000, guid: ef921edb22b6ce44185c640431d8da61, type: 2}
   - {fileID: 11400000, guid: 46d399a990935284b847f9ce7e8cba87, type: 2}
+  - {fileID: 11400000, guid: aeac9b73a1d39fd46b28f1509ff629e5, type: 2}

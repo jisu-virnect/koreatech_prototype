@@ -20,9 +20,9 @@
 	{
 		"index" : 2,
 		"type" : "after",
-		"title_image" : "delete_history",
-		"title" : "점검",
-		"content" : "작업진행 전 점검작업에 대해 알아봅니다.",
+		"title_image" : "foundation",
+		"title" : "비계 점검",
+		"content" : "비계 점검 사항에 대해 알아봅니다.",
 		"step1" : "작업 진행",
 		"step2" : ""
 	}

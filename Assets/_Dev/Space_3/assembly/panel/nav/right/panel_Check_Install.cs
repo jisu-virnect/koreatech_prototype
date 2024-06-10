@@ -219,13 +219,16 @@ public class panel_Check_Install : panel_Base
             btn_Checked.interactable = true;
             btn_Image.sprite = ResourceManager.instance.LoadDataSprite("btn_370_enabled");
             tmp_Checked.text = (index + 1).ToString("00") + "번 항목 점검하기";
+            go_Check_Installs[index].tmp_Summary.fontStyle = FontStyles.Bold;
         }
         else
         {
             btn_Checked.interactable = false;
             btn_Image.sprite = ResourceManager.instance.LoadDataSprite("btn_370_disabled");
             tmp_Checked.text = "점검하기";
+            go_Check_Installs[index].tmp_Summary.fontStyle = FontStyles.Normal;
         }
+
 
     }
 
@@ -258,7 +261,7 @@ public class panel_Check_Install : panel_Base
 
                 SoundManager.instance.PlayVoice(eAudioClips.voice_1_2_modal_end);
                 popup_Success popup_Success = UIManager.instance.OpenPopup<popup_Success>();
-                popup_Success.SetData(new packet_popup_Basic("완료", "[작업 안전]을 완료하였습니다.\n원하는 구역으로 이동하여 체험을 다시 진행할 수 있습니다."));
+                popup_Success.SetData(new packet_popup_Basic("완료", "<b>[작업 안전]</b>을 완료하였습니다.\n원하는 구역으로 이동하여 체험을 다시 진행할 수 있습니다."));
                 popup_Success.SetAction(() =>
                 {
                     UIManager.instance.HideToast<toast_Basic>();

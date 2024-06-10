@@ -15,10 +15,10 @@ MonoBehaviour:
   version: 1
   sku: 665dd1a3b783b0cc2ed76db9
   packageName: Space_koreadtech_prototype
-  thumbnail: {fileID: 2800000, guid: 8556be473992b42dbb7035908e118623, type: 3}
+  thumbnail: {fileID: 2800000, guid: cef601e92d52cc340afe4e3e993cadc5, type: 3}
   savedProjectSettings: {fileID: 11400000, guid: b4d3f3931508d4e3381693ee23f6fe04,
     type: 2}
-  worldID: ax8vwu54u1s059utrh6gc
+  worldID: w9y1owmkqxj2hok06xi8y
   scene: {fileID: 102900000, guid: 26bf2c6a8772e30479eb006e7a0c2194, type: 3}
   csharpAssembly: {fileID: 5897886265953266890, guid: 9dcf8ec24af9f504fb26c6770b8eedaf,
     type: 3}
@@ -32,6 +32,7 @@ MonoBehaviour:
       type: 3}
   - id: 3
     asset: {fileID: 2884532770008596808, guid: a21b8e25f90ef03448a8267ef7fd2ea4, type: 3}
+  networkPrefabs: []
   settings:
     serverInstancingEnabled: 1
     serverCapacitySetting: 1

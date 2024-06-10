@@ -45,6 +45,7 @@ public class panel_Base : MonoBehaviour, IPanel
     public virtual void Open(Action act = null)
     {
         gameObject.SetActive(true);
+        gameObject.transform.SetAsLastSibling();
         StartCoroutine(Co_OpenAnimation(act));
     }
     public virtual void Close(Action act = null)

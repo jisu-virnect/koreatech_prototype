@@ -7,6 +7,7 @@ using System;
 using Cinemachine;
 using System.Linq;
 using System.Runtime;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// 씬 기준 매니저
@@ -31,8 +32,67 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
 
         SoundManager.instance.PlayVoice(eAudioClips.voice_0_toast_guide);
     }
+    private bool IsMouseOverUI()
+    {
+        return EventSystem.current.IsPointerOverGameObject();
+    }
+    private enum eTouchState
+    {
+        idle,
+        press,
+        unpress,
+    }
+    eTouchState eTouch = eTouchState.idle;
+    private eTouchState CheckTouch()
+    {
+        if (Input.touchCount > 0)
+        {
+            if(eTouch == eTouchState.idle)
+            {
+                Touch touch = Input.GetTouch(0);
+                if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+                {
+                    eTouch = eTouchState.press;
+                }
+                else
+                {
+                    eTouch = eTouchState.unpress;
+                }
+            }
+        }
+        else
+        {
+            eTouch = eTouchState.idle;
+        }
+        return eTouch;
+    }
+
     private void Update()
     {
+        //disableFreelook  = IsMouseOverUI();
+
+        ////SpatialBridge.cameraService.lockCameraRotation = disableFreelook;
+        //if (Input.GetKeyDown(KeyCode.Alpha5))
+        //{
+        //    SpatialBridge.cameraService.lockCameraRotation = true;
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha6))
+        //{
+        //    SpatialBridge.cameraService.lockCameraRotation = false;
+        //}
+        switch (CheckTouch())
+        {
+            case eTouchState.press:
+                SpatialBridge.cameraService.lockCameraRotation = true;
+                break;
+            case eTouchState.idle:
+            case eTouchState.unpress:
+                SpatialBridge.cameraService.lockCameraRotation = false;
+                break;
+            default:
+                break;
+        }
+
         ChangeAvatar();
     }
     private void OnEnable()
@@ -92,6 +152,10 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     /// </summary>
     private void ChangeAvatar()
     {
+        if(!isWorld)
+        {
+            return;
+        }
         if (Input.GetKeyDown(KeyCode.Alpha1)) SpatialBridge.actorService.localActor.avatar.SetAvatarBody(AssetType.EmbeddedAsset, "0");
         if (Input.GetKeyDown(KeyCode.Alpha2)) SpatialBridge.actorService.localActor.avatar.SetAvatarBody(AssetType.EmbeddedAsset, "1");
         if (Input.GetKeyDown(KeyCode.Alpha3)) SpatialBridge.actorService.localActor.avatar.SetAvatarBody(AssetType.EmbeddedAsset, "2");
@@ -293,8 +357,10 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     #endregion
 
     #region trigger
+    bool isWorld = true;
     public void Trigger_World()
     {
+        isWorld = true;
         UIManager.instance.ClosePanels(Define.trigger);
 
         UIManager.instance.OpenPanel<panel_GlobalMessage>(Define.world);
@@ -304,6 +370,7 @@ public class Space_3 : MonoBehaviour, IAvatarInputActionsListener
     }
     public void Trigger_Zone(int zoneIndex)
     {
+        isWorld = false;
         UIManager.instance.ClosePanels(Define.world);
         SoundManager.instance.PlayVoice(Util.String2Enum<eAudioClips>("voice_t_" + (zoneIndex + 1).ToString()));
         Section section = DBManager.instance.Sections.FirstOrDefault(x => x.index == zoneIndex);

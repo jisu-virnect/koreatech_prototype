@@ -9,6 +9,7 @@ public class go_Install : MonoBehaviour
 {
     public Install sequence;
 
+    private GameObject img_Focus;
     private Image img_Check;
     private Image img_Index;
     private TMP_Text tmp_Index;
@@ -26,6 +27,8 @@ public class go_Install : MonoBehaviour
     }
     private void GetComponent()
     {
+        img_Focus = gameObject.SearchGameObject(nameof(img_Focus));
+
         img_Check = gameObject.Search<Image>(nameof(img_Check));
         img_Index = gameObject.Search<Image>(nameof(img_Index));
         tmp_Index = gameObject.Search<TMP_Text>(nameof(tmp_Index));
@@ -46,12 +49,17 @@ public class go_Install : MonoBehaviour
             case SEQUENCE_STATE.BEFORE:
                 img_Check.sprite = ResourceManager.instance.LoadDataSprite(check_Off);
                 img_Index.color = color_off;
+                img_Focus.SetActive(false);
                 break;
             case SEQUENCE_STATE.FOCUS:
+                img_Check.sprite = ResourceManager.instance.LoadDataSprite(check_Off);
+                img_Index.color = color_off;
+                img_Focus.SetActive(true);
                 break;
             case SEQUENCE_STATE.AFTER:
                 img_Check.sprite = ResourceManager.instance.LoadDataSprite(check_On);
                 img_Index.color = color_on;
+                img_Focus.SetActive(false);
                 break;
             default:
                 break;

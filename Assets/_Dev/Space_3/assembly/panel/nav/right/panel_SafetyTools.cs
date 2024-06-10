@@ -50,7 +50,7 @@ public class panel_SafetyTools : panel_Base
             SoundManager.instance.PlayVoice(eAudioClips.voice_1_2_modal_end);
 
             popup_Success popup_Success = UIManager.instance.OpenPopup<popup_Success>();
-            popup_Success.SetData(new packet_popup_Basic("완료", "[작업 안전]을 완료하였습니다.\n원하는 구역으로 이동하여 체험을 다시 진행할 수 있습니다."));
+            popup_Success.SetData(new packet_popup_Basic("완료", "<b>[작업 안전]</b>을 완료하였습니다.\n원하는 구역으로 이동하여 체험을 다시 진행할 수 있습니다."));
             popup_Success.SetAction(() =>
             {
                 Space_3.instance.Control_VirtualCamera();

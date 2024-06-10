@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class go_Check_Environment : MonoBehaviour
 {
+    private GameObject img_Focus;
+
     private TMP_Text tmp_Index;
     private TMP_Text tmp_Summary;
 
@@ -20,6 +22,8 @@ public class go_Check_Environment : MonoBehaviour
     private panel_Check_Environment panel_Check_Environment;
     private void Awake()
     {
+        img_Focus = gameObject.SearchGameObject(nameof(img_Focus));
+
         tmp_Index = gameObject.Search<TMP_Text>(nameof(tmp_Index));
         tmp_Summary = gameObject.Search<TMP_Text>(nameof(tmp_Summary));
 
@@ -43,6 +47,8 @@ public class go_Check_Environment : MonoBehaviour
         img_Check1.gameObject.SetActive(true);
         btn_Submit.interactable = false;
 
+        img_Focus.SetActive(false);
+
         //남은 체크개수 카운트
         panel_Check_Environment.remainCheckEnvironment--;
         if(panel_Check_Environment.remainCheckEnvironment == 0)
@@ -54,7 +60,7 @@ public class go_Check_Environment : MonoBehaviour
 
                 SoundManager.instance.PlayVoice(eAudioClips.voice_1_1_toast_end);
                 UIManager.instance
-                    .ShowHideToast<toast_Basic>("[작업현장 조사] 단계가 완료되었습니다. [안전 장비] 단계로 넘어갑니다.", 5.5f, () =>
+                    .ShowHideToast<toast_Basic>("<b>[작업현장 조사]</b> 단계가 완료되었습니다. [안전 장비] 단계로 넘어갑니다.", 5.5f, () =>
                     {
                         UIManager.instance.ClosePanel<panel_Check_Environment>();
                         UIManager.instance.GetPanel<panel_TopNavigation>().NextStep();
@@ -81,6 +87,7 @@ public class go_Check_Environment : MonoBehaviour
         img_Check1.gameObject.SetActive(checkEnvironment.ischecked == 1 ? true : false);
         btn_Submit.interactable = checkEnvironment.ischecked == 1 ? false : true;
         panel_Check_Environment.remainCheckEnvironment += checkEnvironment.ischecked == 1 ? 0 : 1;
+        img_Focus.SetActive(checkEnvironment.ischecked == 1? false : true);
     }
 
 }

@@ -93,6 +93,7 @@ public class go_Section : MonoBehaviour
     /// <param name="en"></param>
     private void SetTriggerWireframe(Color st, Color en)
     {
+        return;
         Util.ShaderFade_Color(mr_Wireframe, "_TintColor", st, en);
     }
     private void SetTriggerCanvasGroup(float st, float en)

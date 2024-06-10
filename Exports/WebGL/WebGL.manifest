@@ -1,0 +1,13 @@
+ManifestFileVersion: 1
+CompatibilityAssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: space-koreadtech-prototype-final_0
+      Hash: 784e63d6312d67ce4b926fcd3d7196ca
+      CRC: 337386805
+      Dependencies: {}
+    Info_1:
+      Name: space-koreadtech-prototype-final_csharp-assembly
+      Hash: 3232b09b5df01006524578bad5013838
+      CRC: 1578976414
+      Dependencies: {}

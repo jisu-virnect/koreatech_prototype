@@ -156,28 +156,42 @@ public class panel_Install : panel_Base
     public void NextSequence()
     {
         SoundManager.instance.PlayEffect(eAudioClips.effect_next);
+
         if (prevInstall != null)
         {
-            //prevInstall.SetData(SEQUENCE_STATE.BEFORE);
+            prevInstall.SetData(SEQUENCE_STATE.AFTER);
             scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
             scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
         }
 
-        if (go_Installs.Count > installIndex + 1)
+        prevInstall = null;
+        if (go_Installs.Count - 1 > installIndex)
         {
             installIndex++;
             prevInstall = go_Installs[installIndex];
 
-            prevInstall.SetData(SEQUENCE_STATE.AFTER);
+            prevInstall.SetData(SEQUENCE_STATE.FOCUS);
             scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.sequence);
             scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.sequence);
             scaffold01_1.Action_scaffold_Active((eBuildScaffold)installIndex, true);
-
-            //tmp_Next.text = (installIndex + 1).ToString() + "단계 설치하기";
         }
-        else
+
+        SetBtnInteractable();
+    }
+
+    private void SetBtnInteractable()
+    {
+        btn_Prev.interactable = true;
+        btn_Next.interactable = true;
+
+        if (prevInstall == null)
         {
-            //NextStep();
+            btn_Next.interactable = false;
+        }
+
+        if (installIndex == 0)
+        {
+            btn_Prev.interactable = false;
         }
     }
 
@@ -231,18 +245,27 @@ public class panel_Install : panel_Base
         SoundManager.instance.PlayEffect(eAudioClips.effect_prev);
         if (installIndex > 0)
         {
-            prevInstall.SetData(SEQUENCE_STATE.BEFORE);
-            scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
-            scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
-            scaffold01_1.Action_scaffold_Active((eBuildScaffold)installIndex, false);
-            installIndex--;
+            if(prevInstall != null)
+            {
+                prevInstall.SetData(SEQUENCE_STATE.BEFORE);
+                scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
+                scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
+                scaffold01_1.Action_scaffold_Active((eBuildScaffold)installIndex, false);
+                installIndex--;
+            }
+            else 
+            {
+                installIndex = go_Installs.Count - 1;
+            }
 
             prevInstall = go_Installs[installIndex];
-            //prevInstall.SetData(SEQUENCE_STATE.AFTER);
+            prevInstall.SetData(SEQUENCE_STATE.FOCUS);
             scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.sequence);
             scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.sequence);
             scaffold01_1.Action_scaffold_Active((eBuildScaffold)installIndex, true);
         }
+
+        SetBtnInteractable();
     }
 
     private void OnEnable()
