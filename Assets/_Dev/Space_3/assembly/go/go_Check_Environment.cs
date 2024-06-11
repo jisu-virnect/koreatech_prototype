@@ -11,6 +11,7 @@ public class go_Check_Environment : MonoBehaviour
     private GameObject img_Focus;
 
     private TMP_Text tmp_Index;
+    private TMP_Text tmp_Title;
     private TMP_Text tmp_Summary;
 
     private Image img_Check1;
@@ -25,6 +26,7 @@ public class go_Check_Environment : MonoBehaviour
         img_Focus = gameObject.SearchGameObject(nameof(img_Focus));
 
         tmp_Index = gameObject.Search<TMP_Text>(nameof(tmp_Index));
+        tmp_Title = gameObject.Search<TMP_Text>(nameof(tmp_Title));
         tmp_Summary = gameObject.Search<TMP_Text>(nameof(tmp_Summary));
 
         img_Check1 = gameObject.Search<Image>(nameof(img_Check1));
@@ -83,7 +85,8 @@ public class go_Check_Environment : MonoBehaviour
     {
         this.checkEnvironment = checkEnvironment;
         tmp_Index.text = (checkEnvironment.index + 1).ToString("00");
-        tmp_Summary.text = checkEnvironment.title + "\n<size=8>" + checkEnvironment.summary + "</size>";
+        tmp_Title.text = checkEnvironment.title;
+        tmp_Summary.text = checkEnvironment.summary;
         img_Check1.gameObject.SetActive(checkEnvironment.ischecked == 1 ? true : false);
         btn_Submit.interactable = checkEnvironment.ischecked == 1 ? false : true;
         panel_Check_Environment.remainCheckEnvironment += checkEnvironment.ischecked == 1 ? 0 : 1;

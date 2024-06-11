@@ -9,13 +9,13 @@ public class panel_Check_Environment : panel_Base
 {
     public int remainCheckEnvironment { get; set; }
     private GameObject go_Check_Environment;
-    private ScrollRect sview_;
+    private ScrollRect sview_Check_Environment;
 
     protected override void Awake()
     {
         base.Awake();
         go_Check_Environment = ResourceManager.instance.LoadData<GameObject>(nameof(go_Check_Environment));
-        sview_ = gameObject.Search<ScrollRect>(nameof(sview_));
+        sview_Check_Environment = gameObject.Search<ScrollRect>(nameof(sview_Check_Environment));
     }
 
     /// <summary>
@@ -23,11 +23,11 @@ public class panel_Check_Environment : panel_Base
     /// </summary>
     private void SetData()
     {
-        Util.DestroyChildrenGameObject(sview_.content);
+        Util.DestroyChildrenGameObject(sview_Check_Environment.content);
         List<CheckEnvironment> checkEnvironments = DBManager.instance.CheckEnvironments;
         for (int i = 0; i < checkEnvironments.Count; i++)
         {
-            GameObject go = Instantiate(go_Check_Environment, sview_.content);
+            GameObject go = Instantiate(go_Check_Environment, sview_Check_Environment.content);
             go.GetComponent<go_Check_Environment>().SetData(checkEnvironments[i]);
         }
     }
@@ -58,7 +58,7 @@ public class panel_Check_Environment : panel_Base
     protected override IEnumerator Action_Opening()
     {
         yield return null;
-        sview_.verticalScrollbar.value = 0;
+        //sview_Check_Environment.verticalScrollbar.value = 0;
     }
 
 }
