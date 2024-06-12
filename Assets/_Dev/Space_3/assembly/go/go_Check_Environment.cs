@@ -51,6 +51,9 @@ public class go_Check_Environment : MonoBehaviour
 
         img_Focus.SetActive(false);
 
+        tmp_Title.color = Define.color_black_153;
+        tmp_Summary.color = Define.color_black_153;
+
         //남은 체크개수 카운트
         panel_Check_Environment.remainCheckEnvironment--;
         if(panel_Check_Environment.remainCheckEnvironment == 0)
@@ -98,6 +101,9 @@ public class go_Check_Environment : MonoBehaviour
         btn_Submit.interactable = checkEnvironment.ischecked == 1 ? false : true;
         panel_Check_Environment.remainCheckEnvironment += checkEnvironment.ischecked == 1 ? 0 : 1;
         img_Focus.SetActive(checkEnvironment.ischecked == 1? false : true);
+
+        tmp_Title.color = checkEnvironment.ischecked == 1 ? Define.color_black_153 : Define.color_black_0 ;
+        tmp_Summary.color = checkEnvironment.ischecked == 1 ? Define.color_black_153 : Define.color_black_77 ;
     }
 
 }

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class go_Install : MonoBehaviour
 {
-    public Install sequence;
+    public Install install;
 
     private GameObject img_Focus;
     private Image img_Check;
@@ -37,7 +37,7 @@ public class go_Install : MonoBehaviour
 
     public void InitData(Install install)
     {
-        this.sequence = install;
+        this.install = install;
         tmp_Index.text = (install.index+1).ToString("00");
         tmp_Summary.text = install.title;
         SetData(SEQUENCE_STATE.BEFORE);
@@ -50,16 +50,19 @@ public class go_Install : MonoBehaviour
                 img_Check.sprite = ResourceManager.instance.LoadDataSprite(check_Off);
                 img_Index.color = color_off;
                 img_Focus.SetActive(false);
+                tmp_Summary.color = Define.color_black_153;
                 break;
             case SEQUENCE_STATE.FOCUS:
                 img_Check.sprite = ResourceManager.instance.LoadDataSprite(check_Off);
                 img_Index.color = color_off;
                 img_Focus.SetActive(true);
+                tmp_Summary.color = Define.color_black_153;
                 break;
             case SEQUENCE_STATE.AFTER:
                 img_Check.sprite = ResourceManager.instance.LoadDataSprite(check_On);
                 img_Index.color = color_on;
                 img_Focus.SetActive(false);
+                tmp_Summary.color = Define.color_black_0;
                 break;
             default:
                 break;

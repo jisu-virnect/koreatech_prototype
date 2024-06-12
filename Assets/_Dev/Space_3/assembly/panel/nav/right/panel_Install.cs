@@ -160,8 +160,8 @@ public class panel_Install : panel_Base
         if (prevInstall != null)
         {
             prevInstall.SetData(SEQUENCE_STATE.AFTER);
-            scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
-            scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
+            scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.install);
+            scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.install);
         }
 
         prevInstall = null;
@@ -171,8 +171,8 @@ public class panel_Install : panel_Base
             prevInstall = go_Installs[installIndex];
 
             prevInstall.SetData(SEQUENCE_STATE.FOCUS);
-            scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.sequence);
-            scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.sequence);
+            scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.install);
+            scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.install);
             scaffold01_1.Action_scaffold_Active((eBuildScaffold)installIndex, true);
         }
 
@@ -248,8 +248,8 @@ public class panel_Install : panel_Base
             if(prevInstall != null)
             {
                 prevInstall.SetData(SEQUENCE_STATE.BEFORE);
-                scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
-                scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.sequence);
+                scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.install);
+                scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Opaque, prevInstall.install);
                 scaffold01_1.Action_scaffold_Active((eBuildScaffold)installIndex, false);
                 installIndex--;
             }
@@ -260,8 +260,8 @@ public class panel_Install : panel_Base
 
             prevInstall = go_Installs[installIndex];
             prevInstall.SetData(SEQUENCE_STATE.FOCUS);
-            scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.sequence);
-            scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.sequence);
+            scaffold01_1.Action_scaffold_RenderMode((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.install);
+            scaffold01_1.Action_scaffold_Position((eBuildScaffold)installIndex, BlendMode.Transparent, prevInstall.install);
             scaffold01_1.Action_scaffold_Active((eBuildScaffold)installIndex, true);
         }
 

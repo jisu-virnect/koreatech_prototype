@@ -225,7 +225,7 @@ public class panel_Check_Install : panel_Base
             btn_Image.sprite = ResourceManager.instance.LoadDataSprite("btn_370_enabled");
             tmp_Checked.text = (index + 1).ToString("00") + "번 항목 점검하기";
             go_TapAni.SetActive(true);
-            go_Check_Installs[index].tmp_Summary.fontStyle = FontStyles.Bold;
+            //go_Check_Installs[index].tmp_Summary.fontStyle = FontStyles.Bold;
         }
         else
         {
@@ -233,7 +233,7 @@ public class panel_Check_Install : panel_Base
             btn_Image.sprite = ResourceManager.instance.LoadDataSprite("btn_370_disabled");
             tmp_Checked.text = "점검하기";
             go_TapAni.SetActive(false);
-            go_Check_Installs[index].tmp_Summary.fontStyle = FontStyles.Normal;
+            //go_Check_Installs[index].tmp_Summary.fontStyle = FontStyles.Normal;
         }
 
 

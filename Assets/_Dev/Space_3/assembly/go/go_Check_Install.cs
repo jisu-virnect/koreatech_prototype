@@ -34,6 +34,7 @@ public class go_Check_Install : MonoBehaviour
 
             img_Suitable.sprite = ResourceManager.instance.LoadDataSprite(value.isChecked ? Define.check_On : Define.check_Off);
             img_Unsuitable.sprite = ResourceManager.instance.LoadDataSprite(value.isChecked ? Define.check_On : Define.check_Off);
+            tmp_Summary.color = value.isChecked ? Define.color_black_153 : Define.color_black_0;
         }
     }
 

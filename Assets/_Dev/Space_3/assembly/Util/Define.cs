@@ -26,7 +26,11 @@ public static class Define
     public static Color white = Color.white;
     public static Color black = Color.black;
 
-    public static Color32 blue_idle = new Color32(34, 139, 255, 153);
+    public static Color32 blue_idle = new Color32(13, 24, 35, 153);
     public static Color32 green_success = new Color32(89, 179, 0, 153);
+
+    public static Color32 color_black_0 = new Color32(0, 0, 0, 255);
+    public static Color32 color_black_77 = new Color32(77, 77, 77, 255);
+    public static Color32 color_black_153 = new Color32(153, 153, 153, 255);
 
 }
