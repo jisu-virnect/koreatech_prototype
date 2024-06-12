@@ -13,6 +13,7 @@ public class panel_Check_Install : panel_Base
     private List<CheckInstall> checkInstalls;
 
     private GameObject go_Check_Install;
+    private GameObject go_TapAni;
     private Dictionary<int, go_Check_Install> go_Check_Installs = new Dictionary<int, go_Check_Install>();
     private RectTransform content;
 
@@ -30,12 +31,12 @@ public class panel_Check_Install : panel_Base
 
     private GameObject ladder;
     private GameObject ladder_error;
-    private GameObject trigger_8;
+    private GameObject trigger_6;
     private GameObject go_사다리;
 
     private GameObject work_scaffolding;
     private GameObject work_scaffolding_error;
-    private GameObject trigger_9;
+    private GameObject trigger_7;
     private GameObject go_작업발판;
 
     public void SetLadder(bool active)
@@ -43,14 +44,14 @@ public class panel_Check_Install : panel_Base
         SoundManager.instance.PlayEffect(eAudioClips.effect_click);
         ladder.SetActive(active);
         ladder_error.SetActive(!active);
-        trigger_8.SetActive(active);
+        trigger_6.SetActive(active);
     }
     public void SetScaffolding(bool active)
     {
         SoundManager.instance.PlayEffect(eAudioClips.effect_click);
         work_scaffolding.SetActive(active);
         work_scaffolding_error.SetActive(!active);
-        trigger_9.SetActive(active);
+        trigger_7.SetActive(active);
     }
 
     protected override void Awake()
@@ -60,6 +61,7 @@ public class panel_Check_Install : panel_Base
         checkInstalls = DBManager.instance.CheckInstalls;
 
         go_Check_Install = ResourceManager.instance.LoadData<GameObject>(nameof(go_Check_Install));
+        go_TapAni = gameObject.SearchGameObject(nameof(go_TapAni));
         sview_Check_Install = gameObject.Search<ScrollRect>(nameof(sview_Check_Install));
         content = sview_Check_Install.content;
 
@@ -83,12 +85,12 @@ public class panel_Check_Install : panel_Base
         //spatial interation
         ladder = ResourceManager.instance.LoadData<GameObject>(nameof(ladder));
         ladder_error = ResourceManager.instance.LoadData<GameObject>(nameof(ladder_error));
-        trigger_8 = ResourceManager.instance.LoadData<GameObject>(nameof(trigger_8));
+        trigger_6 = ResourceManager.instance.LoadData<GameObject>(nameof(trigger_6));
         go_사다리 = ResourceManager.instance.LoadData<GameObject>(nameof(go_사다리));
 
         work_scaffolding = ResourceManager.instance.LoadData<GameObject>(nameof(work_scaffolding));
         work_scaffolding_error = ResourceManager.instance.LoadData<GameObject>(nameof(work_scaffolding_error));
-        trigger_9 = ResourceManager.instance.LoadData<GameObject>(nameof(trigger_9));
+        trigger_7 = ResourceManager.instance.LoadData<GameObject>(nameof(trigger_7));
         go_작업발판 = ResourceManager.instance.LoadData<GameObject>(nameof(go_작업발판));
 
         target_CheckInstall = ResourceManager.instance.LoadData<GameObject>(nameof(target_CheckInstall));
@@ -147,7 +149,10 @@ public class panel_Check_Install : panel_Base
     protected override IEnumerator Action_Opening()
     {
         yield return null;
-        sview_Check_Install.verticalScrollbar.value = 0;
+        //sview_Check_Install.verticalScrollbar.value = 0;
+        Util.RefreshLayout(gameObject, "Content");
+        Util.RefreshLayout(gameObject, "Content");
+        Util.RefreshLayout(gameObject, "Content");
     }
 
     /// <summary>
@@ -219,6 +224,7 @@ public class panel_Check_Install : panel_Base
             btn_Checked.interactable = true;
             btn_Image.sprite = ResourceManager.instance.LoadDataSprite("btn_370_enabled");
             tmp_Checked.text = (index + 1).ToString("00") + "번 항목 점검하기";
+            go_TapAni.SetActive(true);
             go_Check_Installs[index].tmp_Summary.fontStyle = FontStyles.Bold;
         }
         else
@@ -226,6 +232,7 @@ public class panel_Check_Install : panel_Base
             btn_Checked.interactable = false;
             btn_Image.sprite = ResourceManager.instance.LoadDataSprite("btn_370_disabled");
             tmp_Checked.text = "점검하기";
+            go_TapAni.SetActive(false);
             go_Check_Installs[index].tmp_Summary.fontStyle = FontStyles.Normal;
         }
 

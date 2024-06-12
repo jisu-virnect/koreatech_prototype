@@ -60,21 +60,28 @@ public class go_Check_Environment : MonoBehaviour
                 Space_3.instance.Control_VirtualCamera(eVirtualCameraState.none);
                 Space_3.instance.Control_PlayerMovement(false);
 
+                UIManager.instance.ClosePanel<panel_Check_Environment>();
+
                 SoundManager.instance.PlayVoice(eAudioClips.voice_1_1_toast_end);
                 UIManager.instance
                     .ShowHideToast<toast_Basic>("<b>[작업현장 조사]</b> 단계가 완료되었습니다. [안전 장비] 단계로 넘어갑니다.", 5.5f, () =>
                     {
-                        UIManager.instance.ClosePanel<panel_Check_Environment>();
                         UIManager.instance.GetPanel<panel_TopNavigation>().NextStep();
                         
                         SoundManager.instance.PlayVoice(eAudioClips.voice_1_2_toast_guide);
-                        UIManager.instance
-                        .ShowHideToast<toast_Basic>("비계 작업에 필요한 안전 장비를 확인합니다.", 3f, () =>
-                        {
-                            UIManager.instance.OpenPanel<panel_SafetyTools>().ResetStep();
-                            //체크포인트들 켜주기
-                        })
-                        .SetData(new packet_toast_basic(eToastColor.blue, eToastIcon.toast_idle));
+                        //UIManager.instance
+                        //.ShowHideToast<toast_Basic>("비계 작업에 필요한 안전 장비를 확인합니다.", 3f, () =>
+                        //{
+                        //    UIManager.instance.OpenPanel<panel_SafetyTools>().ResetStep();
+                        //    //체크포인트들 켜주기
+                        //})
+                        //.SetData(new packet_toast_basic(eToastColor.blue, eToastIcon.toast_idle));
+
+                        popup_Basic popup_Basic = UIManager.instance.OpenPopup<popup_Basic>();
+                        popup_Basic.SetData(new packet_popup_Basic("안전 장비", "비계 작업에 필요한 안전 장비를 확인합니다."));
+                        popup_Basic.SetAction(() => UIManager.instance.OpenPanel<panel_SafetyTools>().ResetStep());
+
+
                     })
                     .SetData(new packet_toast_basic(eToastColor.green, eToastIcon.toast_success));
             });
